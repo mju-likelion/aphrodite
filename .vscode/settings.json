@@ -1,3 +1,15 @@
 {
-    "svn.ignoreMissingSvnWarning": true
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true,
+	"editor.renderFinalNewline": true,
+	"editor.formatOnSave": true,
+	"[typescript]": {
+		"editor.formatOnSave": true
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"eslint.alwaysShowStatus": true,
+	"svn.ignoreMissingSvnWarning": true
 }
