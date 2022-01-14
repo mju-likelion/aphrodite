@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## 시작 방법
 
 First, run the development server:
 
@@ -24,3 +24,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 2. `git checkout -b {본인이름}` 명령어를 입력하여 자기 이름 브랜치를 만든다.
 3. 자신이 맡은 기능을 개발한다.
 4. git에 본인 브랜치를 올리고 develop에 merge하는 PR을 생성한다.
+
+## 커밋 메세지 규칙
+![image](https://user-images.githubusercontent.com/57565933/149538692-1f687e6a-29de-4944-a54c-caad83ccc293.png)
+여기서 feat, fix, style, refactor, chore를 쓰시면됩니다.
