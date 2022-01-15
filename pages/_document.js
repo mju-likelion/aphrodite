@@ -1,5 +1,4 @@
 import Document from "next/document";
-import CustomHead from "src/components/CustomHead";
 import { ServerStyleSheet } from "styled-components";
 
 export default class MyDocument extends Document {

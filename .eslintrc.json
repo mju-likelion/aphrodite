@@ -32,9 +32,8 @@
 		"no-nested-ternary": 0,
 		"react/jsx-props-no-spreading": 0,
 		"import/prefer-default-export": 0,
-		"import/resolver": {
-			"typescript": {}
-		},
+		"no-use-before-define": 0,
+		"import/no-unresolved": 0,
 		"import/extensions": [
 			"error",
 			"ignorePackages",
