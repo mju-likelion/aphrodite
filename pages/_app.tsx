@@ -1,8 +1,23 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import styled, { ThemeProvider } from "styled-components";
+import type { AppProps } from "next/app";
+import { GlobalStyle } from "../styles/global-styles";
+import { theme } from "../styles/theme";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+	return (
+		<ThemeProvider theme={theme}>
+			<GlobalStyle />
+			<AppContainer>
+				<Component {...pageProps} />
+			</AppContainer>
+		</ThemeProvider>
+	);
 }
 
-export default MyApp
+const AppContainer = styled.div`
+	border: 1px solid white;
+	width: 100%;
+	heigth: 100%;
+`;
+
+export default MyApp;
