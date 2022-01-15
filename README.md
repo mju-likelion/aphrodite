@@ -1,6 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## 시작 방법
 
 First, run the development server:
 
@@ -18,17 +18,13 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+## 개발 방법
+0. 해당 repo를 클론 받는다.
+1. (develop 브랜치가 아닐경우) `git checkout develop` 명령어를 입력하여 develop 브랜치로 이동한다.
+2. `git checkout -b {본인이름}` 명령어를 입력하여 자기 이름 브랜치를 만든다.
+3. 자신이 맡은 기능을 개발한다.
+4. git에 본인 브랜치를 올리고 develop에 merge하는 PR을 생성한다.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 커밋 메세지 규칙
+![image](https://user-images.githubusercontent.com/57565933/149538692-1f687e6a-29de-4944-a54c-caad83ccc293.png)
+여기서 feat, fix, style, refactor, chore를 쓰시면됩니다.
