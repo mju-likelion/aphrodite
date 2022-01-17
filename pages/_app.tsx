@@ -1,23 +1,21 @@
-import styled, { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from "@emotion/react";
 import type { AppProps } from "next/app";
 import { GlobalStyle } from "../src/styles/global-styles";
 import { theme } from "../src/styles/theme";
+import Header from "../src/components/Header";
+import Footer from "../src/components/Footer";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
-		<ThemeProvider theme={theme}>
+		<>
 			<GlobalStyle />
-			<AppContainer>
+			<ThemeProvider theme={theme}>
+				<Header />
 				<Component {...pageProps} />
-			</AppContainer>
-		</ThemeProvider>
+				<Footer />
+			</ThemeProvider>
+		</>
 	);
 }
-
-const AppContainer = styled.div`
-	border: 1px solid white;
-	width: 100%;
-	heigth: 100%;
-`;
 
 export default MyApp;
