@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     max-width : 1024px;
     height: 100%;
-
+    color: #fff;
     margin: 0 auto;
     background-color : #141517;
   }
