@@ -25,6 +25,12 @@
 	},
 	"plugins": ["react", "react-hooks", "prettier"],
 	"rules": {
+		"prettier/prettier": [
+			"error",
+			{
+				"endOfLine": "auto"
+			}
+		],
 		"react/react-in-jsx-scope": 0,
 		"react/prefer-stateless-function": 0,
 		"react/jsx-filename-extension": 0,
@@ -34,13 +40,6 @@
 		"import/prefer-default-export": 0,
 		"no-use-before-define": 0,
 		"import/no-unresolved": 0,
-		"import/extensions": [
-			"error",
-			"ignorePackages",
-			{
-				"ts": "never",
-				"tsx": "never"
-			}
-		]
+		"import/extensions": 0
 	}
 }
