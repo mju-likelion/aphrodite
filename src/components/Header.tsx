@@ -19,9 +19,6 @@ const Logo = styled.img`
 		hidden: none;
 	}
 `;
-const HamburgerBar = styled.img`
-	background-image: url(/images/menu.svg);
-`;
 const Left = styled.div`
 	@media screen and (max-width: 424px) {
 		font-size: 10px;
