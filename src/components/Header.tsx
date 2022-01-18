@@ -1,8 +1,20 @@
 import styled from "styled-components";
 
+function Header() {
+	return (
+		<>
+			<Self>
+				<Left>LIKELION | MJU </Left>
+				<Right> 회원가입|로그인 </Right>
+			</Self>
+		</>
+	);
+}
+
+export default Header;
 const Self = styled.div`
 	justify-content: space-between;
-	font-size: 24px;
+	font-size: 30px;
 	display: flex;
 	align-items: center;
 	padding: 10px 60px;
@@ -30,16 +42,3 @@ const Right = styled.div`
 		font-size: 10px;
 	}
 `;
-
-function Header() {
-	return (
-		<>
-			<Self>
-				<Left>LIKELION | MJU </Left>
-				<Right> 회원가입|로그인 </Right>
-			</Self>
-		</>
-	);
-}
-
-export default Header;
