@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 const AppContainer = styled.div`
 	border: 1px solid white;
 	width: 100%;
-	heigth: 100%;
+	height: 100%;
 `;
 
 export default MyApp;
