@@ -1,5 +1,70 @@
 import styled from "styled-components";
 
+function Footer() {
+	const date = new Date();
+	const years = date.getFullYear();
+
+	return (
+		<FooterSelf>
+			<MaxWidthWrapper>
+				<MjuLogo> LIKE LION | MJU Nature © {years} </MjuLogo>
+				<MjuSnsWrapper>
+					<SnsBlock>
+						<a
+							target="_blank"
+							href="https://www.facebook.com/likelionatmju/"
+							rel="noreferrer"
+							title="멋쟁이 사자처럼 at 명지대 자연 페이스북"
+						>
+							<SnsImage
+								src="/images/sns-icon-facebook.svg"
+								width={19}
+								height={19}
+								alt="멋쟁이 사자처럼 at 명지대 자연 페이스북"
+							/>
+						</a>
+					</SnsBlock>
+					<SnsBlock>
+						<SnsBetweenLine />
+					</SnsBlock>
+					<SnsBlock>
+						<a
+							target="_blank"
+							href="https://www.instagram.com/mju_likelion/"
+							title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
+						>
+							<SnsImage
+								src="/images/sns-icon-instagram.svg"
+								width={19}
+								height={19}
+								alt="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
+							/>
+						</a>
+					</SnsBlock>
+					<SnsBlock>
+						<SnsBetweenLine />
+					</SnsBlock>
+					<SnsGitMargin>
+						<a
+							target="_blank"
+							href="https://github.com/mju-likelion"
+							title="멋쟁이 사자처럼 at 명지대 자연 깃허브"
+						>
+							<SnsImage
+								src="/images/sns-icon-github.svg"
+								width={19}
+								height={19}
+								alt="멋쟁이 사자처럼 at 명지대 자연 깃허브"
+							/>
+						</a>
+					</SnsGitMargin>
+				</MjuSnsWrapper>
+			</MaxWidthWrapper>
+		</FooterSelf>
+	);
+}
+export default Footer;
+
 const FooterSelf = styled.footer`
 	background-color: #141517;
 `;
@@ -66,68 +131,3 @@ const SnsImage = styled.img`
 		width: 15px;
 	}
 `;
-
-function Footer() {
-	const date = new Date();
-	const years = date.getFullYear();
-
-	return (
-		<FooterSelf>
-			<MaxWidthWrapper>
-				<MjuLogo> LIKE LION | MJU Nature © {years} </MjuLogo>
-				<MjuSnsWrapper>
-					<SnsBlock>
-						<a
-							target="_blank"
-							href="https://www.facebook.com/likelionatmju/"
-							rel="noreferrer"
-							title="멋쟁이 사자처럼 at 명지대 자연 페이스북"
-						>
-							<SnsImage
-								src="/images/sns-icon-facebook.svg"
-								width={19}
-								height={19}
-								alt="멋쟁이 사자처럼 at 명지대 자연 페이스북"
-							/>
-						</a>
-					</SnsBlock>
-					<SnsBlock>
-						<SnsBetweenLine />
-					</SnsBlock>
-					<SnsBlock>
-						<a
-							target="_blank"
-							href="https://www.instagram.com/mju_likelion/"
-							title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
-						>
-							<SnsImage
-								src="/images/sns-icon-instagram.svg"
-								width={19}
-								height={19}
-								alt="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
-							/>
-						</a>
-					</SnsBlock>
-					<SnsBlock>
-						<SnsBetweenLine />
-					</SnsBlock>
-					<SnsGitMargin>
-						<a
-							target="_blank"
-							href="https://github.com/mju-likelion"
-							title="멋쟁이 사자처럼 at 명지대 자연 깃허브"
-						>
-							<SnsImage
-								src="/images/sns-icon-github.svg"
-								width={19}
-								height={19}
-								alt="멋쟁이 사자처럼 at 명지대 자연 깃허브"
-							/>
-						</a>
-					</SnsGitMargin>
-				</MjuSnsWrapper>
-			</MaxWidthWrapper>
-		</FooterSelf>
-	);
-}
-export default Footer;
