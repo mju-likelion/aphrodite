@@ -1,14 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
+import { theme } from "./theme";
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-  html, body {
-    max-width : 1024px;
+  html,
+  body {
+    width : 100%;
     height: 100%;
     color: #fff;
-    margin: 0 auto;
-    background-color : #141517;
+    background-color : ${theme.colors.primary.black};
   }
   *,
   *::before,

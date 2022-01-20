@@ -16,10 +16,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-const AppContainer = styled.div`
-  border: 1px solid white;
+const AppContainer = styled.main`
   width: 100%;
+  max-width: 1024px;
   height: 100%;
+
+  margin: 0 auto;
 `;
 
 export default MyApp;

@@ -1,8 +1,11 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 function Footer() {
+  const theme = useTheme();
   const date = new Date();
   const years = date.getFullYear();
+
+  console.log(theme);
 
   return (
     <FooterSelf>
@@ -11,9 +14,9 @@ function Footer() {
         <MjuSnsWrapper>
           <SnsBlock>
             <a
+              rel="noreferrer noopener"
               target="_blank"
               href="https://www.facebook.com/likelionatmju/"
-              rel="noreferrer"
               title="멋쟁이 사자처럼 at 명지대 자연 페이스북"
             >
               <SnsImage
@@ -32,7 +35,7 @@ function Footer() {
               target="_blank"
               href="https://www.instagram.com/mju_likelion/"
               title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
-              rel="noreferrer"
+              rel="noreferrer noopener"
             >
               <SnsImage
                 src="/images/sns-icon-instagram.svg"
@@ -50,7 +53,7 @@ function Footer() {
               target="_blank"
               href="https://github.com/mju-likelion"
               title="멋쟁이 사자처럼 at 명지대 자연 깃허브"
-              rel="noreferrer"
+              rel="noreferrer noopener"
             >
               <SnsImage
                 src="/images/sns-icon-github.svg"
@@ -67,28 +70,29 @@ function Footer() {
 }
 
 const FooterSelf = styled.footer`
-  background-color: #141517;
+  width: 100%;
+
+  display: flex;
 `;
 
 const MaxWidthWrapper = styled.div`
-  height: 62px;
+  width: 100%;
   display: flex;
-  padding: 22px 0;
-  max-width: 1024px;
-  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 10px;
+
   font-size: 16px;
+
   @media screen and (max-width: 424px) {
-    max-width: 424px;
-    height: 100px;
     padding: 23px 0;
-    display: block;
-    text-align: center;
+
+    flex-direction: column;
   }
 `;
 
 const MjuLogo = styled.div`
-  margin-left: 30px;
-  margin-right: auto;
   @media screen and (max-width: 424px) {
     font-size: 15px;
     margin: auto;
@@ -97,16 +101,20 @@ const MjuLogo = styled.div`
 
 const MjuSnsWrapper = styled.div`
   display: inline-flex;
+
   @media screen and (max-width: 424px) {
     padding-top: 20px;
   }
 `;
 
 const SnsBetweenLine = styled.div`
-  margin-top: 8px;
   width: 35px;
   height: 2px;
+
+  margin-top: 8px;
+
   background-color: #fff;
+
   @media screen and (max-width: 424px) {
     margin-top: 8px;
     width: 10px;
@@ -119,6 +127,7 @@ const SnsBlock = styled.div`
 
 const SnsGitMargin = styled.div`
   margin-right: 10px;
+
   @media screen and (max-width: 768px) {
     margin-right: 3;
   }
@@ -127,6 +136,7 @@ const SnsGitMargin = styled.div`
 const SnsImage = styled.img`
   height: 19px;
   width: 19px;
+
   @media screen and (max-width: 424px) {
     height: 15px;
     width: 15px;
