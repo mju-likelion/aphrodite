@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "@styles/theme";
 
 function Main() {
   return (
@@ -18,8 +19,10 @@ function Main() {
           </SubText>
           <Apply>
             <ApplyIntro>
-              모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
-              모집 기간 : ~2022년 3월 11일까지 <br />
+              <p>
+                모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
+                모집 기간 : ~2022년 3월 11일까지 <br />
+              </p>
               <ApplyBtn>
                 지원하기 ➡{/* <Arrow src="/images/ic-more.svg" /> */}
               </ApplyBtn>
@@ -28,7 +31,7 @@ function Main() {
         </SubMainText>
       </Container>
       <Bottom>
-        <Image src="/images/codingimage.svg" />
+        <CodingImg src="/images/codingimage.svg" />
         <CodingTextImage>
           <More>
             <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
@@ -45,134 +48,195 @@ function Main() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.article`
+  width: 100%;
+  height: 640px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
   background-image: url("https://mju-likelion.s3.ap-northeast-2.amazonaws.com/static/home/main_background.png");
   background-position: center;
   background-size: cover;
-  height: 100vh;
 `;
+
 const MainText = styled.div`
-  font-size: 30px;
-  height: 260px;
-  line-height: 260px;
-  font-weight: bold;
+  width: 100%;
+
   text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+
+  margin-top: 100px;
+  margin-bottom: 100px;
+
   @media screen and (max-width: 500px) {
     font-size: 25px;
   }
+
   @media screen and (max-width: 424px) {
     display: none;
   }
 `;
-const Image = styled.img`
-  width: 50%;
-  display: inline;
-  @@media screen and (max-width: 424px) {
-  }
-`;
-
-const Arrow = styled.img``;
-
-const CodingTextImage = styled.div`
-  background-image: url("/images/codingtext.svg");
-  padding: 40px 0px 0px 40px;
-  width: 50%;
-  background-position: cover;
-  display: inline-block;
-  height: 300px;
-`;
 
 const SubMainText = styled.div`
+  width: 100%;
+
   display: flex;
   justify-content: space-around;
   align-items: center;
-  @media screen and (max-width: 424px) {
-    height: 100vh;
-  }
-`;
 
-const SubText = styled.div`
-  display: inline;
-  font-size: 60px;
-  color: #ff9e1b;
+  gap: 100px;
+
   @media screen and (max-width: 424px) {
-    line-height: 70px;
-    font-size: 40px;
-    margin-bottom: 200px;
-  }
-`;
-const Apply = styled.div`
-  display: block;
-  @media screen and (max-width: 424px) {
-    margin-top: 160px;
+    display: block;
     padding: 10px;
   }
 `;
-const ApplyIntro = styled.div`
-  width: 280px;
-  justify-content: center;
-  text-align: right;
+
+const SubText = styled.div<{ theme: object }>`
+  display: inline;
+  font-size: 60px;
+  color: ${({ theme }) => theme.colors.primary.orange};
+
   @media screen and (max-width: 424px) {
-    font-size: 12px;
+    display: block;
+
+    margin-top: 100px;
+    font-size: 40px;
   }
 `;
-const ApplyBtn = styled.div`
-  width: 161px;
-  float: right;
-  height: 38px;
-  background-color: #0087d1;
-  text-align: center;
-  border-radius: 5px;
-  font-size: 25px;
-  line-height: 38px;
-  cursor: pointer;
+
+const Apply = styled.div`
   @media screen and (max-width: 424px) {
-    font-size: 12px;
-    height: 28px;
-    width: 120px;
+    margin-top: 100px;
+    padding: 10px;
   }
+`;
+
+const ApplyIntro = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+
+  text-align: right;
+
+  p {
+    line-height: 25px;
+  }
+`;
+
+const ApplyBtn = styled.button<{ theme: object }>`
+  width: 165px;
+  height: 38px;
+
+  border: none;
+  border-radius: 5px;
+  opacity: 0.9;
+
+  background-color: ${({ theme }) => theme.colors.third.skyblue};
+  color: white;
+
+  cursor: pointer;
+
   &:hover {
     background-color: #ff9e1b;
   }
-`;
-const Bottom = styled.div`
-  padding-top: 40px;
-  display: flex;
-  align-items: center;
-  @media screen and (max-width: 750px) {
-    padding-top: 20px;
-    display: inline;
+
+  @media screen and (max-width: 424px) {
+    width: 120px;
+    height: 28px;
+
+    font-size: 12px;
   }
 `;
-const Mju = styled.div`
+
+const CodingImg = styled.img`
+  width: 50%;
+
+  @media screen and (max-width: 424px) {
+    width: 100%;
+
+    margin-top: 80px;
+  }
+`;
+
+const CodingTextImage = styled.div`
+  width: 50%;
+  height: 300px;
+
+  padding: 40px 0px 0px 40px;
+
+  background-image: url("/images/codingtext.svg");
+  background-position: cover;
+
+  @media screen and (max-width: 424px) {
+    width: 80%;
+    display: flex;
+    align-items: center;
+
+    text-align: left;
+    background-image: none;
+
+    padding: 0;
+  }
+`;
+
+const Mju = styled.p`
   font-weight: bold;
   font-size: 30px;
   line-height: 43px;
+
   @media screen and (max-width: 424px) {
     font-size: 22px;
   }
 `;
-const Detail = styled.div`
+
+const Detail = styled.p`
   font-size: 16px;
   line-height: 23px;
   color: #a0a0a0;
-  @media screen and (max-width: 750px) {
+
+  @media screen and (max-width: 424px) {
     font-size: 16px;
   }
 `;
+
 const DetailLink = styled.div`
   font-size: 16px;
   cursor: pointer;
-  @media screen and (max-width: 750px) {
+
+  @media screen and (max-width: 424px) {
     font-size: 16px;
   }
+
   &:hover {
     color: #ff9e1b;
   }
 `;
+
 const More = styled.div`
   @media screen and (max-width: 424px) {
-    padding: 10px 20px;
+    width: 100%;
   }
 `;
+
+const Bottom = styled.article`
+  display: flex;
+  align-items: center;
+
+  padding-top: 40px;
+
+  @media screen and (max-width: 424px) {
+    width: 100%;
+    flex-direction: column;
+    padding-top: 20px;
+  }
+`;
+
 export default Main;
