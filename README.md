@@ -34,7 +34,7 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 여기서 feat: , fix: , style: , refactor: , chore: 를 쓰시면됩니다.
 
-#### PR 이후
+## PR 이후
 
 - 터미널에서 `git checkout develop` 명령어를 이용하여 develop 브랜치로 이동한다
 - `git pull` 명령어를 이용하여 develop의 최신 상태를 가져온다.
