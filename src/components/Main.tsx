@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { theme } from "@styles/theme";
+import { useState } from "react";
 
 function Main() {
+  const [show, setShow] = useState(true);
   return (
     <>
       <Container>
@@ -60,6 +61,8 @@ const Container = styled.article`
   background-image: url("https://mju-likelion.s3.ap-northeast-2.amazonaws.com/static/home/main_background.png");
   background-position: center;
   background-size: cover;
+
+  overflow-y: auto !important;
 `;
 
 const MainText = styled.div`
@@ -76,7 +79,7 @@ const MainText = styled.div`
     font-size: 25px;
   }
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     display: none;
   }
 `;
@@ -90,7 +93,7 @@ const SubMainText = styled.div`
 
   gap: 100px;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     display: block;
     padding: 10px;
   }
@@ -101,7 +104,7 @@ const SubText = styled.div<{ theme: object }>`
   font-size: 60px;
   color: ${({ theme }) => theme.colors.primary.orange};
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     display: block;
 
     margin-top: 100px;
@@ -110,7 +113,7 @@ const SubText = styled.div<{ theme: object }>`
 `;
 
 const Apply = styled.div`
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     margin-top: 100px;
     padding: 10px;
   }
@@ -148,7 +151,7 @@ const ApplyBtn = styled.button<{ theme: object }>`
     background-color: #ff9e1b;
   }
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 120px;
     height: 28px;
 
@@ -159,7 +162,7 @@ const ApplyBtn = styled.button<{ theme: object }>`
 const CodingImg = styled.img`
   width: 50%;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 100%;
 
     margin-top: 80px;
@@ -175,7 +178,7 @@ const CodingTextImage = styled.div`
   background-image: url("/images/codingtext.svg");
   background-position: cover;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 80%;
     display: flex;
     align-items: center;
@@ -192,7 +195,7 @@ const Mju = styled.p`
   font-size: 30px;
   line-height: 43px;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     font-size: 22px;
   }
 `;
@@ -202,7 +205,7 @@ const Detail = styled.p`
   line-height: 23px;
   color: #a0a0a0;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     font-size: 16px;
   }
 `;
@@ -211,7 +214,7 @@ const DetailLink = styled.div`
   font-size: 16px;
   cursor: pointer;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     font-size: 16px;
   }
 
@@ -221,7 +224,7 @@ const DetailLink = styled.div`
 `;
 
 const More = styled.div`
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 100%;
   }
 `;
@@ -232,7 +235,7 @@ const Bottom = styled.article`
 
   padding-top: 40px;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 100%;
     flex-direction: column;
     padding-top: 20px;
