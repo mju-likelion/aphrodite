@@ -1,11 +1,33 @@
+import Modal from "@lib/DesignSystem/Modal/Modal";
+import { useState } from "react";
 import styled from "styled-components";
 
 function Header() {
+  const [show, setShow] = useState(false);
+
   return (
-    <Self>
-      <div>LIKELION | MJU </div>
-      <div> 회원가입|로그인 </div>
-    </Self>
+    <>
+      <Self>
+        <div>LIKELION | MJU </div>
+        <button
+          onClick={() => {
+            setShow(true);
+          }}
+        >
+          {" "}
+          회원가입|로그인{" "}
+        </button>
+      </Self>
+      <Modal
+        show={show}
+        width={376}
+        height={456}
+        title="로그인"
+        onClose={() => {
+          setShow(false);
+        }}
+      />
+    </>
   );
 }
 
@@ -14,15 +36,15 @@ const Self = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  padding: 10px 60px;
   font-size: 20px;
 
-  padding: 10px 60px;
+  button {
+    color: white;
+  }
 
   @media screen and (max-width: 424px) {
-    padding: 5px 30px;
-
     font-size: 15px;
-
     padding: 20px 10px;
   }
 `;

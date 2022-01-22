@@ -20,4 +20,11 @@ export const GlobalStyle = createGlobalStyle`
   }
   * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';}
   a { cursor: pointer; text-decoration: none; }
+  button {
+    outline: none;
+    border:none;
+    background-color : transparent;
+
+    cursor : pointer;
+  }
 `;

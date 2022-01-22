@@ -6,13 +6,16 @@ import CustomHead from "src/components/CustomHead";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={theme}>
-      <CustomHead />
-      <GlobalStyle />
-      <AppContainer>
-        <Component {...pageProps} />
-      </AppContainer>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <CustomHead />
+        <GlobalStyle />
+        <AppContainer>
+          <Component {...pageProps} />
+        </AppContainer>
+      </ThemeProvider>
+      <div id="modal" />
+    </>
   );
 }
 
