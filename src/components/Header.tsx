@@ -1,6 +1,7 @@
 import Modal from "@lib/DesignSystem/Modal/Modal";
 import { useState } from "react";
 import styled from "styled-components";
+import Login from "./Login";
 
 function Header() {
   const [show, setShow] = useState(false);
@@ -26,7 +27,9 @@ function Header() {
         onClose={() => {
           setShow(false);
         }}
-      />
+      >
+        <Login />
+      </Modal>
     </>
   );
 }
