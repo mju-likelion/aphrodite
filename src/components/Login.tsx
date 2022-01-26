@@ -3,14 +3,14 @@ import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import SignUp from "./SignUp";
-
 function Login() {
-  const [show, setShow] = useState(false);
+  const [isLogin, setLogin] = useState(false);
+  const [isSignup, setSignup] = useState(false);
 
-  const formik = useFormik<Values>({
+  const formik = useFormik({
     initialValues: {
-      Email: "",
-      Password: "",
+      email: "",
+      password: "",
     },
     onSubmit: () => {},
   });
@@ -55,19 +55,19 @@ function Login() {
           </Text>
           <Signup
             onClick={() => {
-              setShow(true);
+              setSignup(true);
             }}
           >
             회원가입 하기
           </Signup>
         </Div>
         <Modal
-          show={show}
+          show={isSignup}
           width={376}
           height={456}
           title="회원가입"
           onClose={() => {
-            setShow(false);
+            setSignup(false);
           }}
         >
           <SignUp />
@@ -97,6 +97,7 @@ const Input = styled.input`
   line-height: 22px;
   border: 0px;
   padding-left: 16px;
+  outline-color: #8ffcff;
 `;
 
 const Button = styled.button`

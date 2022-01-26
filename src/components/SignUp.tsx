@@ -23,7 +23,7 @@ function SignUp() {
           onChange={formik.handleChange}
           value={formik.values.Email}
         />
-        <Button disabled={!formik.values.Email}>회원가입</Button>
+        <Button disabled={!formik.values.Email}>인증하기</Button>
       </FormWrapper>
       <Div>
         <Text>이미 회원이신가요? </Text>
