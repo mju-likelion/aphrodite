@@ -17,7 +17,7 @@ function ModalHeader({ title, onClose }: Props) {
 
 const Container = styled.div`
   width: 100%;
-  height: 20%;
+  height: 30%;
 
   position: relative;
 
@@ -27,6 +27,7 @@ const Container = styled.div`
   h4 {
     width: 100%;
     text-align: center;
+    font-size: 22px;
   }
 
   button {
@@ -34,6 +35,8 @@ const Container = styled.div`
 
     top: 15%;
     right: 5%;
+
+    font-size: 20px;
 
     color: ${({ theme }) => theme.colors.secondary.white};
 
