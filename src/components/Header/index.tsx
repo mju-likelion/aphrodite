@@ -1,8 +1,8 @@
 import Modal from "@lib/DesignSystem/Modal/Modal";
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "../Login";
+import SignUp from "../SignUp";
 
 interface Props {
   setComponentText: (s: string) => void;

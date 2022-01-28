@@ -1,11 +1,9 @@
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
+import { theme } from "@styles/theme";
 
 function Footer() {
-  const theme = useTheme();
   const date = new Date();
   const years = date.getFullYear();
-
-  console.log(theme);
 
   return (
     <FooterSelf>
@@ -85,7 +83,7 @@ const MaxWidthWrapper = styled.div`
 
   font-size: 16px;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     padding: 23px 0;
 
     flex-direction: column;
@@ -93,7 +91,7 @@ const MaxWidthWrapper = styled.div`
 `;
 
 const MjuLogo = styled.div`
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     font-size: 15px;
     margin: auto;
   }
@@ -102,7 +100,7 @@ const MjuLogo = styled.div`
 const MjuSnsWrapper = styled.div`
   display: inline-flex;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     padding-top: 20px;
   }
 `;
@@ -115,7 +113,7 @@ const SnsBetweenLine = styled.div`
 
   background-color: #fff;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     margin-top: 8px;
     width: 10px;
   }
@@ -137,7 +135,7 @@ const SnsImage = styled.img`
   height: 19px;
   width: 19px;
 
-  @media screen and (max-width: 424px) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     height: 15px;
     width: 15px;
   }
