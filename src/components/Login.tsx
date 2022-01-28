@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import SignUp from "./SignUp";
-function Login() {
-  const [isLogin, setLogin] = useState(false);
-  const [isSignup, setSignup] = useState(false);
 
+type Props = {
+  setComponentText: (s: string) => void;
+};
+
+function Login({ setComponentText }: Props) {
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -16,64 +16,51 @@ function Login() {
   });
 
   return (
-    <>
-      <FormWrapper onSubmit={formik.handleSubmit}>
-        <Input
-          id="Email"
-          placeholder="Email"
-          onChange={formik.handleChange}
-          value={formik.values.Email}
-        />
-        <Input
-          id="Password"
-          placeholder="Password"
-          type="password"
-          onChange={formik.handleChange}
-          value={formik.values.Password}
-        />
-        <Button
-          type="submit"
-          disabled={!formik.values.Email || !formik.values.Password}
-        >
-          로그인
-        </Button>
-        <Div>
-          <Text>
-            비밀번호 찾기
-            <Signup
-              target="_blank"
-              href="https://www.instagram.com/mju_likelion/"
-              title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
-              rel="noreferrer noopener"
-            >
-              어드민이시면 관리자에게 문의하세요.
-            </Signup>
-          </Text>
-          <Text>
-            <br />
-            새로 들어오셨나요?
-          </Text>
+    <FormWrapper onSubmit={formik.handleSubmit}>
+      <Input
+        id="Email"
+        placeholder="Email"
+        onChange={formik.handleChange}
+        value={formik.values.email}
+      />
+      <Input
+        id="Password"
+        placeholder="Password"
+        type="password"
+        onChange={formik.handleChange}
+        value={formik.values.password}
+      />
+      <Button
+        type="submit"
+        disabled={!formik.values.email || !formik.values.password}
+      >
+        로그인
+      </Button>
+      <Div>
+        <Text>
+          비밀번호 찾기
           <Signup
-            onClick={() => {
-              setSignup(true);
-            }}
+            target="_blank"
+            href="https://www.instagram.com/mju_likelion/"
+            title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
+            rel="noreferrer noopener"
           >
-            회원가입 하기
+            어드민이시면 관리자에게 문의하세요.
           </Signup>
-        </Div>
-        <Modal
-          show={isSignup}
-          width={376}
-          height={456}
-          title="회원가입"
-          onClose={() => {
-            setSignup(false);
+        </Text>
+        <Text>
+          <br />
+          새로 들어오셨나요?
+        </Text>
+        <Signup
+          onClick={() => {
+            setComponentText("SignUp");
           }}
         >
-          <SignUp />
-        </Modal>
-      </FormWrapper>
-    </>
+          회원가입 하기
+        </Signup>
+      </Div>
+    </FormWrapper>
   );
 }
 
@@ -101,7 +88,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  display: flex; 
+  display: flex;
   width: 336px;
   height: 44px;
   margin-bottom: 24px;
@@ -113,7 +100,6 @@ const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.third.skyblue};
   border-radius: 6px;
   outline: none;
-};
 
   &:disabled {
     background-color: ${({ theme }) => theme.colors.primary.gray};

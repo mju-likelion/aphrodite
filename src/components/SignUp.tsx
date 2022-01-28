@@ -1,10 +1,17 @@
 import { useState } from "react";
-import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import Login from "./Login";
 
-function SignUp() {
+interface Values {
+  Email: string;
+  Password: string;
+}
+
+type Props = {
+  setComponentText: (s: string) => void;
+};
+
+function SignUp({ setComponentText }: Props) {
   const [show, setShow] = useState(false);
   const formik = useFormik<Values>({
     initialValues: {
@@ -29,23 +36,12 @@ function SignUp() {
         <Text>이미 회원이신가요? </Text>
         <Forget
           onClick={() => {
-            setShow(true);
+            setComponentText("Login");
           }}
         >
           로그인하기
         </Forget>
       </Div>
-      <Modal
-        show={show}
-        width={376}
-        height={456}
-        title="로그인"
-        onClose={() => {
-          setShow(false);
-        }}
-      >
-        <Login />
-      </Modal>
     </>
   );
 }
@@ -72,7 +68,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  display: flex; 
+  display: flex;
   width: 336px;
   height: 44px;
   margin-bottom: 24px;
@@ -84,12 +80,12 @@ const Button = styled.button`
   background-color: ${({ theme }) => theme.colors.third.skyblue};
   border-radius: 6px;
   outline: none;
-};
 
   &:disabled {
     background-color: ${({ theme }) => theme.colors.primary.gray};
   }
 `;
+
 const Div = styled.div`
   text-align: center;
 `;

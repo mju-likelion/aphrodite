@@ -1,12 +1,37 @@
 import Modal from "@lib/DesignSystem/Modal/Modal";
-import { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
+interface Props {
+  setComponentText: (s: string) => void;
+}
+
+interface ComponentType {
+  [s: string]: {
+    title: string;
+    component: ({ setComponentText }: Props) => ReactElement;
+  };
+}
+
+const InputComponent: ComponentType = {
+  ["Login"]: {
+    title: "로그인",
+    component: Login,
+  },
+  ["SignUp"]: {
+    title: "회원가입",
+    component: SignUp,
+  },
+};
+
 function Header() {
-  const [isLogin, setLogin] = useState(false);
-  const [isSignup, setSignup] = useState(false);
+  const [componentText, setComponentText] = useState<string>("Login");
+  const [show, setShow] = useState<boolean>(false);
+
+  const title = InputComponent[componentText].title;
+  const StepComponent = InputComponent[componentText].component;
 
   return (
     <>
@@ -15,7 +40,8 @@ function Header() {
         <div>
           <button
             onClick={() => {
-              setSignup(true);
+              setShow(true);
+              setComponentText("SignUp");
             }}
           >
             회원가입
@@ -23,7 +49,8 @@ function Header() {
           |
           <button
             onClick={() => {
-              setLogin(true);
+              setShow(true);
+              setComponentText("Login");
             }}
           >
             로그인
@@ -31,26 +58,16 @@ function Header() {
         </div>
       </Self>
       <Modal
-        show={isSignup}
+        show={show}
         width={376}
         height={456}
-        title="회원가입"
+        title={title}
         onClose={() => {
-          setSignup(false);
+          setShow(false);
         }}
       >
-        <SignUp />
-      </Modal>
-      <Modal
-        show={isLogin}
-        width={376}
-        height={456}
-        title="로그인"
-        onClose={() => {
-          setLogin(false);
-        }}
-      >
-        <Login />
+        {/* 이거 에러 어케해야함 */}
+        <StepComponent setComponentText={setComponentText} />
       </Modal>
     </>
   );

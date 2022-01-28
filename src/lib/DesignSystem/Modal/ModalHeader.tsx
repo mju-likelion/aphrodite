@@ -36,6 +36,8 @@ const Container = styled.div`
     top: 15%;
     right: 5%;
 
+    font-size: 20px;
+
     color: ${({ theme }) => theme.colors.secondary.white};
 
     justify-self: flex-end;
