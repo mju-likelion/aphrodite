@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 
@@ -12,7 +12,8 @@ type Props = {
 };
 
 function SignUp({ setComponentText }: Props) {
-  const [show, setShow] = useState(false);
+  const [first, setFirst] = useState(true);
+
   const formik = useFormik<Values>({
     initialValues: {
       Email: "",
@@ -21,16 +22,32 @@ function SignUp({ setComponentText }: Props) {
     onSubmit: () => {},
   });
 
+  const handleSendConfirmMail = useCallback(() => {
+    console.log(formik.values.Email);
+  }, [formik.values.Email]);
+
+  console.log();
+
   return (
     <>
       <FormWrapper>
-        <Input
-          id="Email"
-          placeholder="Email"
-          onChange={formik.handleChange}
-          value={formik.values.Email}
-        />
-        <Button disabled={!formik.values.Email}>인증하기</Button>
+        {first && (
+          <>
+            <Input
+              id="Email"
+              placeholder="Email"
+              onChange={formik.handleChange}
+              value={formik.values.Email}
+            />
+            <Button
+              type="button"
+              disabled={!formik.values.Email}
+              onClick={handleSendConfirmMail}
+            >
+              인증하기
+            </Button>
+          </>
+        )}
       </FormWrapper>
       <Div>
         <Text>이미 회원이신가요? </Text>
