@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { GlobalStyle } from "@styles/global-styles";
 import { theme } from "@styles/theme";
 import CustomHead from "src/components/CustomHead";
+import Header from "@components/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <CustomHead />
         <GlobalStyle />
         <AppContainer>
+          <Header />
           <Component {...pageProps} />
         </AppContainer>
       </ThemeProvider>

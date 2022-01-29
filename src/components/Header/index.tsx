@@ -1,6 +1,7 @@
 import Modal from "@lib/DesignSystem/Modal/Modal";
 import React, { ReactElement, useState } from "react";
 import useUser from "src/hooks/useUser";
+import { useSWRConfig } from "swr";
 import styled from "styled-components";
 import Login from "../Login";
 import SignUp from "../SignUp";
@@ -31,7 +32,7 @@ function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
   const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
-
+  const { mutate } = useSWRConfig();
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
 
@@ -39,6 +40,17 @@ function Header() {
 
   return (
     <>
+      <button
+        type="button"
+        style={{
+          color: "white",
+        }}
+        onClick={() => {
+          mutate("https://randomuser.me/api/");
+        }}
+      >
+        갱신
+      </button>
       <Self>
         <div>LIKELION | MJU </div>
         {!user && (
