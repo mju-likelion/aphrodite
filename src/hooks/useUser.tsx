@@ -1,8 +1,7 @@
 import useSWR from "swr";
+import { fetcher } from "@lib/Axios/fetcher";
 
 function useUser(url: string) {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
   const { data, error } = useSWR(url, fetcher);
 
   return {

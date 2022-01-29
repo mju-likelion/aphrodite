@@ -1,5 +1,6 @@
 import Modal from "@lib/DesignSystem/Modal/Modal";
 import React, { ReactElement, useState } from "react";
+import useUser from "src/hooks/useUser";
 import styled from "styled-components";
 import Login from "../Login";
 import SignUp from "../SignUp";
@@ -29,33 +30,39 @@ const InputComponent: ComponentType = {
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
+  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
 
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
+
+  console.log(user?.results[0].name.first);
 
   return (
     <>
       <Self>
         <div>LIKELION | MJU </div>
-        <div>
-          <button
-            onClick={() => {
-              setShow(true);
-              setComponentText("SignUp");
-            }}
-          >
-            회원가입
-          </button>
-          |
-          <button
-            onClick={() => {
-              setShow(true);
-              setComponentText("Login");
-            }}
-          >
-            로그인
-          </button>
-        </div>
+        {!user && (
+          <div>
+            <button
+              onClick={() => {
+                setShow(true);
+                setComponentText("SignUp");
+              }}
+            >
+              회원가입
+            </button>
+            |
+            <button
+              onClick={() => {
+                setShow(true);
+                setComponentText("Login");
+              }}
+            >
+              로그인
+            </button>
+          </div>
+        )}
+        {user && `${user.results[0].name.first}님 안녕하세요`}
       </Self>
       <Modal
         show={show}
