@@ -54,7 +54,7 @@ function Login({ setComponentText }: Props) {
         </Text>
         <Signup
           onClick={() => {
-            setComponentText("SignUp");
+            setComponentText("Verify");
           }}
         >
           회원가입 하기

@@ -4,7 +4,8 @@ import useUser from "src/hooks/useUser";
 import { useSWRConfig } from "swr";
 import styled from "styled-components";
 import Login from "../Login";
-import SignUp from "../SignUp";
+import Verify from "../Verify";
+import { useRouter } from "next/router";
 
 interface Props {
   setComponentText: (s: string) => void;
@@ -22,21 +23,23 @@ const InputComponent: ComponentType = {
     title: "로그인",
     component: Login,
   },
-  ["SignUp"]: {
+  ["Verify"]: {
     title: "회원가입",
-    component: SignUp,
+    component: Verify,
   },
 };
 
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
+  //const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
   const { mutate } = useSWRConfig();
+  const router = useRouter();
+
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
 
-  console.log(user?.results[0].name.first);
+  //console.log(user?.results[0].name.first);
 
   return (
     <>
@@ -46,35 +49,33 @@ function Header() {
           color: "white",
         }}
         onClick={() => {
-          mutate("https://randomuser.me/api/");
+          //mutate("https://randomuser.me/api/");
+          router.push("/signup");
         }}
       >
         갱신
       </button>
       <Self>
         <div>LIKELION | MJU </div>
-        {!user && (
-          <div>
-            <button
-              onClick={() => {
-                setShow(true);
-                setComponentText("SignUp");
-              }}
-            >
-              회원가입
-            </button>
-            |
-            <button
-              onClick={() => {
-                setShow(true);
-                setComponentText("Login");
-              }}
-            >
-              로그인
-            </button>
-          </div>
-        )}
-        {user && `${user.results[0].name.first}님 안녕하세요`}
+        <div>
+          <button
+            onClick={() => {
+              setShow(true);
+              setComponentText("Verify");
+            }}
+          >
+            회원가입
+          </button>
+          |
+          <button
+            onClick={() => {
+              setShow(true);
+              setComponentText("Login");
+            }}
+          >
+            로그인
+          </button>
+        </div>
       </Self>
       <Modal
         show={show}

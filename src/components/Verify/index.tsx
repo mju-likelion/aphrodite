@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
-
+import * as valid from "@lib/etc/validation";
+import { Button } from "@lib/DesignSystem/Button";
+import { theme } from "@styles/theme";
 interface Values {
-  Email: string;
-  Password: string;
+  email: string;
 }
 
 type Props = {
@@ -12,42 +13,42 @@ type Props = {
 };
 
 function SignUp({ setComponentText }: Props) {
-  const [first, setFirst] = useState(true);
-
+  const [error, setError] = useState<boolean>(false);
   const formik = useFormik<Values>({
     initialValues: {
-      Email: "",
-      Password: "",
+      email: "",
     },
     onSubmit: () => {},
   });
 
   const handleSendConfirmMail = useCallback(() => {
-    console.log(formik.values.Email);
-  }, [formik.values.Email]);
-
-  console.log();
+    if (valid.email(formik.values.email)) {
+      console.log("이메일 인증 링크 보냄");
+    } else {
+      setError(true);
+    }
+  }, [formik.values.email]);
 
   return (
     <>
-      <FormWrapper>
-        {first && (
-          <>
-            <Input
-              id="Email"
-              placeholder="Email"
-              onChange={formik.handleChange}
-              value={formik.values.Email}
-            />
-            <Button
-              type="button"
-              disabled={!formik.values.Email}
-              onClick={handleSendConfirmMail}
-            >
-              인증하기
-            </Button>
-          </>
-        )}
+      <FormWrapper onSubmit={(e) => e.preventDefault()}>
+        <Input
+          id="email"
+          placeholder="email"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+        />
+        {error && <ErrorMsg>유효한 이메일을 입력해주세요</ErrorMsg>}
+        <Button
+          type="button"
+          disabled={!formik.values.email}
+          onClick={handleSendConfirmMail}
+          fullWidth
+          color={theme.colors.third.skyblue}
+          size="medium"
+        >
+          인증하기
+        </Button>
       </FormWrapper>
       <Div>
         <Text>이미 회원이신가요? </Text>
@@ -66,51 +67,48 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding: 20px;
+  font-size: 14px;
+
+  button {
+    padding: 12px 0px;
+    margin-top: 20px;
+  }
 `;
 
 const Input = styled.input`
-  width: 336px;
+  width: 100%;
   height: 44px;
+
+  border: 0;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.colors.primary.gray};
-  margin-bottom: 24px;
-  font-size: 17px;
-  line-height: 22px;
-  letter-spacing: -0.2px;
-  border: 0px;
-  outline-color: #8ffcff;
-  padding-left: 16px;
 
+  font-size: 17px;
+  letter-spacing: -0.2px;
+
+  outline-color: #8ffcff;
   color: #a0a0a0;
+
+  padding-left: 16px;
 `;
 
-const Button = styled.button`
-  display: flex;
-  width: 336px;
-  height: 44px;
-  margin-bottom: 24px;
-  padding: 13px;
-
-  flex-direction: column;
-  align-items: center;
-  color: ${({ theme }) => theme.colors.primary.white};
-  background-color: ${({ theme }) => theme.colors.third.skyblue};
-  border-radius: 6px;
-  outline: none;
-
-  &:disabled {
-    background-color: ${({ theme }) => theme.colors.primary.gray};
-  }
+const ErrorMsg = styled.p`
+  width: 100%;
+  color: #f55442;
 `;
 
 const Div = styled.div`
   text-align: center;
 `;
+
 const Text = styled.div`
   display: inline;
   text-align: center;
   font-size: 13px;
 `;
+
 const Forget = styled.a`
   display: inline-flex;
   margin: 4px;
@@ -118,4 +116,5 @@ const Forget = styled.a`
   text-align: center;
   color: ${({ theme }) => theme.colors.third.skyblue};
 `;
+
 export default SignUp;
