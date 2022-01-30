@@ -75,7 +75,7 @@ const Div = styled.div`
 `;
 
 const Input = styled.input`
-  width: 336px;
+  width: 90%;
   height: 44px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.colors.primary.gray};
@@ -89,7 +89,7 @@ const Input = styled.input`
 
 const Button = styled.button`
   display: flex;
-  width: 336px;
+  width: 90%;
   height: 44px;
   margin-bottom: 24px;
   padding: 13px;
