@@ -1,17 +1,11 @@
 import React from "react";
 
 type Props = {
-  body: string;
-  children?: React.ReactDOM;
+  children: React.ReactNode;
 };
 
-function ModalBody({ children, body }: Props) {
-  return (
-    <div>
-      {body}
-      {children}
-    </div>
-  );
+function ModalBody({ children }: Props) {
+  return <>{children}</>;
 }
 
 export default ModalBody;

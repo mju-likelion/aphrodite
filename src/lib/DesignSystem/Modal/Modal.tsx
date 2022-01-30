@@ -5,12 +5,10 @@ import Portal from "./Portal";
 import React from "react";
 
 type ModalProps = {
-  children?: React.ReactDOM;
+  children?: React.ReactNode;
   show: boolean;
   title: string;
-  body: string;
   onClose: () => void;
-  onConfirm: () => void;
   width?: number;
   height?: number;
 };
@@ -20,15 +18,7 @@ type StylesProps = {
   height?: number;
 };
 
-function Modal({
-  children,
-  show,
-  title,
-  body,
-  onClose,
-  onConfirm,
-  ...props
-}: ModalProps) {
+function Modal({ children, show, title, onClose, ...props }: ModalProps) {
   const { ...styles } = props;
   const { width, height } = styles;
 
@@ -38,7 +28,7 @@ function Modal({
         <Container>
           <Inner width={width} height={height}>
             <ModalHeader title={title} onClose={onClose} />
-            <ModalBody body={body}>{body ? undefined : children}</ModalBody>
+            <ModalBody>{children}</ModalBody>
           </Inner>
         </Container>
       )}
@@ -46,9 +36,7 @@ function Modal({
   );
 }
 
-Modal.defaultProps = {
-  children: undefined,
-};
+Modal.defaultProps = {};
 
 const Container = styled.div`
   width: 100%;

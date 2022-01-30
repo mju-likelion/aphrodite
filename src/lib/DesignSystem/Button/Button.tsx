@@ -1,11 +1,14 @@
+import { theme } from "@styles/theme";
 import styled, { css } from "styled-components";
 
 type Props = {
+  type: "button" | "submit";
   ghost?: boolean;
   color?: string;
   textColor?: string;
   size?: string;
   fullWidth?: boolean;
+  disabled?: boolean;
   children: React.ReactNode;
 
   onClick: () => void;
@@ -18,13 +21,13 @@ function Button({
   size,
   fullWidth,
   children,
+  type,
   onClick,
   ...props
 }: Props) {
-  console.log(fullWidth);
   return (
     <DesignButton
-      type="button"
+      type={type}
       ghost={ghost}
       color={color}
       size={size}
@@ -63,24 +66,29 @@ const DesignButton = styled.button<Props>`
       ? css`
           width: 80px;
           padding: 5px 15px;
-          font-size: 12px;
         `
       : size === "medium"
       ? css`
           width: 120px;
           padding: 5px 15px;
-          font-size: 15px;
         `
       : size === "large" &&
         css`
-          width: 160px;
+          width: 335px;
           padding: 5px 15px;
-          font-size: 20px;
         `}
   ${({ fullWidth }) =>
     fullWidth &&
     css`
       width: 100%;
+    `}
+
+    ${({ disabled }) =>
+    disabled &&
+    css`
+      &:disabled {
+        background-color: ${theme.colors.secondary.white};
+      }
     `}
 `;
 
