@@ -5,7 +5,7 @@ import * as Cookie from "@lib/Cookie";
 function useUser(url: string) {
   const { data, error } = useSWRImmutable(url, fetcher);
 
-  console.log(data);
+  // console.log(data);
 
   if (data) {
     Cookie.setCookie("jwt", data.jwt);

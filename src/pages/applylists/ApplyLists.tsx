@@ -7,9 +7,29 @@ import useApplyLists from "src/hooks/useApplyLists";
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
-  const datas = useApplyLists();
+  const data = useApplyLists();
+  const size = data.data.user.length;
+  console.log(data.data.user);
 
-  console.log(datas);
+  const Rendering = () => {
+    let result = [];
+    for (let i = 0; i < size; i += 1) {
+      let line = (
+        <>
+          <Line>
+            <span key={i}>{data.data.user[i].id}</span>
+            <span>{data.data.user[i].name}</span>
+            <span>{data.data.user[i].major}</span>
+            <span>{data.data.user[i].email}</span>
+            <Apply>지원서보기</Apply>
+          </Line>
+        </>
+      );
+
+      result.push(line);
+    }
+    return result;
+  };
 
   return (
     <Container>
@@ -54,7 +74,28 @@ function ApplyLists() {
           </label>
         </div>
       </FilterContainer>
-      <ApplyContainer></ApplyContainer>
+      <ApplyNum>지원자 명</ApplyNum>
+      <ApplySort>
+        가나다순
+        <ApplySorting src="/images/SortPolygon.svg" />
+      </ApplySort>
+      <ApplyContainer>
+        <span>번호</span>
+        <span>이름</span>
+        <span>학과</span>
+        <span>이메일</span>
+      </ApplyContainer>
+
+      <>{Rendering()}</>
+
+      {/* <Line>
+        
+        <span>{data?.data.user[0].id}</span>
+        <span>{data?.data.user[0].name}</span>
+        <span>{data?.data.user[0].major}</span>
+        <span>{data?.data.user[0].email}</span>
+        <Apply>지원서보기</Apply>
+      </Line> */}
     </Container>
   );
 }
@@ -100,7 +141,71 @@ const FilterContainer = styled.article`
     margin-left: 10px;
   }
 `;
+const ApplyNum = styled.div`
+  width: 100%;
 
-const ApplyContainer = styled.article``;
+  margin-top: 20px;
+
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+`;
+const ApplySort = styled.div`
+  width: 100%;
+
+  margin-top: 20px;
+
+  font-size: 16px;
+  text-align: right;
+`;
+const ApplySorting = styled.img``;
+
+const ApplyContainer = styled.article`
+  width: 100%;
+
+  padding: 10px;
+  border-top: 5px solid ${theme.colors.third.skyblue};
+  border-bottom: 2px solid ${theme.colors.third.skyblue};
+
+  font-size: 20px;
+  font-weight: bold;
+
+  span + span {
+    margin: 0 100px;
+  }
+`;
+const Apply = styled.div`
+  display: inline-flex;
+  width: 70px;
+  height: 30px;
+
+  margin-left: 130px;
+  padding-top: 7px;
+
+  flex-direction: column;
+  text-align: center;
+  font-size: 13px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: rgba(0, 135, 209, 0.5);
+  color: white;
+
+  cursor: pointer;
+`;
+const Line = styled.div`
+  width: 100%;
+  margin-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  font-size: 16px;
+  border-bottom: 2px solid #28292a;
+
+  span + span {
+    margin: 0 50px;
+    padding-left: 60px;
+  }
+`;
 
 export default ApplyLists;
