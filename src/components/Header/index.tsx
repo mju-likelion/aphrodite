@@ -43,18 +43,6 @@ function Header() {
 
   return (
     <>
-      <button
-        type="button"
-        style={{
-          color: "white",
-        }}
-        onClick={() => {
-          //mutate("https://randomuser.me/api/");
-          router.push("/signup");
-        }}
-      >
-        갱신
-      </button>
       <Self>
         <div>LIKELION | MJU </div>
         <div>
@@ -86,7 +74,6 @@ function Header() {
           setShow(false);
         }}
       >
-        {/* 이거 에러 어케해야함 */}
         <StepComponent setComponentText={setComponentText} />
       </Modal>
     </>
