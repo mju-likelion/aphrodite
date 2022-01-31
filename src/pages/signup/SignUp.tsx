@@ -2,9 +2,9 @@
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
-import * as validate from "@lib/etc/validation";
+import { Validation } from "@lib/etc/validation";
 
 interface initialStateI {
   [s: string]: {
@@ -45,7 +45,6 @@ const INITIALSTATE = {
 };
 
 function reducer(state: initialStateI, action: actionI) {
-  console.log(action);
   const { name, value } = action.payload;
 
   switch (action.type) {
@@ -60,6 +59,7 @@ function reducer(state: initialStateI, action: actionI) {
 
 function SignUp() {
   const [state, dispatch] = useReducer(reducer, INITIALSTATE);
+  const [termsOfUse, setTermsOfUse] = useState<boolean>(false);
   const router = useRouter();
   const { token } = router.query;
 
@@ -73,7 +73,7 @@ function SignUp() {
     if (token) {
       dispatch({
         type: "user",
-        payload: { name: "eamil", value: token },
+        payload: { name: "email", value: token },
       });
     }
   }, []);
@@ -81,9 +81,7 @@ function SignUp() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
-    console.log(validate);
-
-    if (validate[name](value)) {
+    if (Validation[name](value)) {
       dispatch({
         type: "user",
         payload: { name, value },
@@ -98,9 +96,19 @@ function SignUp() {
     console.log("전송!");
   }
 
-  const isValidate = useCallback((): boolean => {
-    return true;
-  }, []);
+  function isValid() {
+    const hasError =
+      Object.values(state.error).filter((err) => err !== "").length > 0;
+
+    const isEmpty =
+      Object.values(state.user).filter((u) => u === "").length > 0;
+
+    if (hasError || isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   return (
     <Container onSubmit={handleSubmit}>
@@ -128,35 +136,42 @@ function SignUp() {
         />
         <Input
           type="text"
-          placeholder="휴대폰 번호 (번호만 작성)"
+          placeholder="휴대폰 번호 (ex.01012345678)"
           name="mobile"
           value={state.user.mobile}
           onChange={handleChange}
         />
         <Input
           type="text"
-          placeholder="학교"
+          placeholder="학교 (ex.명지대학교)"
           name="school"
           value={state.user.school}
           onChange={handleChange}
         />
         <Input
           type="text"
-          placeholder="전공"
+          placeholder="전공 (ex.컴퓨터공학과)"
           name="major"
           value={state.user.major}
           onChange={handleChange}
         />
       </InputGroup>
       <label htmlFor="termsOfUse">
-        <input type="checkbox" id="termsOfUse" /> 이용약관에 동의 합니다
+        <input
+          type="checkbox"
+          id="termsOfUse"
+          onChange={() => {
+            setTermsOfUse(!termsOfUse);
+          }}
+        />{" "}
+        이용약관에 동의 합니다
       </label>
       <Button
         type="submit"
         fullWidth
         color={theme.colors.third.skyblue}
         size="large"
-        disabled={isValidate}
+        disabled={isValid() || !termsOfUse}
         onClick={() => {}}
       >
         회원가입
