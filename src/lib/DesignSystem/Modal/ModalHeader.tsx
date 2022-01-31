@@ -18,6 +18,7 @@ function ModalHeader({ title, onClose }: Props) {
 const Container = styled.div`
   width: 100%;
   height: 30%;
+  max-height: 90px;
 
   position: relative;
 
