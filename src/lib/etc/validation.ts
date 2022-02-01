@@ -10,13 +10,15 @@ export const Validation: ValidationI = {
   },
 
   password: function (data: string): boolean {
-    console.log("asdasd");
-    return true;
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i;
+
+    return regex.test(data);
   },
 
   passwordConfirm: function (data: string): boolean {
-    console.log("asdasd");
-    return true;
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/i;
+
+    return regex.test(data);
   },
 
   mobile: function (data: string): boolean {

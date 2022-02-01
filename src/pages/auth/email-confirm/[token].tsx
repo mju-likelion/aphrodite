@@ -20,7 +20,7 @@ function EmailConfirm() {
             pathname: "/signup",
             query: { email },
           },
-          "/signup", // /signup 으로 보내고 token 숨기기
+          "/signup", // '/signup' 으로 보내고 token 숨기기
         );
       } catch (e) {
         console.error(e);
