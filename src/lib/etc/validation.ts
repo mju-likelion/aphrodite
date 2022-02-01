@@ -26,14 +26,13 @@ export const Validation: ValidationI = {
   },
 
   school: function (data: string): boolean {
-    console.log(data);
     const regex = /^[ㄱ-ㅎ가-힣]*$/g;
 
     return regex.test(data);
   },
 
   major: function (data: string): boolean {
-    const regex = /^[ㄱ-ㅎ가-힣]*$/i;
+    const regex = /^[ㄱ-ㅎ가-힣]*$/gi;
 
     return regex.test(data);
   },
