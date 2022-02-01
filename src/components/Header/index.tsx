@@ -39,8 +39,6 @@ function Header() {
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
 
-  console.log(user?.results[0].name.first);
-
   return (
     <>
       <Self>

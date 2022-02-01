@@ -12,7 +12,7 @@ function useUser(url: string) {
   }
 
   return {
-    user: data,
+    user: data.results[0].name.first,
     isLoading: !error && !data,
     isError: error,
   };
