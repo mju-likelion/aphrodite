@@ -87,7 +87,6 @@ function SignUp() {
 
   useEffect(() => {
     //임의로 접근할 경우 홈으로 리다이렉트
-    console.log(email);
     if (!email) {
       alert("잘못된 접근 입니다");
       router.push("/");
@@ -112,28 +111,28 @@ function SignUp() {
 
   function handleBlur(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
+    const { message } = Validation[name](value);
+
+    if (name === "password") {
+      if (user.passwordConfirm !== value) {
+        handleErrorMsg({
+          name: "passwordConfirm",
+          value: "비밀번호와 다릅니다",
+        });
+      }
+    }
 
     if (name === "passwordConfirm") {
       if (user.password !== value) {
-        handleErrorMsg({ name, value: "비밀번호와 일치하지 않습니다" });
-      } else {
-        handleErrorMsg({ name, value: "" });
+        handleErrorMsg({ name, value: "비밀번호와 다릅니다" });
+        return;
       }
-      return;
     }
 
-    if (Validation[name](value)) {
-      errorDispatch({
-        type: name,
-        payload: value,
-      });
-    }
+    handleErrorMsg({ name, value: message });
   }
 
   function handleErrorMsg({ name, value }: { name: string; value: string }) {
-    // 메시지를 받으면
-    // 해당하는 에러 key의 value로 넣어야함
-
     errorDispatch({
       type: name,
       payload: value,
@@ -141,16 +140,7 @@ function SignUp() {
   }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    //학교, 학과에 대해 검증해야함
     e.preventDefault();
-
-    if (!user.school.endsWith("대학교")) {
-      handleErrorMsg({ name: "school", value: "학교 이름을 확인해주세요" });
-    }
-
-    if (!user.major.endsWith("과" || "학과" || "학부")) {
-      handleErrorMsg({ name: "major", value: "전공명을 확인해주세요" });
-    }
 
     console.log(user, error);
     console.log("전송!");
@@ -186,6 +176,7 @@ function SignUp() {
           name="password"
           value={user.password}
           onChange={handleChange}
+          onBlur={handleBlur}
         />
         <Input
           type="password"
@@ -202,7 +193,9 @@ function SignUp() {
           name="mobile"
           value={user.mobile}
           onChange={handleChange}
+          onBlur={handleBlur}
         />
+        {error.mobile && <ErrorMsg>{error.mobile}</ErrorMsg>}
         <Input
           type="text"
           placeholder="학교 (ex.명지대학교)"
@@ -237,7 +230,7 @@ function SignUp() {
         fullWidth
         color={theme.colors.third.skyblue}
         size="large"
-        disabled={isValid() || !termsOfUse}
+        disabled={isValid() || !termsOfUse} // 하나라도 true면 disabled
         onClick={() => {}}
       >
         회원가입
