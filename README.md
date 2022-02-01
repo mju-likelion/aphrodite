@@ -28,11 +28,11 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ## 커밋 메세지 규칙
 
-![image](https://user-images.githubusercontent.com/57565933/149538692-1f687e6a-29de-4944-a54c-caad83ccc293.png)
-
-#####
-
-여기서 feat: , fix: , style: , refactor: , chore: 를 쓰시면됩니다.
+- `feat:` => 기능 개발
+- `fix:` => 기능 및 코드 수정
+- `style:` => css 관련
+- `refactor:` => 리팩토링
+- `chore:` => 폴더 구조 변경
 
 ## PR 이후
 
