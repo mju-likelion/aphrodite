@@ -11,15 +11,15 @@ function useApplyLists() {
       user: [
         {
           id: 1,
-          email: "mju@email.com",
           name: "홍길동",
           major: "정보통신공학과",
+          email: "mju@email.com",
         },
         {
           id: 2,
-          email: "mjuackr@email.com",
           name: "김철수",
           major: "정보통신공학과",
+          email: "mjuackr@email.com",
         },
       ],
     },
