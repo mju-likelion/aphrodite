@@ -1,50 +1,40 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { INITIAL } from "./constants";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import useSWR from "swr";
 import { fetcher } from "@lib/Axios/fetcher";
+import axios from "axios";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
+
   const datas = useApplyLists();
   const size = datas.data.user.length;
+  const user = Object.values(datas.data)[0];
 
   const ApplyListFunc = () => {
-    const { data, error } = useSWR("https://randomuser.me/api/", fetcher);
-    console.log("data: ", data);
+    //swr테스트
+    const { data, error } = useSWR(
+      "https://jsonplaceholder.typicode.com/posts",
+      fetcher,
+    );
     if (error) return <div>failed to load</div>;
     if (!data) return <div>loading...</div>;
-    // 데이터 렌더링
 
-    let result = [];
-    for (let i = 1; i <= size; i += 1) {
-      const user = datas.data.user.find((data) => {
-        return data.id === i;
-      });
-      console.log(user);
-      let line = (
-        <>
-          <Line>
-            <span key={i}>{Object.values(user)[0]}</span>
-            <span>{Object.values(user)[1]}</span>
-            <span>{Object.values(user)[2]}</span>
-            <span>{Object.values(user)[3]}</span>
-            {/* swr 테스트 코드 */}
-            {/* <span> {data.results[0].gender}</span>
-            <span> {data.results[0].name.first}</span>
-            <span> {data.results[0].email}</span>
-            <span> {data.results[0].email}</span> */}
-            <Apply>지원서보기</Apply>
-          </Line>
-        </>
+    return user.map((user) => {
+      return (
+        <Line key={user.id}>
+          <span>{user.id}</span>
+          <span>{user.name}</span>
+          <span>{user.email}</span>
+          <span>{user.major}</span>
+          <Apply>지원서보기</Apply>
+        </Line>
       );
-
-      result.push(line);
-    }
-    return result;
+    });
   };
 
   return (
@@ -182,7 +172,6 @@ const ApplySelect = styled.select`
   display: inline;
   background-color: none;
   color: #444;
-  background-color: #fff;
 
   option {
     background-color: green;
@@ -243,5 +232,36 @@ const Apply = styled.div`
   color: white;
 
   cursor: pointer;
+`;
+
+const PageUl = styled.ul`
+  list-style: none;
+  text-align: center;
+  border-radius: 3px;
+  padding: 20px;
+`;
+
+const PageLi = styled.li`
+  display: inline-block;
+  font-size: 17px;
+  padding: 5px;
+  border-radius: 5px;
+  width: 25px;
+  &:hover {
+    cursor: pointer;
+    background-color: #263a6c;
+  }
+  &:focus::after {
+    color: white;
+    background-color: #263a6c;
+  }
+`;
+
+const PageSpan = styled.span`
+  &:hover::after,
+  &:focus::after {
+    border-radius: 100%;
+    background-color: #263a6c;
+  }
 `;
 export default ApplyLists;
