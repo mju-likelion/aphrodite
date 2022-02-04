@@ -1,14 +1,14 @@
 export const INITIAL = {
   STATUS: {
-    complete: false,
+    completion: false,
     first_out: false,
-    first_int: false,
+    first_pass: false,
     second_out: false,
     second_in: false,
   },
   PART: {
-    projectOwner: false,
+    manage: false,
     design: false,
-    develop: false,
+    dev: false,
   },
 };

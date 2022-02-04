@@ -1,5 +1,4 @@
 import useSWRImmutable from "swr/immutable";
-import { fetcher } from "@lib/Axios/fetcher";
 
 function useApplyLists() {
   return {
