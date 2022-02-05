@@ -1,10 +1,10 @@
-import axios from "axios";
-import Cookie from "@lib/Cookie";
-import useSWR from "swr";
-import { fetcher } from "./fetcher";
+import axios, { AxiosInstance } from "axios";
+import * as Cookie from "@lib/Cookie";
 
-const instance = axios.create({
+const customAxios: AxiosInstance = axios.create({
   headers: {
-    Token: useSWR("/api/auth/sign-in", fetcher),
+    "X-Access-Token": Cookie.getCookie("jwt") ?? null,
   },
 });
+
+export default customAxios;
