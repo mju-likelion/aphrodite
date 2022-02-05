@@ -3,9 +3,18 @@ import { useState } from "react";
 import useUser from "src/hooks/useUser";
 
 function Main() {
-  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
+  const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  //const { user, isLoading, isError } = useUser("/api/users/:id");
 
   console.log(user);
+
+  if (isLoading) {
+    return <>대충 로딩중</>;
+  }
+
+  if (isError) {
+    return <>대충 에러</>;
+  }
 
   return (
     <>
@@ -154,7 +163,7 @@ const ApplyBtn = styled.button<{ theme: object }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #ff9e1b;
+    opacity: 1;
   }
 
   & + & {
@@ -173,7 +182,7 @@ const QuestionBtn = styled(ApplyBtn)`
   background-color: ${({ theme }) => theme.colors.primary.orange};
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.third.skyblue};
+    opacity: 1;
   }
 `;
 

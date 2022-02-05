@@ -32,7 +32,7 @@ const InputComponent: ComponentType = {
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
+  const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 

@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import customAxios from ".";
 
 export const fetcher = (url: string) =>
-  axios.get(url).then((res) => ({ ...res.data, jwt: "1q2w3e4r" }));
+  customAxios.get(url).then((res: AxiosResponse) => res.data);
