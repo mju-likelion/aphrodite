@@ -3,13 +3,17 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { Validation } from "@lib/etc/validation";
 import customAxios from "@lib/Axios";
+import { useRouter } from "next/router";
+import * as Cookie from "@lib/Cookie";
 
 type Props = {
   setComponentText: (s: string) => void;
+  setShow: (b: boolean) => void;
 };
 
-function Login({ setComponentText }: Props) {
+function Login({ setComponentText, setShow }: Props) {
   const [errors, setErrors] = useState<boolean>(false);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -18,11 +22,20 @@ function Login({ setComponentText }: Props) {
     onSubmit: () => {
       const isValid = handleValid(formik.values.email, formik.values.password);
 
-      //FIXME: isValid에 ! 붙이기
-      if (isValid) {
-        customAxios.post("/api/auth/sign-in");
-      } else {
+      if (!isValid) {
         setErrors(true);
+      } else {
+        // customAxios
+        //   .post("/api/auth/sign-in", {
+        //     email: formik.values.email,
+        //     password: formik.values.password,
+        //   })
+        //   .then(({ data }) => {
+        //     Cookie.setCookie("jwt", data.jwt);
+        //     router.push("/");
+        //   });
+        setShow(false);
+        router.push("/");
       }
     },
   });
