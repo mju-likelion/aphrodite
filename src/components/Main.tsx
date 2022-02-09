@@ -8,13 +8,9 @@ function Main() {
 
   console.log(user);
 
-  if (isLoading) {
-    return <>대충 로딩중</>;
-  }
-
-  if (isError) {
-    return <>대충 에러</>;
-  }
+  // if (isError) {
+  //   return <>대충 에러</>;
+  // }
 
   return (
     <>

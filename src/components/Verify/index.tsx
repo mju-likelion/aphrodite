@@ -1,18 +1,21 @@
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
-import * as valid from "@lib/etc/validation";
+import { Validation } from "@lib/etc/validation";
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
+import customAxios from "@lib/Axios";
 interface Values {
   email: string;
 }
 
-type Props = {
+interface Props {
   setComponentText: (s: string) => void;
-};
+  setShow: (b: boolean) => void;
+}
 
-function SignUp({ setComponentText }: Props) {
+function SignUp({ setComponentText, setShow }: Props) {
+  const [message, setMessage] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const formik = useFormik<Values>({
     initialValues: {
@@ -21,13 +24,20 @@ function SignUp({ setComponentText }: Props) {
     onSubmit: () => {},
   });
 
-  const handleSendConfirmMail = useCallback(() => {
-    if (valid.email(formik.values.email)) {
-      console.log("이메일 인증 링크 보냄");
+  const handleSendConfirmMail = useCallback((email) => {
+    console.log(Validation.email(email).result);
+    if (Validation.email(email).result) {
+      setError(false);
+      setMessage(true);
+      //FIXME: 주석제거
+      // customAxios.post("/api/auth/email-verify", {
+      //   email,
+      // });
     } else {
+      setMessage(false);
       setError(true);
     }
-  }, [formik.values.email]);
+  }, []);
 
   return (
     <>
@@ -38,11 +48,12 @@ function SignUp({ setComponentText }: Props) {
           onChange={formik.handleChange}
           value={formik.values.email}
         />
-        {error && <ErrorMsg>유효한 이메일을 입력해주세요</ErrorMsg>}
+        {message && <NoticeMsg>인증 링크가 전송되었습니다</NoticeMsg>}
+        {error && <NoticeMsg>유효한 이메일을 입력해주세요</NoticeMsg>}
         <Button
           type="button"
           disabled={!formik.values.email}
-          onClick={handleSendConfirmMail}
+          onClick={() => handleSendConfirmMail(formik.values.email)}
           fullWidth
           color={theme.colors.third.skyblue}
           size="medium"
@@ -94,9 +105,11 @@ const Input = styled.input`
   padding-left: 16px;
 `;
 
-const ErrorMsg = styled.p`
+const NoticeMsg = styled.p`
   width: 100%;
-  color: #f55442;
+
+  margin-top: 5px;
+  color: ${({ theme }) => theme.colors.primary.orange};
 `;
 
 const Div = styled.div`
