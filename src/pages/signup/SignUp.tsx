@@ -95,7 +95,7 @@ function SignUp() {
     if (email) {
       userDispatch({
         type: "email",
-        payload: email,
+        payload: email as string,
       });
     }
   }, []);
