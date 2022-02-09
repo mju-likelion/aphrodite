@@ -3,9 +3,9 @@ import React, { ReactElement, useState } from "react";
 import useUser from "src/hooks/useUser";
 import { useSWRConfig } from "swr";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import Login from "../Login";
 import Verify from "../Verify";
-import { useRouter } from "next/router";
 
 interface Props {
   setComponentText: (s: string) => void;
@@ -20,11 +20,11 @@ interface ComponentType {
 }
 
 const InputComponent: ComponentType = {
-  ["Login"]: {
+  Login: {
     title: "로그인",
     component: Login,
   },
-  ["Verify"]: {
+  Verify: {
     title: "회원가입",
     component: Verify,
   },
@@ -37,15 +37,18 @@ function Header() {
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
-  const title = InputComponent[componentText].title;
+  const { title } = InputComponent[componentText];
   const StepComponent = InputComponent[componentText].component;
 
   return (
     <>
       <Self>
-        <button onClick={() => router.push("/")}>LIKELION | MJU </button>
+        <button type="button" onClick={() => router.push("/")}>
+          LIKELION | MJU{" "}
+        </button>
         <div>
           <button
+            type="button"
             onClick={() => {
               setShow(true);
               setComponentText("Verify");
@@ -55,6 +58,7 @@ function Header() {
           </button>
           |
           <button
+            type="button"
             onClick={() => {
               setShow(true);
               setComponentText("Login");

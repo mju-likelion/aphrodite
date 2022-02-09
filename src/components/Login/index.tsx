@@ -46,9 +46,8 @@ function Login({ setComponentText, setShow }: Props) {
       Validation.password(password).result
     ) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }, []);
 
   return (

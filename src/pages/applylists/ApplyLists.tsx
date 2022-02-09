@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
-import { INITIAL } from "./constants";
 import { useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
+import { INITIAL } from "../../components/ApplyLists/constants";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
@@ -54,7 +54,7 @@ function ApplyLists() {
           </label>
         </div>
       </FilterContainer>
-      <ApplyContainer></ApplyContainer>
+      <ApplyContainer />
     </Container>
   );
 }
