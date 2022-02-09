@@ -1,8 +1,7 @@
-/* global window */
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { Validation } from "@lib/etc/validation";
 
@@ -86,7 +85,7 @@ function SignUp() {
   const { email } = router.query;
 
   useEffect(() => {
-    //임의로 접근할 경우 홈으로 리다이렉트
+    // 임의로 접근할 경우 홈으로 리다이렉트
     if (!email) {
       alert("잘못된 접근 입니다");
       router.push("/");
@@ -154,9 +153,8 @@ function SignUp() {
 
     if (hasError || isEmpty) {
       return true;
-    } else {
-      return false;
     }
+    return false;
   }
 
   return (

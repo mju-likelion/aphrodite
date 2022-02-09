@@ -4,7 +4,7 @@ import useUser from "src/hooks/useUser";
 
 function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
-  //const { user, isLoading, isError } = useUser("/api/users/:id");
+  // const { user, isLoading, isError } = useUser("/api/users/:id");
 
   console.log(user);
 
@@ -51,7 +51,7 @@ function Main() {
             <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
             <br />
             <DetailLink>
-              <a>자세히 보기 ➡</a>
+              <a href="/">자세히 보기 ➡</a>
             </DetailLink>
           </More>
         </CodingTextImage>

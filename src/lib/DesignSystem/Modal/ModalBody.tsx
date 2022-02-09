@@ -5,7 +5,7 @@ type Props = {
 };
 
 function ModalBody({ children }: Props) {
-  return <>{children}</>;
+  return <div>{children}</div>;
 }
 
 export default ModalBody;
