@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import React from "react";
 import ModalBody from "./ModalBody";
 import ModalHeader from "./ModalHeader";
 import Portal from "./Portal";
-import React from "react";
 
 type ModalProps = {
   children?: React.ReactNode;

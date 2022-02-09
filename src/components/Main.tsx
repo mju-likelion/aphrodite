@@ -1,7 +1,17 @@
 import styled from "styled-components";
 import { useState } from "react";
+import useUser from "src/hooks/useUser";
 
 function Main() {
+  const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  // const { user, isLoading, isError } = useUser("/api/users/:id");
+
+  console.log(user);
+
+  // if (isError) {
+  //   return <>대충 에러</>;
+  // }
+
   return (
     <>
       <Container>
@@ -24,8 +34,10 @@ function Main() {
                 모집 기간 : ~2022년 3월 11일까지 <br />
               </p>
               <ApplyBtn>
-                지원하기 ➡{/* <Arrow src="/images/ic-more.svg" /> */}
+                {user ? "지원서 보기 ➡" : "지원하기 ➡"}
+                {/* <img src="/images/ic-more.svg" /> */}
               </ApplyBtn>
+              {user && <QuestionBtn>문항 제출/수정</QuestionBtn>}
             </ApplyIntro>
           </Apply>
         </SubMainText>
@@ -39,7 +51,9 @@ function Main() {
             <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
             <br />
             <DetailLink>
-              <a>자세히 보기 ➡</a>
+              <a href="/">
+                자세히 보기 <img src="/images/ic-more.svg" alt="arrow" />
+              </a>
             </DetailLink>
           </More>
         </CodingTextImage>
@@ -139,7 +153,7 @@ const ApplyBtn = styled.button<{ theme: object }>`
 
   border: none;
   border-radius: 5px;
-  opacity: 0.9;
+  opacity: 0.8;
 
   background-color: ${({ theme }) => theme.colors.third.skyblue};
   color: white;
@@ -147,7 +161,11 @@ const ApplyBtn = styled.button<{ theme: object }>`
   cursor: pointer;
 
   &:hover {
-    background-color: #ff9e1b;
+    opacity: 1;
+  }
+
+  & + & {
+    margin-top: 10px;
   }
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
@@ -155,6 +173,14 @@ const ApplyBtn = styled.button<{ theme: object }>`
     height: 28px;
 
     font-size: 12px;
+  }
+`;
+
+const QuestionBtn = styled(ApplyBtn)`
+  background-color: ${({ theme }) => theme.colors.primary.orange};
+
+  &:hover {
+    opacity: 1;
   }
 `;
 

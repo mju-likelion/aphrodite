@@ -1,35 +1,72 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
+import { Validation } from "@lib/etc/validation";
+import customAxios from "@lib/Axios";
+import { useRouter } from "next/router";
+import * as Cookie from "@lib/Cookie";
 
 type Props = {
   setComponentText: (s: string) => void;
+  setShow: (b: boolean) => void;
 };
 
-function Login({ setComponentText }: Props) {
+function Login({ setComponentText, setShow }: Props) {
+  const [errors, setErrors] = useState<boolean>(false);
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    onSubmit: () => {},
+    onSubmit: () => {
+      const isValid = handleValid(formik.values.email, formik.values.password);
+
+      if (!isValid) {
+        setErrors(true);
+      } else {
+        // customAxios
+        //   .post("/api/auth/sign-in", {
+        //     email: formik.values.email,
+        //     password: formik.values.password,
+        //   })
+        //   .then(({ data }) => {
+        //     Cookie.setCookie("jwt", data.jwt);
+        //     router.push("/");
+        //   });
+        setShow(false);
+        router.push("/");
+      }
+    },
   });
+
+  const handleValid = useCallback((email, password) => {
+    if (
+      Validation.email(email).result &&
+      Validation.password(password).result
+    ) {
+      return true;
+    }
+    return false;
+  }, []);
 
   return (
     <FormWrapper onSubmit={formik.handleSubmit}>
       <Input
-        id="Email"
+        id="eamil"
+        name="email"
         placeholder="Email"
         onChange={formik.handleChange}
         value={formik.values.email}
       />
       <Input
-        id="Password"
+        id="password"
         placeholder="Password"
         type="password"
         onChange={formik.handleChange}
         value={formik.values.password}
       />
+      {errors && <ErrorMsg>아이디 및 비밀번호를 확인해주세요</ErrorMsg>}
       <Button
         type="submit"
         disabled={!formik.values.email || !formik.values.password}
@@ -77,21 +114,35 @@ const Div = styled.div`
 const Input = styled.input`
   width: 90%;
   height: 44px;
+
   border-radius: 6px;
   background-color: ${({ theme }) => theme.colors.primary.gray};
-  margin-bottom: 24px;
+
   font-size: 17px;
   line-height: 22px;
   border: 0px;
   padding-left: 16px;
+
   outline-color: #8ffcff;
+  color: ${({ theme }) => theme.colors.primary.white};
+
+  & + & {
+    margin-top: 20px;
+  }
+`;
+
+const ErrorMsg = styled.span`
+  margin-top: 10px;
+
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.primary.orange};
 `;
 
 const Button = styled.button`
   display: flex;
   width: 90%;
   height: 44px;
-  margin-bottom: 24px;
+  margin: 24px 0px;
   padding: 13px;
 
   flex-direction: column;

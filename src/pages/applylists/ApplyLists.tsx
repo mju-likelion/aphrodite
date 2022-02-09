@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
-import { INITIAL } from "../../components/Applylists/contants";
 import { useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
+import { INITIAL } from "../../components/Applylists/contants";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
   const users = useApplyLists().data.user;
-  //swr
+  // swr
   // const { applies, isLoading, isError } = useApplyLists(
   // "https://jsonplaceholder.typicode.com/posts",
   // );
@@ -50,7 +50,7 @@ function ApplyLists() {
         <div>
           <span>현황</span>
           {statusKeys.map((s, i) => (
-            <label htmlFor={s} key={i}>
+            <label htmlFor={s} key={s}>
               <input
                 type="checkbox"
                 id={s}
@@ -69,7 +69,7 @@ function ApplyLists() {
         <div>
           <span>직종</span>
           {partKeys.map((p, i) => (
-            <label htmlFor={p} key={i}>
+            <label htmlFor={p} key={p}>
               <input
                 type="checkbox"
                 id={p}
@@ -96,7 +96,7 @@ function ApplyLists() {
             최신순
           </option>
         </ApplySelect>
-        <img src="/images/SortPolygon.svg" />
+        <img src="/images/SortPolygon.svg" alt="arrow" />
       </ApplySort>
       <ApplyContainer>
         <span>번호</span>
@@ -116,6 +116,7 @@ function ApplyLists() {
           </Line>
         );
       })}
+      <ApplyContainer />
     </Container>
   );
 }

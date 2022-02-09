@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-//여기서 이메일 인증 api 호출
+// 여기서 이메일 인증 api 호출
 function EmailConfirm() {
   const router = useRouter();
   const { token } = router.query;
@@ -12,8 +12,8 @@ function EmailConfirm() {
 
     async function emailVerify() {
       try {
-        //await axios.post(`/api/auth/email-verify/${token}`); api연동 되면 테스트
-        //response === {message : string, email : string}
+        // await axios.post(`/api/auth/email-verify/${token}`); api연동 되면 테스트
+        // response === {message : string, email : string}
         const { email } = { email: "test123@naver.com" };
         router.push(
           {
