@@ -159,7 +159,7 @@ function SignUp() {
 
   return (
     <Container onSubmit={handleSubmit}>
-      <Title>회원가입</Title>
+      <Title>회원가입 대충수정</Title>
       <InputGroup>
         <Input
           type="email"
