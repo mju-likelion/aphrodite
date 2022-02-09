@@ -1,14 +1,15 @@
 import { createGlobalStyle } from "styled-components";
 import { normalize } from "styled-normalize";
+import { theme } from "./theme";
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-  html, body {
-    max-width : 1024px;
+  html,
+  body {
+    width : 100%;
     height: 100%;
-
-    margin: 0 auto;
-    background-color : #141517;
+    color: #fff;
+    background-color : ${theme.colors.primary.black};
   }
   *,
   *::before,
@@ -19,4 +20,11 @@ export const GlobalStyle = createGlobalStyle`
   }
   * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';}
   a { cursor: pointer; text-decoration: none; }
+  button {
+    outline: none;
+    border:none;
+    background-color : transparent;
+
+    cursor : pointer;
+  }
 `;
