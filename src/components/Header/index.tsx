@@ -32,31 +32,19 @@ const InputComponent: ComponentType = {
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  //const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
+  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
 
-  //console.log(user?.results[0].name.first);
+  console.log(user?.results[0].name.first);
 
   return (
     <>
-      <button
-        type="button"
-        style={{
-          color: "white",
-        }}
-        onClick={() => {
-          //mutate("https://randomuser.me/api/");
-          router.push("/signup");
-        }}
-      >
-        갱신
-      </button>
       <Self>
-        <div>LIKELION | MJU </div>
+        <button onClick={() => router.push("/")}>LIKELION | MJU </button>
         <div>
           <button
             onClick={() => {
@@ -86,7 +74,6 @@ function Header() {
           setShow(false);
         }}
       >
-        {/* 이거 에러 어케해야함 */}
         <StepComponent setComponentText={setComponentText} />
       </Modal>
     </>
