@@ -32,14 +32,14 @@ const InputComponent: ComponentType = {
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
+  // const { user, isLodaing, isError } = useUser("https://randomuser.me/api/");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
   const title = InputComponent[componentText].title;
   const StepComponent = InputComponent[componentText].component;
 
-  console.log(user?.results[0].name.first);
+  // console.log(user?.results[0].name.first);
 
   return (
     <>
@@ -84,9 +84,10 @@ const Self = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 68px;
 
   padding: 10px 60px;
-  font-size: 20px;
+  font-size: 16px;
 
   button {
     color: white;

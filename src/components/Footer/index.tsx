@@ -69,6 +69,7 @@ function Footer() {
 
 const FooterSelf = styled.footer`
   width: 100%;
+  height: 68px;
 
   display: flex;
 `;

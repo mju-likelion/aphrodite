@@ -1,19 +1,28 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
-import { INITIAL } from "./constants";
+import { INITIAL } from "../../components/Applylists/contants";
 import { useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
-import useSWR from "swr";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
-  const [pageIndex, setPageIndex] = useState(1);
+  const users = useApplyLists().data.user;
+  //swr
+  // const { applies, isLoading, isError } = useApplyLists(
+  // "https://jsonplaceholder.typicode.com/posts",
+  // );
 
-  const datas = useApplyLists();
+  // if (isLoading) {
+  //   return <>is Loading</>;
+  // }
+  // if (isError) {
+  //   return <>error</>;
+  // }
+  // const { count } = totalCount("https://randomuser.me/api/?results=5");
   const size = totalCount().meta.count;
-  const user = Object.values(datas.data)[0];
+
   const statusKeys = [
     "completion",
     "first_out",
@@ -30,33 +39,6 @@ function ApplyLists() {
   ];
   const partKeys = ["manage", "design", "dev"] as const;
   const partNames = ["기획", "디자인", "개발"];
-
-  const ApplyListFunc = () => {
-    //swr테스트
-    const { data, error } = useSWR(
-      "https://jsonplaceholder.typicode.com/posts",
-    );
-    if (error) return <div>failed to load</div>;
-    if (!data) return <div>loading...</div>;
-    //목업데이터
-    return user.map((user) => {
-      return (
-        <Line key={user.id}>
-          <span>{user.id}</span>
-          <span>{user.name}</span>
-          <span>{user.email}</span>
-          <span>{user.major}</span>
-          <Apply>지원서보기</Apply>
-        </Line>
-      );
-    });
-  };
-
-  //페이지네이션 (총페이지갯수 / 한번에 보여줄 지원서10개 )
-  const pageNumbers = [];
-  for (let i = 1; i <= size / 10; i++) {
-    pageNumbers.push(i);
-  }
 
   return (
     <Container>
@@ -86,16 +68,16 @@ function ApplyLists() {
         </div>
         <div>
           <span>직종</span>
-          {partKeys.map((s, i) => (
-            <label htmlFor={s} key={i}>
+          {partKeys.map((p, i) => (
+            <label htmlFor={p} key={i}>
               <input
                 type="checkbox"
-                id={s}
-                checked={part[s]}
+                id={p}
+                checked={part[p]}
                 onChange={(e) => {
                   setPart({
                     ...part,
-                    [s]: e.target.checked,
+                    [p]: e.target.checked,
                   });
                 }}
               />
@@ -114,7 +96,7 @@ function ApplyLists() {
             최신순
           </option>
         </ApplySelect>
-        <ApplySorting src="/images/SortPolygon.svg" />
+        <img src="/images/SortPolygon.svg" />
       </ApplySort>
       <ApplyContainer>
         <span>번호</span>
@@ -122,7 +104,18 @@ function ApplyLists() {
         <span>학과</span>
         <span>이메일</span>
       </ApplyContainer>
-      {ApplyListFunc()}
+
+      {users.map((s: any) => {
+        return (
+          <Line key={s.id}>
+            <span>{s.id}</span>
+            <span>{s.name}</span>
+            <span>{s.major}</span>
+            <span>{s.email}</span>
+            <Apply>지원서보기</Apply>
+          </Line>
+        );
+      })}
     </Container>
   );
 }
@@ -171,6 +164,7 @@ const FilterContainer = styled.article`
     margin-left: 10px;
   }
 `;
+
 const ApplyNum = styled.div`
   width: 100%;
 
@@ -180,6 +174,7 @@ const ApplyNum = styled.div`
   font-weight: bold;
   text-align: right;
 `;
+
 const ApplySort = styled.div`
   width: 100%;
   margin-top: 20px;
@@ -193,14 +188,13 @@ const ApplySort = styled.div`
     border: 0px;
   }
 `;
+
 const ApplySelect = styled.select`
   display: inline;
   background-color: none;
   color: #444;
   appearance: none;
 `;
-
-const ApplySorting = styled.img``;
 
 const ApplyContainer = styled.article`
   width: 100%;
@@ -240,6 +234,7 @@ const Line = styled.div`
     padding-left: 80px;
   }
 `;
+
 const Apply = styled.div`
   display: inline-block;
   width: 70px;
