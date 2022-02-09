@@ -9,12 +9,13 @@ import { useRouter } from "next/router";
 
 interface Props {
   setComponentText: (s: string) => void;
+  setShow: (b: boolean) => void;
 }
 
 interface ComponentType {
   [s: string]: {
     title: string;
-    component: ({ setComponentText }: Props) => ReactElement;
+    component: ({ setComponentText, setShow }: Props) => ReactElement;
   };
 }
 
@@ -72,7 +73,7 @@ function Header() {
           setShow(false);
         }}
       >
-        <StepComponent setComponentText={setComponentText} />
+        <StepComponent setComponentText={setComponentText} setShow={setShow} />
       </Modal>
     </>
   );
