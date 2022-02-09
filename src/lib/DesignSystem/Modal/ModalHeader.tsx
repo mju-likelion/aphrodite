@@ -10,7 +10,9 @@ function ModalHeader({ title, onClose }: Props) {
   return (
     <Container>
       <h4>{title}</h4>
-      <button onClick={onClose}>𝖷</button>
+      <button type="button" onClick={onClose}>
+        𝖷
+      </button>
     </Container>
   );
 }

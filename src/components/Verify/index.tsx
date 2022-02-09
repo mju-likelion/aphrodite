@@ -5,6 +5,7 @@ import { Validation } from "@lib/etc/validation";
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import customAxios from "@lib/Axios";
+
 interface Values {
   email: string;
 }
@@ -29,7 +30,7 @@ function SignUp({ setComponentText, setShow }: Props) {
     if (Validation.email(email).result) {
       setError(false);
       setMessage(true);
-      //FIXME: 주석제거
+      // FIXME: 주석제거
       // customAxios.post("/api/auth/email-verify", {
       //   email,
       // });
@@ -94,7 +95,7 @@ const Input = styled.input`
 
   border: 0;
   border-radius: 6px;
-  background-color: ${({ theme }) => theme.colors.primary.gray};
+  background-color: ${theme.colors.primary.gray};
 
   font-size: 17px;
   letter-spacing: -0.2px;
@@ -109,7 +110,7 @@ const NoticeMsg = styled.p`
   width: 100%;
 
   margin-top: 5px;
-  color: ${({ theme }) => theme.colors.primary.orange};
+  color: ${theme.colors.primary.orange};
 `;
 
 const Div = styled.div`
@@ -127,7 +128,7 @@ const Forget = styled.a`
   margin: 4px;
   font-size: 14px;
   text-align: center;
-  color: ${({ theme }) => theme.colors.third.skyblue};
+  color: ${theme.colors.third.skyblue};
 `;
 
 export default SignUp;

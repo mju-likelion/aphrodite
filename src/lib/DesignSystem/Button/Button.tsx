@@ -1,4 +1,5 @@
 import { theme } from "@styles/theme";
+import React from "react";
 import styled, { css } from "styled-components";
 
 type Props = {
