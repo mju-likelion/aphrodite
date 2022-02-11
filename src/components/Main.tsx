@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { useState } from "react";
 import useUser from "src/hooks/useUser";
+import { useRouter } from "next/router";
 
 function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  const router = useRouter();
   // const { user, isLoading, isError } = useUser("/api/users/:id");
 
   console.log(user);
@@ -34,8 +36,8 @@ function Main() {
                 모집 기간 : ~2022년 3월 11일까지 <br />
               </p>
               <ApplyBtn>
-                {user ? "지원서 보기 ➡" : "지원하기 ➡"}
-                {/* <img src="/images/ic-more.svg" /> */}
+                {user ? `지원서 보기 ` : `지원하기 `}
+                <img src="/images/ic-more.svg" alt="arrow" />
               </ApplyBtn>
               {user && <QuestionBtn>문항 제출/수정</QuestionBtn>}
             </ApplyIntro>
@@ -50,10 +52,8 @@ function Main() {
             <br />
             <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
             <br />
-            <DetailLink>
-              <a href="/">
-                자세히 보기 <img src="/images/ic-more.svg" alt="arrow" />
-              </a>
+            <DetailLink onClick={() => router.push("/")}>
+              자세히 보기 <img src="/images/ic-more.svg" alt="arrow" />
             </DetailLink>
           </More>
         </CodingTextImage>
