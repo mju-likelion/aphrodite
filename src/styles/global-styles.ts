@@ -19,7 +19,11 @@ export const GlobalStyle = createGlobalStyle`
     padding:0;
   }
   * { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';}
-  a { cursor: pointer; text-decoration: none; }
+  a { cursor: pointer; text-decoration: none;
+  &:active, :visited {
+    color: #fff;
+  }
+  }
   button {
     outline: none;
     border:none;

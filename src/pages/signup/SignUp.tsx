@@ -20,22 +20,12 @@ interface actionI {
 }
 
 const INITIALSTATE = {
-  user: {
-    email: "",
-    password: "",
-    passwordConfirm: "",
-    mobile: "",
-    school: "",
-    major: "",
-  },
-  error: {
-    email: "",
-    password: "",
-    passwordConfirm: "",
-    mobile: "",
-    school: "",
-    major: "",
-  },
+  email: "",
+  password: "",
+  passwordConfirm: "",
+  mobile: "",
+  school: "",
+  major: "",
 };
 
 function userReducer(state: initialStateI, action: actionI) {
@@ -77,8 +67,8 @@ function errorReducer(state: initialStateI, action: actionI) {
 }
 
 function SignUp() {
-  const [user, userDispatch] = useReducer(userReducer, INITIALSTATE.user);
-  const [error, errorDispatch] = useReducer(errorReducer, INITIALSTATE.error);
+  const [user, userDispatch] = useReducer(userReducer, INITIALSTATE);
+  const [error, errorDispatch] = useReducer(errorReducer, INITIALSTATE);
   const [termsOfUse, setTermsOfUse] = useState<boolean>(false);
   const router = useRouter();
 
@@ -253,6 +243,7 @@ const Container = styled.form`
 `;
 
 const Title = styled.h3`
+  padding-top: 90px;
   text-align: center;
   font-size: 24px;
 `;
@@ -278,7 +269,7 @@ const Input = styled.input`
   padding-left: 16px;
 
   & + & {
-    margin-top: 15px;
+    margin-top: 24px;
   }
 `;
 
