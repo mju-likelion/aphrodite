@@ -3,6 +3,7 @@ import { theme } from "@styles/theme";
 import { useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
+import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import { INITIAL } from "../../components/Applylists/contants";
 
 function ApplyLists() {
@@ -96,7 +97,7 @@ function ApplyLists() {
             최신순
           </option>
         </ApplySelect>
-        <img src="/images/SortPolygon.svg" alt="arrow" />
+        <SortPolygon />
       </ApplySort>
       <ApplyContainer>
         <span>번호</span>

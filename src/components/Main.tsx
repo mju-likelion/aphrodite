@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import useUser from "src/hooks/useUser";
 import { useRouter } from "next/router";
+import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
@@ -37,7 +38,7 @@ function Main() {
               </p>
               <ApplyBtn>
                 {user ? `지원서 보기 ` : `지원하기 `}
-                <img src="/images/ic-more.svg" alt="arrow" />
+                <Arrow />
               </ApplyBtn>
               {user && <QuestionBtn>문항 제출/수정</QuestionBtn>}
             </ApplyIntro>
@@ -45,18 +46,19 @@ function Main() {
         </SubMainText>
       </Container>
       <Bottom>
-        <CodingImg src="/images/codingimage.svg" />
-        <CodingTextImage>
+        <CodingImg src="/images/codingimage.png" />
+        <CodingText>
           <More>
             <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
             <br />
             <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
             <br />
             <DetailLink onClick={() => router.push("/")}>
-              자세히 보기 <img src="/images/ic-more.svg" alt="arrow" />
+              자세히 보기 <Arrow />
             </DetailLink>
+            <CodingTextImage src="images/codingtext.png" />
           </More>
-        </CodingTextImage>
+        </CodingText>
       </Bottom>
     </>
   );
@@ -186,6 +188,7 @@ const QuestionBtn = styled(ApplyBtn)`
 
 const CodingImg = styled.img`
   width: 50%;
+  height: 300px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 100%;
@@ -194,27 +197,29 @@ const CodingImg = styled.img`
   }
 `;
 
-const CodingTextImage = styled.div`
-  width: 50%;
+const CodingText = styled.div`
+  width: 100%;
   height: 300px;
-
-  padding: 40px 0px 0px 40px;
-
-  background-image: url("/images/codingtext.svg");
-  background-position: cover;
+  padding: 40px 0 0 40px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    width: 80%;
     display: flex;
-    align-items: center;
+    width: 100%;
+    padding: 0 0 0 40px;
 
-    text-align: left;
-    background-image: none;
+    align-items: center;
+  }
+`;
+const CodingTextImage = styled.img`
+  display: absolute;
+  margin: -100px 0 0 150px;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
+    display: none;
 
     padding: 0;
   }
 `;
-
 const Mju = styled.p`
   font-weight: bold;
   font-size: 30px;
@@ -255,6 +260,8 @@ const More = styled.div`
 `;
 
 const Bottom = styled.article`
+  display: relative;
+
   display: flex;
   align-items: center;
 
