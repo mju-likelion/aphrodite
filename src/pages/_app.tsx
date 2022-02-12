@@ -4,20 +4,24 @@ import { GlobalStyle } from "@styles/global-styles";
 import { theme } from "@styles/theme";
 import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
+import Notice from "@components/Notice";
+import { RecoilRoot, useRecoilValue } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <RecoilRoot>
       <ThemeProvider theme={theme}>
         <CustomHead />
         <GlobalStyle />
+
         <AppContainer>
           <Header />
           <Component {...pageProps} />
+          <Notice />
         </AppContainer>
       </ThemeProvider>
       <div id="modal" />
-    </>
+    </RecoilRoot>
   );
 }
 
