@@ -6,12 +6,6 @@ function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
   // const { user, isLoading, isError } = useUser("/api/users/:id");
 
-  console.log(user);
-
-  // if (isError) {
-  //   return <>대충 에러</>;
-  // }
-
   return (
     <>
       <Container>
