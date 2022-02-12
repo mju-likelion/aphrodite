@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
+import Facebook from "@lib/DesignSystem/Icon/SnsIconFacebook";
+import Github from "@lib/DesignSystem/Icon/SnsIconGithub";
+import Insta from "@lib/DesignSystem/Icon/SnsIconInstagram";
 
 function Footer() {
   const date = new Date();
@@ -17,12 +20,7 @@ function Footer() {
               href="https://www.facebook.com/likelionatmju/"
               title="멋쟁이 사자처럼 at 명지대 자연 페이스북"
             >
-              <SnsImage
-                src="/images/sns-icon-facebook.svg"
-                width={19}
-                height={19}
-                alt="멋쟁이 사자처럼 at 명지대 자연 페이스북"
-              />
+              <Facebook />
             </a>
           </SnsBlock>
           <SnsBlock>
@@ -35,12 +33,7 @@ function Footer() {
               title="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
               rel="noreferrer noopener"
             >
-              <SnsImage
-                src="/images/sns-icon-instagram.svg"
-                width={19}
-                height={19}
-                alt="멋쟁이 사자처럼 at 명지대 자연 인스타그램"
-              />
+              <Insta />
             </a>
           </SnsBlock>
           <SnsBlock>
@@ -53,12 +46,7 @@ function Footer() {
               title="멋쟁이 사자처럼 at 명지대 자연 깃허브"
               rel="noreferrer noopener"
             >
-              <SnsImage
-                src="/images/sns-icon-github.svg"
-                width={19}
-                height={19}
-                alt="멋쟁이 사자처럼 at 명지대 자연 깃허브"
-              />
+              <Github />
             </a>
           </SnsGitMargin>
         </MjuSnsWrapper>

@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import { useState } from "react";
 import useUser from "src/hooks/useUser";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
   const router = useRouter();
+
+  function MovedPage() {
+    if (user) router.push("/apply");
+    else router.push("/applylists");
+  }
+
   // const { user, isLoading, isError } = useUser("/api/users/:id");
 
   console.log(user);
@@ -32,15 +38,24 @@ function Main() {
           </SubText>
           <Apply>
             <ApplyIntro>
-              <p>
-                모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
-                모집 기간 : ~2022년 3월 11일까지 <br />
-              </p>
-              <ApplyBtn>
+              {user ? (
+                <p>멋쟁이사자처럼(명지대자연) 10기</p>
+              ) : (
+                <p>
+                  모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
+                  모집 기간 : ~2022년 3월 11일까지 <br />
+                </p>
+              )}
+
+              <ApplyBtn onClick={() => MovedPage()}>
                 {user ? `지원서 보기 ` : `지원하기 `}
                 <Arrow />
               </ApplyBtn>
-              {user && <QuestionBtn>문항 제출/수정</QuestionBtn>}
+              {user && (
+                <QuestionBtn onClick={() => router.push("/")}>
+                  문항 제출/수정
+                </QuestionBtn>
+              )}
             </ApplyIntro>
           </Apply>
         </SubMainText>
@@ -198,7 +213,7 @@ const CodingImg = styled.img`
 `;
 
 const CodingText = styled.div`
-  width: 100%;
+  width: 50%;
   height: 300px;
   padding: 40px 0 0 40px;
 
@@ -212,6 +227,7 @@ const CodingText = styled.div`
 `;
 const CodingTextImage = styled.img`
   display: absolute;
+  width: 50%;
   margin: -100px 0 0 150px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {

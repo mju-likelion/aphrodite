@@ -1,16 +1,21 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
+import qs from "qs";
+import { useRouter } from "next/router";
+import axios from "axios";
 import { INITIAL } from "../../components/Applylists/contants";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
   const users = useApplyLists().data.user;
-  // swr
+  const router = useRouter();
+  const statusList = Object.keys(status).filter((value) => status[value]);
+
   // const { applies, isLoading, isError } = useApplyLists(
   // "https://jsonplaceholder.typicode.com/posts",
   // );
@@ -23,7 +28,7 @@ function ApplyLists() {
   // }
   // const { count } = totalCount("https://randomuser.me/api/?results=5");
   const size = totalCount().meta.count;
-
+  // const { statusKeys, isLoading, isError } = statuspart("");
   const statusKeys = [
     "completion",
     "first_out",
@@ -40,6 +45,13 @@ function ApplyLists() {
   ];
   const partKeys = ["manage", "design", "dev"] as const;
   const partNames = ["기획", "디자인", "개발"];
+
+  // useEffect(() => {
+  //   router.replace({
+  //     query: { ...router.query, status: statusList.join(":") },
+  //   });
+  // }, [statusList]);
+  console.log(statusList);
 
   return (
     <Container>
@@ -61,6 +73,10 @@ function ApplyLists() {
                     ...status,
                     [s]: e.target.checked,
                   });
+                  console.log(status);
+                  // router.replace({
+                  //   query: { ...router.query, status: statusList.join(":") },
+                  // });
                 }}
               />
               {statusNames[i]}
@@ -81,6 +97,11 @@ function ApplyLists() {
                     [p]: e.target.checked,
                   });
                 }}
+                onClick={(e) =>
+                  router.replace({
+                    query: { part: [p] },
+                  })
+                }
               />
               {partNames[i]}
             </label>
@@ -105,8 +126,7 @@ function ApplyLists() {
         <span>학과</span>
         <span>이메일</span>
       </ApplyContainer>
-
-      {users.map((s: any) => {
+      {users.map((s) => {
         return (
           <Line key={s.id}>
             <span>{s.id}</span>
@@ -130,15 +150,12 @@ const Container = styled.section`
   justify-content: center;
   align-items: center;
 
-  padding: 10px;
-
   color: white !important;
 `;
 
 const Title = styled.h2`
   width: 100%;
-
-  margin-top: 40px;
+  margin: 100px 0 32px 0;
 
   text-align: left;
   font-size: 40px;
@@ -149,13 +166,11 @@ const Title = styled.h2`
 const FilterContainer = styled.article`
   width: 100%;
 
-  margin-top: 20px;
-
-  padding: 20px;
+  padding: 30px;
   border: 3px solid ${theme.colors.third.skyblue};
 
   label {
-    margin-left: 10px;
+    margin-left: 24px;
   }
 
   div + div {
@@ -163,7 +178,7 @@ const FilterContainer = styled.article`
   }
 
   label + label {
-    margin-left: 10px;
+    margin-left: 16px;
   }
 `;
 
