@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
@@ -7,14 +8,28 @@ import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import qs from "qs";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useTable } from "react-table";
 import { INITIAL } from "../../components/Applylists/contants";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
+  const [sort, setSort] = useState("time_asc");
+  const [page, setPage] = useState(1);
   const users = useApplyLists().data.user;
   const router = useRouter();
   const statusList = Object.keys(status).filter((value) => status[value]);
+  const partList = Object.keys(part).filter((value) => part[value]);
+  const size = totalCount().meta.count;
+
+  const pageNumbers = [];
+  for (let i = 1; i <= users.length / 10; i++) {
+    pageNumbers.push(i);
+  }
+  // const table = useTable({
+  //   columns,
+  //   data,
+  // });
 
   // const { applies, isLoading, isError } = useApplyLists(
   // "https://jsonplaceholder.typicode.com/posts",
@@ -27,7 +42,6 @@ function ApplyLists() {
   //   return <>error</>;
   // }
   // const { count } = totalCount("https://randomuser.me/api/?results=5");
-  const size = totalCount().meta.count;
   // const { statusKeys, isLoading, isError } = statuspart("");
   const statusKeys = [
     "completion",
@@ -46,13 +60,17 @@ function ApplyLists() {
   const partKeys = ["manage", "design", "dev"] as const;
   const partNames = ["기획", "디자인", "개발"];
 
-  // useEffect(() => {
-  //   router.replace({
-  //     query: { ...router.query, status: statusList.join(":") },
-  //   });
-  // }, [statusList]);
-  console.log(statusList);
-
+  useEffect(() => {
+    router.replace({
+      query: {
+        ...router.query,
+        status: statusList.join(":"),
+        part: partList.join(":"),
+        sort,
+      },
+    });
+  }, [status, part, sort]);
+  console.log(users.slice((page - 1) * 10, page * 10));
   return (
     <Container>
       <Title>
@@ -73,10 +91,6 @@ function ApplyLists() {
                     ...status,
                     [s]: e.target.checked,
                   });
-                  console.log(status);
-                  // router.replace({
-                  //   query: { ...router.query, status: statusList.join(":") },
-                  // });
                 }}
               />
               {statusNames[i]}
@@ -110,12 +124,23 @@ function ApplyLists() {
       </FilterContainer>
       <ApplyNum>지원자 {size}명</ApplyNum>
       <ApplySort>
-        <ApplySelect>
+        <ApplySelect
+          onChange={(e) => {
+            setSort(e.target.value);
+          }}
+          value={sort}
+        >
           <option id="name_asc" value="name_asc">
-            가나다순
+            가나다순(오름차순)
+          </option>
+          <option id="name_desc" value="name_desc">
+            가나다순(내림차순)
           </option>
           <option id="time_asc" value="time_asc">
-            최신순
+            최신순(오름차순)
+          </option>
+          <option id="time_desc" value="time_desc">
+            최신순(내림차순)
           </option>
         </ApplySelect>
         <SortPolygon />
@@ -126,7 +151,7 @@ function ApplyLists() {
         <span>학과</span>
         <span>이메일</span>
       </ApplyContainer>
-      {users.map((s) => {
+      {users.slice((page - 1) * 10, page * 10).map((s) => {
         return (
           <Line key={s.id}>
             <span>{s.id}</span>
@@ -137,6 +162,22 @@ function ApplyLists() {
           </Line>
         );
       })}
+      <PageNation>
+        <span>
+          {pageNumbers.map((n, i) => (
+            <PageLi
+              key={n}
+              onClick={() => {
+                setPage(n);
+                console.log(n);
+              }}
+              selected={i + 1 === page}
+            >
+              {n}
+            </PageLi>
+          ))}
+        </span>
+      </PageNation>
       <ApplyContainer />
     </Container>
   );
@@ -270,6 +311,23 @@ const Apply = styled.div`
   background-color: rgba(0, 135, 209, 0.5);
 
   cursor: pointer;
+`;
+
+const PageNation = styled.ul`
+  display: flex;
+  padding: 30px;
+  font-size: 18px;
+`;
+
+const PageLi = styled.li<{ selected: boolean }>`
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+  ${(props) => props.selected && `border-bottom: 3px solid #0087d1;`}
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default ApplyLists;
