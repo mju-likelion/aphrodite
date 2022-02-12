@@ -70,7 +70,7 @@ function ApplyLists() {
       },
     });
   }, [status, part, sort]);
-  console.log(users.slice((page - 1) * 10, page * 10));
+
   return (
     <Container>
       <Title>
@@ -99,27 +99,29 @@ function ApplyLists() {
         </div>
         <div>
           <span>직종</span>
-          {partKeys.map((p, i) => (
-            <label htmlFor={p} key={p}>
-              <input
-                type="checkbox"
-                id={p}
-                checked={part[p]}
-                onChange={(e) => {
-                  setPart({
-                    ...part,
-                    [p]: e.target.checked,
-                  });
-                }}
-                onClick={(e) =>
-                  router.replace({
-                    query: { part: [p] },
-                  })
-                }
-              />
-              {partNames[i]}
-            </label>
-          ))}
+          <div>
+            {partKeys.map((p, i) => (
+              <label htmlFor={p} key={p}>
+                <input
+                  type="checkbox"
+                  id={p}
+                  checked={part[p]}
+                  onChange={(e) => {
+                    setPart({
+                      ...part,
+                      [p]: e.target.checked,
+                    });
+                  }}
+                  onClick={(e) =>
+                    router.replace({
+                      query: { part: [p] },
+                    })
+                  }
+                />
+                {partNames[i]}
+              </label>
+            ))}
+          </div>
         </div>
       </FilterContainer>
       <ApplyNum>지원자 {size}명</ApplyNum>
@@ -145,40 +147,44 @@ function ApplyLists() {
         </ApplySelect>
         <SortPolygon />
       </ApplySort>
-      <ApplyContainer>
-        <span>번호</span>
-        <span>이름</span>
-        <span>학과</span>
-        <span>이메일</span>
-      </ApplyContainer>
-      {users.slice((page - 1) * 10, page * 10).map((s) => {
-        return (
-          <Line key={s.id}>
-            <span>{s.id}</span>
-            <span>{s.name}</span>
-            <span>{s.major}</span>
-            <span>{s.email}</span>
-            <Apply>지원서보기</Apply>
-          </Line>
-        );
-      })}
-      <PageNation>
-        <span>
+
+      <TableDiv>
+        <TableContainer>
+          <TableHeader>
+            <tr>
+              <th>번호</th>
+              <th>이름</th>
+              <th>학과</th>
+              <th>이메일</th>
+              <th> </th>
+            </tr>
+          </TableHeader>
+          <tbody>
+            {users.slice((page - 1) * 10, page * 10).map((s) => (
+              <Line key={s.id}>
+                <td>{s.id}</td>
+                <td>{s.name}</td>
+                <td>{s.major}</td>
+                <td>{s.email}</td>
+                <Apply>지원서보기</Apply>
+              </Line>
+            ))}
+          </tbody>
+        </TableContainer>
+        <PageNation>
           {pageNumbers.map((n, i) => (
             <PageLi
               key={n}
               onClick={() => {
                 setPage(n);
-                console.log(n);
               }}
               selected={i + 1 === page}
             >
               {n}
             </PageLi>
           ))}
-        </span>
-      </PageNation>
-      <ApplyContainer />
+        </PageNation>
+      </TableDiv>
     </Container>
   );
 }
@@ -192,6 +198,8 @@ const Container = styled.section`
   align-items: center;
 
   color: white !important;
+
+  padding: 12px;
 `;
 
 const Title = styled.h2`
@@ -210,8 +218,16 @@ const FilterContainer = styled.article`
   padding: 30px;
   border: 3px solid ${theme.colors.third.skyblue};
 
+  > div {
+    display: flex;
+  }
+
   label {
-    margin-left: 24px;
+    width: keep-all;
+  }
+
+  span {
+    margin-right: 24px;
   }
 
   div + div {
@@ -220,6 +236,16 @@ const FilterContainer = styled.article`
 
   label + label {
     margin-left: 16px;
+  }
+
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
+    > div {
+      flex-direction: column;
+    }
+
+    span {
+      margin-bottom: 8px;
+    }
   }
 `;
 
@@ -254,24 +280,33 @@ const ApplySelect = styled.select`
   appearance: none;
 `;
 
-const ApplyContainer = styled.article`
+const TableDiv = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+`;
+
+const TableContainer = styled.table`
   width: 100%;
 
-  margin-top: 32px;
-  padding: 10px;
-
   border-top: 5px solid ${theme.colors.third.skyblue};
-  border-bottom: 2px solid ${theme.colors.third.skyblue};
+  border-bottom: 1px solid ${theme.colors.third.skyblue};
 
-  font-size: 20px;
-  font-weight: bold;
+  text-align: center;
+  border-collapse: collapse;
 
-  span + span {
-    padding: 0 100px;
+  th,
+  td {
+    padding: 10px 0px;
   }
 `;
 
-const Line = styled.div`
+const TableHeader = styled.thead`
+  width: 100%;
+  border-bottom: 1px solid ${theme.colors.third.skyblue};
+`;
+
+const Line = styled.tr`
   width: 100%;
 
   margin-top: 15px;
@@ -280,17 +315,7 @@ const Line = styled.div`
 
   font-size: 16px;
 
-  border-bottom: 2px solid #28292a;
-
-  span {
-    display: inline-block;
-    width: 40px;
-  }
-
-  span + span {
-    width: 230px;
-    padding-left: 80px;
-  }
+  border-bottom: 1px solid #28292a;
 `;
 
 const Apply = styled.div`
@@ -314,7 +339,10 @@ const Apply = styled.div`
 `;
 
 const PageNation = styled.ul`
-  display: flex;
+  width: 100%;
+
+  text-align: center;
+
   padding: 30px;
   font-size: 18px;
 `;
