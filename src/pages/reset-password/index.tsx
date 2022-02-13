@@ -20,10 +20,11 @@ function ResetPassword() {
     axios
       .post("/api/auth/reset-password")
       .then((res) => {
+        setError("");
         alert(res.data.message);
       })
       .catch((e) => {
-        alert(e.error.message);
+        setError(e.error.message);
       });
   }
 
