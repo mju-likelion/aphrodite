@@ -9,6 +9,7 @@ function Main() {
   const router = useRouter();
 
   function MovedPage() {
+    // TODO: user.isAdmin으로 판별
     if (user) router.push("/apply");
     else router.push("/applylists");
   }
@@ -41,7 +42,7 @@ function Main() {
                 </p>
               )}
 
-              <ApplyBtn onClick={() => MovedPage()}>
+              <ApplyBtn onClick={MovedPage}>
                 {user ? `지원서 보기 ` : `지원하기 `}
                 <Arrow />
               </ApplyBtn>
