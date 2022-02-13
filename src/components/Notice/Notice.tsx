@@ -20,7 +20,7 @@ const Container = styled.div<{ isShow: boolean }>`
 
   width: 400px;
   position: fixed;
-  bottom: 100px;
+  top: 100px;
   left: calc(50% - 200px);
 
   text-align: center;
