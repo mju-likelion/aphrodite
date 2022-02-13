@@ -1,5 +1,3 @@
-/* eslint-disable no-plusplus */
-
 import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
 import { theme } from "@styles/theme";
@@ -29,19 +27,18 @@ function ApplyLists() {
   const users = useApplyLists().data.user;
   const router = useRouter();
 
-  const statusList = Object.keys(status).filter((value) => status[value]);
-  const partList = Object.keys(part).filter((value) => part[value]);
-
+  const statusList = Object.keys(status).filter(
+    (value) => status[value as keyof typeof status],
+  );
+  const partList = Object.keys(part).filter(
+    (value) => part[value as keyof typeof part],
+  );
   const size = totalCount().meta.count;
 
   const pageNumbers = [];
-  for (let i = 1; i <= users.length / 10; i++) {
+  for (let i = 1; i <= users.length / 10; i += 1) {
     pageNumbers.push(i);
   }
-  // const table = useTable({
-  //   columns,
-  //   data,
-  // });
 
   // const { applies, isLoading, isError } = useApplyLists(
   // "https://jsonplaceholder.typicode.com/posts",
@@ -127,7 +124,7 @@ function ApplyLists() {
                         [p]: e.target.checked,
                       });
                     }}
-                    onClick={(e) =>
+                    onClick={() =>
                       router.replace({
                         query: { part: [p] },
                       })
