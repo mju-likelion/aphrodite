@@ -39,6 +39,7 @@
     "react/jsx-no-bind": 0,
     "no-unused-vars": 0,
     "react/require-default-props": 0,
-    "axe/forms": 0
+    "axe/forms": 0,
+    "axe/parsing": 0
   }
 }
