@@ -5,16 +5,18 @@ import useApplyDetail from "src/hooks/useApplyDetail";
 import useQuestions from "src/hooks/useQuestions";
 
 function Apply() {
-  const apply = useApplyDetail().data.user;
+  const datas = useApplyDetail().data;
   const answer = useApplyDetail().data.apply.answers;
   const question = useQuestions().data.questions;
   return (
     <ApplyWrapper>
       <ApplyList>
         <UserInfo>
-          이름: {apply.name} <br />
-          대학명: {apply.univ} <br />
-          휴대폰: {apply.phone} <br />
+          이름 : {datas.user.name} <br />
+          대학 : {datas.user.univ} <br />
+          전공 : {datas.user.major} <br />
+          휴대폰 : {datas.user.phone} <br />
+          지원분야 : {datas.apply.part}
         </UserInfo>
         {question.map((q, i) => (
           <>
@@ -38,7 +40,7 @@ const ApplyList = styled.div`
 `;
 const UserInfo = styled.div`
   display: inline-block;
-  margin-bottom: 20px;
+  margin: 20px 0 50px 0;
   font-size: 15px;
 `;
 const ApplyQuestion = styled.h4`
