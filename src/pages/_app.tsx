@@ -5,7 +5,7 @@ import { theme } from "@styles/theme";
 import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Notice from "@components/Notice";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { RecoilRoot } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <CustomHead />
         <GlobalStyle />
-
         <AppContainer>
           <Header />
           <Component {...pageProps} />

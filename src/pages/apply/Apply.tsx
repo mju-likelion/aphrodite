@@ -126,7 +126,7 @@ const Container = styled.section`
 const Inner = styled.div`
   max-width: 824px;
 
-  padding: 10px;
+  padding: 21px;
   margin: 0 auto;
 `;
 

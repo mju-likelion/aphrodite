@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { useState } from "react";
-import useApplyLists from "src/hooks/useApplyLists";
-import { INITIAL } from "../../components/ApplyLists/constants";
+import useApplyLists from "@hooks/useApplyLists";
+import totalCount from "@hooks/totalCount";
+import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { INITIAL } from "@components/ApplyLists/constants";
 
 function ApplyLists() {
   const [status, setStatus] = useState(INITIAL.STATUS);
