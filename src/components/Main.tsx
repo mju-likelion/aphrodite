@@ -1,9 +1,18 @@
 import styled from "styled-components";
 import { useState } from "react";
 import useUser from "src/hooks/useUser";
+import Router, { useRouter } from "next/router";
+import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
   const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  const router = useRouter();
+
+  function MovedPage() {
+    if (user) router.push("/apply");
+    else router.push("/applylists");
+  }
+
   // const { user, isLoading, isError } = useUser("/api/users/:id");
 
   return (
@@ -23,32 +32,42 @@ function Main() {
           </SubText>
           <Apply>
             <ApplyIntro>
-              <p>
-                모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
-                모집 기간 : ~2022년 3월 11일까지 <br />
-              </p>
-              <ApplyBtn>
-                {user ? "지원서 보기 ➡" : "지원하기 ➡"}
-                {/* <Arrow src="/images/ic-more.svg" /> */}
+              {user ? (
+                <p>멋쟁이사자처럼(명지대자연) 10기</p>
+              ) : (
+                <p>
+                  모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
+                  모집 기간 : ~2022년 3월 11일까지 <br />
+                </p>
+              )}
+
+              <ApplyBtn onClick={() => MovedPage()}>
+                {user ? `지원서 보기 ` : `지원하기 `}
+                <Arrow />
               </ApplyBtn>
-              {user && <QuestionBtn>문항 제출/수정</QuestionBtn>}
+              {user && (
+                <QuestionBtn onClick={() => router.push("/")}>
+                  문항 제출/수정
+                </QuestionBtn>
+              )}
             </ApplyIntro>
           </Apply>
         </SubMainText>
       </Container>
       <Bottom>
-        <CodingImg src="/images/codingimage.svg" />
-        <CodingTextImage>
+        <CodingImg src="/images/codingimage.png" />
+        <CodingText>
           <More>
             <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
             <br />
             <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
             <br />
-            <DetailLink>
-              <a href="/">자세히 보기 ➡</a>
+            <DetailLink onClick={() => router.push("/")}>
+              자세히 보기 <Arrow />
             </DetailLink>
+            <CodingTextImage src="images/codingtext.png" />
           </More>
-        </CodingTextImage>
+        </CodingText>
       </Bottom>
     </>
   );
@@ -178,6 +197,7 @@ const QuestionBtn = styled(ApplyBtn)`
 
 const CodingImg = styled.img`
   width: 50%;
+  height: 300px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 100%;
@@ -186,27 +206,30 @@ const CodingImg = styled.img`
   }
 `;
 
-const CodingTextImage = styled.div`
+const CodingText = styled.div`
   width: 50%;
   height: 300px;
-
-  padding: 40px 0px 0px 40px;
-
-  background-image: url("/images/codingtext.svg");
-  background-position: cover;
+  padding: 40px 0 0 40px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    width: 80%;
     display: flex;
-    align-items: center;
+    width: 100%;
+    padding: 0 0 0 40px;
 
-    text-align: left;
-    background-image: none;
+    align-items: center;
+  }
+`;
+const CodingTextImage = styled.img`
+  display: absolute;
+  width: 50%;
+  margin: -100px 0 0 150px;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
+    display: none;
 
     padding: 0;
   }
 `;
-
 const Mju = styled.p`
   font-weight: bold;
   font-size: 30px;
@@ -247,6 +270,8 @@ const More = styled.div`
 `;
 
 const Bottom = styled.article`
+  display: relative;
+
   display: flex;
   align-items: center;
 

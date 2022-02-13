@@ -12,6 +12,7 @@ declare module "styled-components" {
         orange: string;
         gray: string;
         white: string;
+        red: string;
       };
       secondary: {
         orangeL1: string;
