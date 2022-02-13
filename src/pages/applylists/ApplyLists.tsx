@@ -1,17 +1,17 @@
 /* eslint-disable no-plusplus */
+import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
 import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
-import qs from "qs";
 import { useRouter } from "next/router";
-import axios from "axios";
-import { useTable } from "react-table";
-import { INITIAL } from "../../components/Applylists/contants";
+import Apply from "../../components/ApplyLists";
+import { INITIAL } from "../../components/ApplyLists/contants";
 
 function ApplyLists() {
+  const [show, setShow] = useState(false);
   const [status, setStatus] = useState(INITIAL.STATUS);
   const [part, setPart] = useState(INITIAL.PART);
   const [sort, setSort] = useState("time_asc");
@@ -72,120 +72,139 @@ function ApplyLists() {
   }, [status, part, sort]);
 
   return (
-    <Container>
-      <Title>
-        명지대(자연) <br />
-        지원서 리스트
-      </Title>
-      <FilterContainer>
-        <div>
-          <span>현황</span>
-          {statusKeys.map((s, i) => (
-            <label htmlFor={s} key={s}>
-              <input
-                type="checkbox"
-                id={s}
-                checked={status[s]}
-                onChange={(e) => {
-                  setStatus({
-                    ...status,
-                    [s]: e.target.checked,
-                  });
-                }}
-              />
-              {statusNames[i]}
-            </label>
-          ))}
-        </div>
-        <div>
-          <span>직종</span>
+    <>
+      <Container>
+        <Title>
+          명지대(자연) <br />
+          지원서 리스트
+        </Title>
+        <FilterContainer>
           <div>
-            {partKeys.map((p, i) => (
-              <label htmlFor={p} key={p}>
+            <span>현황</span>
+            {statusKeys.map((s, i) => (
+              <label htmlFor={s} key={s}>
                 <input
                   type="checkbox"
-                  id={p}
-                  checked={part[p]}
+                  id={s}
+                  checked={status[s]}
                   onChange={(e) => {
-                    setPart({
-                      ...part,
-                      [p]: e.target.checked,
+                    setStatus({
+                      ...status,
+                      [s]: e.target.checked,
                     });
                   }}
-                  onClick={(e) =>
-                    router.replace({
-                      query: { part: [p] },
-                    })
-                  }
                 />
-                {partNames[i]}
+                {statusNames[i]}
               </label>
             ))}
           </div>
-        </div>
-      </FilterContainer>
-      <ApplyNum>지원자 {size}명</ApplyNum>
-      <ApplySort>
-        <ApplySelect
-          onChange={(e) => {
-            setSort(e.target.value);
-          }}
-          value={sort}
-        >
-          <option id="name_asc" value="name_asc">
-            가나다순(오름차순)
-          </option>
-          <option id="name_desc" value="name_desc">
-            가나다순(내림차순)
-          </option>
-          <option id="time_asc" value="time_asc">
-            최신순(오름차순)
-          </option>
-          <option id="time_desc" value="time_desc">
-            최신순(내림차순)
-          </option>
-        </ApplySelect>
-        <SortPolygon />
-      </ApplySort>
+          <div>
+            <span>직종</span>
+            <div>
+              {partKeys.map((p, i) => (
+                <label htmlFor={p} key={p}>
+                  <input
+                    type="checkbox"
+                    id={p}
+                    checked={part[p]}
+                    onChange={(e) => {
+                      setPart({
+                        ...part,
+                        [p]: e.target.checked,
+                      });
+                    }}
+                    onClick={(e) =>
+                      router.replace({
+                        query: { part: [p] },
+                      })
+                    }
+                  />
+                  {partNames[i]}
+                </label>
+              ))}
+            </div>
+          </div>
+        </FilterContainer>
+        <ApplyNum>지원자 {size}명</ApplyNum>
+        <ApplySort>
+          <ApplySelect
+            onChange={(e) => {
+              setSort(e.target.value);
+            }}
+            value={sort}
+          >
+            <option id="name_asc" value="name_asc">
+              가나다순(오름차순)
+            </option>
+            <option id="name_desc" value="name_desc">
+              가나다순(내림차순)
+            </option>
+            <option id="time_asc" value="time_asc">
+              최신순(오름차순)
+            </option>
+            <option id="time_desc" value="time_desc">
+              최신순(내림차순)
+            </option>
+          </ApplySelect>
+          <SortPolygon />
+        </ApplySort>
 
-      <TableDiv>
-        <TableContainer>
-          <TableHeader>
-            <tr>
-              <th>번호</th>
-              <th>이름</th>
-              <th>학과</th>
-              <th>이메일</th>
-              <th> </th>
-            </tr>
-          </TableHeader>
-          <tbody>
-            {users.slice((page - 1) * 10, page * 10).map((s) => (
-              <Line key={s.id}>
-                <td>{s.id}</td>
-                <td>{s.name}</td>
-                <td>{s.major}</td>
-                <td>{s.email}</td>
-                <Apply>지원서보기</Apply>
-              </Line>
+        <TableDiv>
+          <TableContainer>
+            <TableHeader>
+              <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>학과</th>
+                <th>이메일</th>
+                <th> </th>
+              </tr>
+            </TableHeader>
+            <tbody>
+              {users.slice((page - 1) * 10, page * 10).map((s) => (
+                <Line key={s.id}>
+                  <td>{s.id}</td>
+                  <td>{s.name}</td>
+                  <td>{s.major}</td>
+                  <td>{s.email}</td>
+                  <ApplyButton
+                    onClick={() => {
+                      setShow(true);
+                    }}
+                  >
+                    지원서보기
+                  </ApplyButton>
+                </Line>
+              ))}
+            </tbody>
+          </TableContainer>
+          <PageNation>
+            {pageNumbers.map((n, i) => (
+              <PageLi
+                key={n}
+                onClick={() => {
+                  setPage(n);
+                }}
+                selected={i + 1 === page}
+              >
+                {n}
+              </PageLi>
             ))}
-          </tbody>
-        </TableContainer>
-        <PageNation>
-          {pageNumbers.map((n, i) => (
-            <PageLi
-              key={n}
-              onClick={() => {
-                setPage(n);
-              }}
-              selected={i + 1 === page}
-            >
-              {n}
-            </PageLi>
-          ))}
-        </PageNation>
-      </TableDiv>
-    </Container>
+          </PageNation>
+        </TableDiv>
+      </Container>
+      <Modal
+        show={show}
+        width={900}
+        height={800}
+        title="지원서보기"
+        onClose={() => {
+          setShow(false);
+        }}
+      >
+        <Apply />
+      </Modal>
+    </>
   );
 }
 
@@ -238,8 +257,8 @@ const FilterContainer = styled.article`
     margin-left: 16px;
   }
 
-  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    > div {
+  @media screen and (max-width: 424px) {
+    div {
       flex-direction: column;
     }
 
@@ -318,7 +337,7 @@ const Line = styled.tr`
   border-bottom: 1px solid #28292a;
 `;
 
-const Apply = styled.div`
+const ApplyButton = styled.div`
   display: inline-block;
   width: 70px;
   height: 30px;

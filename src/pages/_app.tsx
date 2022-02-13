@@ -6,10 +6,12 @@ import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
 import axios from "axios";
+import Notice from "@components/Notice";
+import { RecoilRoot, useRecoilValue } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <RecoilRoot>
       <ThemeProvider theme={theme}>
         <CustomHead />
         <GlobalStyle />
@@ -17,10 +19,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Header />
           <Component {...pageProps} />
           <Footer />
+          <Notice />
         </AppContainer>
       </ThemeProvider>
       <div id="modal" />
-    </>
+    </RecoilRoot>
   );
 }
 
