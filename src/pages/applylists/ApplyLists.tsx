@@ -7,8 +7,8 @@ import useApplyLists from "src/hooks/useApplyLists";
 import totalCount from "src/hooks/totalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import { useRouter } from "next/router";
-import Apply from "../../components/ApplyLists";
-import { INITIAL } from "../../components/ApplyLists/contants";
+import Apply from "@components/ApplyLists";
+import { INITIAL } from "@components/ApplyLists/contants";
 
 function ApplyLists() {
   const [show, setShow] = useState(false);
