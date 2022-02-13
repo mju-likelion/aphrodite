@@ -87,9 +87,10 @@ const Self = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 68px;
 
   padding: 10px 60px;
-  font-size: 20px;
+  font-size: 16px;
 
   button {
     color: white;

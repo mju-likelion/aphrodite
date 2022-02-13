@@ -50,7 +50,7 @@ const Container = styled.div`
   top: 0;
 
   overflow-y: hidden;
-
+  overflow-y: initial !important
   background-color: rgba(0, 0, 0, 0.7);
 `;
 
@@ -61,7 +61,7 @@ const Inner = styled.div<StylesProps>`
   border-radius: 6px;
 
   background-color: ${({ theme }) => theme.colors.secondary.black};
-
+  overflow-y: auto;
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     width: 90%;
   }

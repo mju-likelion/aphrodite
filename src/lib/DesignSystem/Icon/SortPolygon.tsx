@@ -1,0 +1,14 @@
+function SortPolygon() {
+  return (
+    <svg
+      width="18"
+      height="12"
+      viewBox="0 0 18 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M9 12L0.339745 0.75L17.6603 0.75L9 12Z" fill="#0087D1" />
+    </svg>
+  );
+}
+export default SortPolygon;

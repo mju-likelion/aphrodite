@@ -62,11 +62,7 @@ export const Validation: ValidationI = {
   mobile(data) {
     const regex = /^[0-9]{0,11}$/i;
 
-    console.log(data);
-
     const result = regex.test(data);
-
-    console.log(result);
 
     if (result) {
       return {
