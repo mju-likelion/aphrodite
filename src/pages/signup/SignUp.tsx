@@ -131,7 +131,6 @@ function SignUp() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log(user, error);
     console.log("전송!");
   }
 

@@ -7,7 +7,7 @@ import Header from "@components/Header";
 import Footer from "@components/Footer";
 import axios from "axios";
 import Notice from "@components/Notice";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { RecoilRoot } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -26,7 +26,6 @@ function SignUp({ setComponentText, setShow }: Props) {
   });
 
   const handleSendConfirmMail = useCallback((email) => {
-    console.log(Validation.email(email).result);
     if (Validation.email(email).result) {
       setError(false);
       setMessage(true);

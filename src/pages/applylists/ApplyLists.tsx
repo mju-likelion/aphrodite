@@ -9,14 +9,24 @@ import { useRouter } from "next/router";
 import Apply from "@components/ApplyLists";
 import { INITIAL } from "@components/ApplyLists/contacts";
 
+interface StatusI {
+  [key: string]: boolean;
+}
+
+interface PartI {
+  [key: string]: boolean;
+}
+
 function ApplyLists() {
   const [show, setShow] = useState(false);
-  const [status, setStatus] = useState(INITIAL.STATUS);
-  const [part, setPart] = useState(INITIAL.PART);
+  const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
+  const [part, setPart] = useState<PartI>(INITIAL.PART);
   const [sort, setSort] = useState("time_asc");
   const [page, setPage] = useState(1);
+
   const users = useApplyLists().data.user;
   const router = useRouter();
+
   const statusList = Object.keys(status).filter(
     (value) => status[value as keyof typeof status],
   );
@@ -41,6 +51,8 @@ function ApplyLists() {
   //   return <>error</>;
   // }
   // const { count } = totalCount("https://randomuser.me/api/?results=5");
+  // const { statusKeys, isLoading, isError } = statuspart("");
+
   const statusKeys = [
     "completion",
     "first_out",
@@ -48,6 +60,7 @@ function ApplyLists() {
     "second_out",
     "second_in",
   ] as const;
+
   const statusNames = [
     "지원완료",
     "서류탈락",
@@ -83,7 +96,7 @@ function ApplyLists() {
               <label htmlFor={s} key={s}>
                 <input
                   type="checkbox"
-                  id={s}
+                  name={s}
                   checked={status[s]}
                   onChange={(e) => {
                     setStatus({

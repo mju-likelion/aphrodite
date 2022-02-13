@@ -86,16 +86,26 @@ function Login({ setComponentText, setShow }: Props) {
           </Signup>
         </Text>
         <Text>
-          <br />
           새로 들어오셨나요?
+          <Signup
+            onClick={() => {
+              setComponentText("Verify");
+            }}
+          >
+            회원가입 하기
+          </Signup>
         </Text>
-        <Signup
-          onClick={() => {
-            setComponentText("Verify");
-          }}
-        >
-          회원가입 하기
-        </Signup>
+        <Text>
+          비밀번호를 잊어버리셨나요?{" "}
+          <Reset
+            onClick={() => {
+              setShow(false);
+              router.push("/reset-password");
+            }}
+          >
+            비밀번호 초기화
+          </Reset>
+        </Text>
       </Div>
     </FormWrapper>
   );
@@ -108,7 +118,8 @@ const FormWrapper = styled.form`
 `;
 
 const Div = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Input = styled.input`
@@ -158,9 +169,15 @@ const Button = styled.button`
 `;
 
 const Text = styled.div`
-  display: inline;
   text-align: center;
   font-size: 13px;
+`;
+
+const Reset = styled.button`
+  display: inline;
+
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.third.skyblue};
 `;
 
 const Signup = styled.a`
@@ -168,7 +185,7 @@ const Signup = styled.a`
   margin: 4px;
   font-size: 13px;
   text-align: center;
-  color: ${({ theme }) => theme.colors.third.skyblue};
+  color: ${({ theme }) => theme.colors.third.skyblue} !important;
 `;
 
 interface Values {
