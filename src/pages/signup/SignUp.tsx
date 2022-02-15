@@ -202,16 +202,36 @@ function SignUp() {
         />
         {error.major && <ErrorMsg>{error.major}</ErrorMsg>}
       </InputGroup>
-      <label htmlFor="termsOfUse">
-        <input
-          type="checkbox"
-          id="termsOfUse"
-          onChange={() => {
-            setTermsOfUse(!termsOfUse);
-          }}
-        />{" "}
-        이용약관에 동의 합니다
-      </label>
+      <Check>
+        <Privacy>
+          <a
+            href="https://likelion.notion.site/23c93a4763844b18abcaeb0fe68ba172"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            멋쟁이사자처럼 개인정보 이용 동의서
+            <br />
+          </a>
+          <a
+            href="https://burnt-dahlia-f9e.notion.site/d6b60340125841039e9610ea29e38e4a"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            멋쟁이사자처럼(명지대학교 자연) 개인정보 이용 동의서 <br />
+            <br />
+          </a>
+        </Privacy>
+        <label htmlFor="termsOfUse">
+          <input
+            type="checkbox"
+            id="termsOfUse"
+            onChange={() => {
+              setTermsOfUse(!termsOfUse);
+            }}
+          />{" "}
+          이용약관에 동의 합니다.
+        </label>
+      </Check>
       <Button
         type="submit"
         fullWidth
@@ -230,7 +250,6 @@ const Container = styled.form`
   width: 100%;
   max-width: 334px;
   height: 100%;
-
   margin: 0 auto;
   padding: 20px;
 
@@ -274,7 +293,24 @@ const Input = styled.input`
 
 const ErrorMsg = styled.p`
   padding: 6px 0px;
-  color: ${theme.colors.primary.orange};
+  color: ${theme.colors.primary.red};
 `;
 
+const Privacy = styled.a`
+  text-align: center;
+  font-size: 13.5px;
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: ${theme.colors.third.skyblue};
+  }
+`;
+
+const Check = styled.p`
+  color: ${theme.colors.third.skyblue};
+  text-align: center;
+  cursot: pointer;
+`;
 export default SignUp;

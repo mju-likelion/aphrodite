@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+
 import { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
@@ -19,10 +21,10 @@ function Apply() {
           지원분야 : {datas.apply.part}
         </UserInfo>
         {question.map((q, i) => (
-          <>
+          <div key={i}>
             <ApplyQuestion>{q}</ApplyQuestion>
             <ApplyAnswer>{answer[i]}</ApplyAnswer>
-          </>
+          </div>
         ))}
       </ApplyList>
     </ApplyWrapper>

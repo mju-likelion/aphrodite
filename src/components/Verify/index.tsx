@@ -48,7 +48,14 @@ function SignUp({ setComponentText, setShow }: Props) {
           onChange={formik.handleChange}
           value={formik.values.email}
         />
-        {message && <NoticeMsg>인증 링크가 전송되었습니다</NoticeMsg>}
+        {message && (
+          <NoticeMsg>
+            이메일로 인증메일이 발송되었습니다. 인증메일은 약 24시간 동안
+            유효합니다. <br />
+            유효 시간 이내에 확인해주세요. (메일이 도착하지 않았을 경우, 스팸
+            메일함을 확인해주세요.)
+          </NoticeMsg>
+        )}
         {error && <NoticeMsg>유효한 이메일을 입력해주세요</NoticeMsg>}
         <Button
           type="button"
@@ -109,7 +116,8 @@ const NoticeMsg = styled.p`
   width: 100%;
 
   margin-top: 5px;
-  color: ${theme.colors.primary.orange};
+  color: ${theme.colors.primary.red};
+  word-break: keep-all;
 `;
 
 const Div = styled.div`

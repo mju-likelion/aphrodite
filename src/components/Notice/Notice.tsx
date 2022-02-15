@@ -49,6 +49,9 @@ const Message = styled.p`
 
   border-radius: 8px;
   background-color: ${theme.colors.primary.orange};
+
+  white-space: pre-wrap;
+  text-align: center;
 `;
 
 export default Notice;
