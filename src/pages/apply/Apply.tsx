@@ -74,8 +74,8 @@ function Apply() {
   function handleClickSave() {
     customAxios.put("/api/apply").catch((res) => {
       showNotice({
-        message:
-          "지원서가 임시저장 되었습니다.\n임시저장만으로는 제출되지않습니다.",
+        message: `지원서가 임시저장 되었습니다.
+        임시저장만으로는 제출되지않습니다.`,
       });
     });
   }
