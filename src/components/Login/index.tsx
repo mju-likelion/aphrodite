@@ -6,6 +6,11 @@ import customAxios from "@lib/Axios";
 import { useRouter } from "next/router";
 import * as Cookie from "@lib/Cookie";
 
+interface Values {
+  email: string;
+  password: string;
+}
+
 type Props = {
   setComponentText: (s: string) => void;
   setShow: (b: boolean) => void;
@@ -14,7 +19,7 @@ type Props = {
 function Login({ setComponentText, setShow }: Props) {
   const [errors, setErrors] = useState<boolean>(false);
   const router = useRouter();
-  const formik = useFormik({
+  const formik = useFormik<Values>({
     initialValues: {
       email: "",
       password: "",
@@ -146,7 +151,7 @@ const ErrorMsg = styled.span`
   margin-top: 10px;
 
   font-size: 14px;
-  color: ${({ theme }) => theme.colors.primary.orange};
+  color: ${({ theme }) => theme.colors.primary.red};
 `;
 
 const Button = styled.button`
@@ -188,8 +193,4 @@ const Signup = styled.a`
   color: ${({ theme }) => theme.colors.third.skyblue} !important;
 `;
 
-interface Values {
-  Email: string;
-  Password: string;
-}
 export default Login;

@@ -207,7 +207,7 @@ function SignUp() {
           <a
             href="https://likelion.notion.site/23c93a4763844b18abcaeb0fe68ba172"
             target="_blank"
-            rel="noreferrer"
+            rel="noreferrer noopener"
           >
             멋쟁이사자처럼 개인정보 이용 동의서
             <br />
@@ -215,7 +215,7 @@ function SignUp() {
           <a
             href="https://burnt-dahlia-f9e.notion.site/d6b60340125841039e9610ea29e38e4a"
             target="_blank"
-            rel="noreferrer"
+            rel="noreferrer noopener"
           >
             멋쟁이사자처럼(명지대학교 자연) 개인정보 이용 동의서 <br />
             <br />
@@ -293,7 +293,7 @@ const Input = styled.input`
 
 const ErrorMsg = styled.p`
   padding: 6px 0px;
-  color: ${theme.colors.primary.orange};
+  color: ${theme.colors.primary.red};
 `;
 
 const Privacy = styled.a`
