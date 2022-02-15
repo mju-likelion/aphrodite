@@ -339,33 +339,25 @@ const TableHeader = styled.thead`
 const Line = styled.tr`
   width: 100%;
 
-  margin-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 20px;
-
   font-size: 16px;
 
   border-bottom: 1px solid #28292a;
 `;
 
-const ApplyButton = styled.div`
-  display: inline-block;
+const ApplyButton = styled.button`
   width: 70px;
   height: 30px;
 
-  padding-top: 7px;
-  margin-left: 120px;
-
-  flex-direction: column;
-  text-align: center;
   font-size: 13px;
 
+  margin-top: 4px;
+
   border: none;
+  outline: none;
   border-radius: 8px;
 
+  color: white;
   background-color: rgba(0, 135, 209, 0.5);
-
-  cursor: pointer;
 `;
 
 const PageNation = styled.ul`

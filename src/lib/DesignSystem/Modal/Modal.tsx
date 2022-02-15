@@ -50,8 +50,9 @@ const Container = styled.div`
   top: 0;
 
   overflow-y: hidden;
-  overflow-y: initial !important
-  background-color: rgba(0, 0, 0, 0.7);
+  overflow-y: initial !important;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(42px);
 `;
 
 const Inner = styled.div<StylesProps>`
