@@ -126,7 +126,7 @@ const NoticeMsg = styled.p<{ error: boolean }>`
   color: ${theme.colors.primary.red};
   word-break: keep-all;
 
-  ${({ error }) => error && `color : ${theme.colors.primary.red}`}
+  ${({ error }) => (error ? `color : ${theme.colors.primary.red}` : "")}
 `;
 
 const Div = styled.div`
