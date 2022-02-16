@@ -118,7 +118,7 @@ const Input = styled.input`
   padding-left: 16px;
 `;
 
-const NoticeMsg = styled.p<{ error: boolean }>`
+const NoticeMsg = styled.p<{ error?: boolean }>`
   display: inline-flex;
   width: 100%;
 
