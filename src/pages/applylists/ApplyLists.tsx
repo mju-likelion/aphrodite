@@ -21,7 +21,7 @@ function ApplyLists() {
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
   const [part, setPart] = useState<PartI>(INITIAL.PART);
-  const [sort, setSort] = useState("time_asc");
+  const [sort, setSort] = useState("updatedAt_asc");
   const [page, setPage] = useState(1);
 
   const users = useApplyLists().data.user;
@@ -53,11 +53,11 @@ function ApplyLists() {
   // const { count } = totalCount("https://randomuser.me/api/?results=5");
 
   const statusKeys = [
-    "completion",
-    "first_out",
-    "first_pass",
-    "second_out",
-    "second_in",
+    "complete",
+    "first-fail",
+    "first-pass",
+    "second-fail",
+    "second-pass",
   ] as const;
 
   const statusNames = [
@@ -67,8 +67,8 @@ function ApplyLists() {
     "면접탈락",
     "최종합격",
   ];
-  const partKeys = ["manage", "design", "dev"] as const;
-  const partNames = ["기획", "디자인", "개발"];
+  const partKeys = ["design", "web", "server"] as const;
+  const partNames = ["기획/디자인", "웹", "서버"];
 
   useEffect(() => {
     router.replace({
@@ -145,10 +145,10 @@ function ApplyLists() {
             <option id="name_desc" value="name_desc">
               가나다순(내림차순)
             </option>
-            <option id="time_asc" value="time_asc">
+            <option id="updatedAt_asc" value="updatedAt_asc">
               최신순(오름차순)
             </option>
-            <option id="time_desc" value="time_desc">
+            <option id="updatedAt_desc" value="updatedAt_desc">
               최신순(내림차순)
             </option>
           </ApplySelect>
