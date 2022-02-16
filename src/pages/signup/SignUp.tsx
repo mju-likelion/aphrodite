@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { Validation } from "@lib/etc/validation";
+import Warning from "@lib/DesignSystem/Icon/Warning";
 
 interface initialStateI {
   email: string;
@@ -173,7 +174,12 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.passwordConfirm && <ErrorMsg>{error.passwordConfirm}</ErrorMsg>}
+        {error.passwordConfirm && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.passwordConfirm}
+          </ErrorMsg>
+        )}
         <Input
           type="text"
           placeholder="휴대폰 번호 (ex.01012345678)"
@@ -182,7 +188,12 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.mobile && <ErrorMsg>{error.mobile}</ErrorMsg>}
+        {error.mobile && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.mobile}
+          </ErrorMsg>
+        )}
         <Input
           type="text"
           placeholder="학교 (ex.명지대학교)"
@@ -191,7 +202,12 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.school && <ErrorMsg>{error.school}</ErrorMsg>}
+        {error.school && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.school}
+          </ErrorMsg>
+        )}
         <Input
           type="text"
           placeholder="전공 (ex.컴퓨터공학과)"
@@ -200,7 +216,12 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.major && <ErrorMsg>{error.major}</ErrorMsg>}
+        {error.major && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.major}
+          </ErrorMsg>
+        )}
       </InputGroup>
       <Check>
         <Privacy>
@@ -249,7 +270,8 @@ function SignUp() {
 const Container = styled.form`
   width: 100%;
   max-width: 334px;
-  height: 100%;
+  height: 100vh;
+
   margin: 0 auto;
   padding: 20px;
 
@@ -257,6 +279,10 @@ const Container = styled.form`
     margin-top: 20px;
     font-size: 14px;
     padding: 12px 0px;
+  }
+
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
+    height: 100%;
   }
 `;
 

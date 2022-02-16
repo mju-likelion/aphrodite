@@ -5,6 +5,7 @@ import { Validation } from "@lib/etc/validation";
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import customAxios from "@lib/Axios";
+import Warning from "@lib/DesignSystem/Icon/Warning";
 
 interface Values {
   email: string;
@@ -56,7 +57,12 @@ function SignUp({ setComponentText, setShow }: Props) {
             메일함을 확인해주세요.)
           </NoticeMsg>
         )}
-        {error && <NoticeMsg>유효한 이메일을 입력해주세요</NoticeMsg>}
+        {error && (
+          <NoticeMsg error>
+            <Warning />
+            &nbsp;유효한 이메일을 입력해주세요
+          </NoticeMsg>
+        )}
         <Button
           type="button"
           disabled={!formik.values.email}
@@ -112,12 +118,15 @@ const Input = styled.input`
   padding-left: 16px;
 `;
 
-const NoticeMsg = styled.p`
+const NoticeMsg = styled.p<{ error?: boolean }>`
+  display: inline-flex;
   width: 100%;
 
   margin-top: 5px;
   color: ${theme.colors.primary.red};
   word-break: keep-all;
+
+  ${({ error }) => (error ? `color : ${theme.colors.primary.red}` : "")}
 `;
 
 const Div = styled.div`
