@@ -6,6 +6,8 @@ import customAxios from "@lib/Axios";
 import { useRouter } from "next/router";
 import * as Cookie from "@lib/Cookie";
 
+import Warning from "@lib/DesignSystem/Icon/Warning";
+
 interface Values {
   email: string;
   password: string;
@@ -71,7 +73,12 @@ function Login({ setComponentText, setShow }: Props) {
         onChange={formik.handleChange}
         value={formik.values.password}
       />
-      {errors && <ErrorMsg>아이디 및 비밀번호를 확인해주세요</ErrorMsg>}
+      {errors && (
+        <ErrorMsg>
+          <Warning />
+          &nbsp; 아이디 및 비밀번호를 확인해주세요
+        </ErrorMsg>
+      )}
       <Button
         type="submit"
         disabled={!formik.values.email || !formik.values.password}
@@ -148,6 +155,7 @@ const Input = styled.input`
 `;
 
 const ErrorMsg = styled.span`
+  display: inline-flex;
   margin-top: 10px;
 
   font-size: 14px;
