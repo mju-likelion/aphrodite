@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { Validation } from "@lib/etc/validation";
@@ -8,6 +8,10 @@ import * as Cookie from "@lib/Cookie";
 
 import Warning from "@lib/DesignSystem/Icon/Warning";
 
+const Errors = {
+  email: "",
+  password: "",
+};
 interface Values {
   email: string;
   password: string;
@@ -19,7 +23,7 @@ type Props = {
 };
 
 function Login({ setComponentText, setShow }: Props) {
-  const [errors, setErrors] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Values>(Errors);
   const router = useRouter();
   const formik = useFormik<Values>({
     initialValues: {
@@ -29,9 +33,7 @@ function Login({ setComponentText, setShow }: Props) {
     onSubmit: () => {
       const isValid = handleValid(formik.values.email, formik.values.password);
 
-      if (!isValid) {
-        setErrors(true);
-      } else {
+      if (isValid) {
         // customAxios
         //   .post("/api/auth/sign-in", {
         //     email: formik.values.email,
@@ -57,31 +59,73 @@ function Login({ setComponentText, setShow }: Props) {
     return false;
   }, []);
 
+  function handleBlur(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    if (name === "email") {
+      if (!Validation.email(value).result)
+        setErrors((prev) => ({
+          ...prev,
+          email: Validation.email(value).message,
+        }));
+      else {
+        setErrors((prev) => ({
+          ...prev,
+          email: Validation.email(value).message,
+        }));
+      }
+      return;
+    }
+
+    if (name === "password") {
+      if (!Validation.password(value).result)
+        setErrors((prev) => ({
+          ...prev,
+          password: Validation.password(value).message,
+        }));
+      else {
+        setErrors((prev) => ({
+          ...prev,
+          password: Validation.password(value).message,
+        }));
+      }
+    }
+  }
+
   return (
     <FormWrapper onSubmit={formik.handleSubmit}>
       <Input
-        id="eamil"
+        id="email"
         name="email"
         placeholder="Email"
         onChange={formik.handleChange}
+        onBlur={handleBlur}
         value={formik.values.email}
       />
+      {errors.email && (
+        <ErrorMsg>
+          <Warning />
+          &nbsp; {errors.email}
+        </ErrorMsg>
+      )}
       <Input
         id="password"
         placeholder="Password"
+        name="password"
         type="password"
         onChange={formik.handleChange}
+        onBlur={handleBlur}
         value={formik.values.password}
       />
-      {errors && (
+      {errors.password && (
         <ErrorMsg>
           <Warning />
-          &nbsp; 아이디 및 비밀번호를 확인해주세요
+          &nbsp; {errors.password}
         </ErrorMsg>
       )}
       <Button
         type="submit"
-        disabled={!formik.values.email || !formik.values.password}
+        disabled={!handleValid(formik.values.email, formik.values.password)}
       >
         로그인
       </Button>
@@ -156,9 +200,12 @@ const Input = styled.input`
 
 const ErrorMsg = styled.span`
   display: inline-flex;
-  margin-top: 10px;
+  align-items: center;
+  width: 90%;
 
-  font-size: 14px;
+  margin: 8px 0px;
+
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.primary.red};
 `;
 

@@ -270,7 +270,8 @@ function SignUp() {
 const Container = styled.form`
   width: 100%;
   max-width: 334px;
-  height: 100%;
+  height: 100vh;
+
   margin: 0 auto;
   padding: 20px;
 
@@ -278,6 +279,10 @@ const Container = styled.form`
     margin-top: 20px;
     font-size: 14px;
     padding: 12px 0px;
+  }
+
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
+    height: 100%;
   }
 `;
 
