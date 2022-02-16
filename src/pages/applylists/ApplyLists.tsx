@@ -51,7 +51,6 @@ function ApplyLists() {
   //   return <>error</>;
   // }
   // const { count } = totalCount("https://randomuser.me/api/?results=5");
-  // const { statusKeys, isLoading, isError } = statuspart("");
 
   const statusKeys = [
     "completion",
@@ -78,9 +77,10 @@ function ApplyLists() {
         status: statusList.join(":"),
         part: partList.join(":"),
         sort,
+        page,
       },
     });
-  }, [status, part, sort]);
+  }, [status, part, sort, page]);
 
   return (
     <>
@@ -124,11 +124,6 @@ function ApplyLists() {
                         [p]: e.target.checked,
                       });
                     }}
-                    onClick={() =>
-                      router.replace({
-                        query: { part: [p] },
-                      })
-                    }
                   />
                   {partNames[i]}
                 </label>
@@ -172,7 +167,7 @@ function ApplyLists() {
               </tr>
             </TableHeader>
             <tbody>
-              {users.slice((page - 1) * 10, page * 10).map((s) => (
+              {users.map((s) => (
                 <Line key={s.id}>
                   <td>{s.id}</td>
                   <td>{s.name}</td>
