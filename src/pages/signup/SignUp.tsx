@@ -5,13 +5,14 @@ import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { Validation } from "@lib/etc/validation";
 import Warning from "@lib/DesignSystem/Icon/Warning";
+import customAxios from "@lib/Axios";
 
 interface initialStateI {
   email: string;
   password: string;
   passwordConfirm: string;
-  mobile: string;
-  school: string;
+  phone: string;
+  name: string;
   major: string;
 }
 
@@ -24,8 +25,8 @@ const INITIALSTATE = {
   email: "",
   password: "",
   passwordConfirm: "",
-  mobile: "",
-  school: "",
+  phone: "",
+  name: "",
   major: "",
 };
 
@@ -37,10 +38,10 @@ function userReducer(state: initialStateI, action: actionI) {
       return { ...state, password: action.payload };
     case "passwordConfirm":
       return { ...state, passwordConfirm: action.payload };
-    case "mobile":
-      return { ...state, mobile: action.payload };
-    case "school":
-      return { ...state, school: action.payload };
+    case "phone":
+      return { ...state, phone: action.payload };
+    case "name":
+      return { ...state, name: action.payload };
     case "major":
       return { ...state, major: action.payload };
     default:
@@ -56,10 +57,10 @@ function errorReducer(state: initialStateI, action: actionI) {
       return { ...state, password: action.payload };
     case "passwordConfirm":
       return { ...state, passwordConfirm: action.payload };
-    case "mobile":
-      return { ...state, mobile: action.payload };
-    case "school":
-      return { ...state, school: action.payload };
+    case "phone":
+      return { ...state, phone: action.payload };
+    case "name":
+      return { ...state, name: action.payload };
     case "major":
       return { ...state, major: action.payload };
     default:
@@ -132,7 +133,17 @@ function SignUp() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log("전송!");
+    delete user.passwordConfirm;
+
+    customAxios
+      .post("/api/auth/sign-up", user)
+      .then((res) => {
+        alert(res.data.data.message);
+        router.push("/");
+      })
+      .catch((err) => {
+        alert(err.response.data.error.message);
+      });
   }
 
   function isValid() {
@@ -157,7 +168,20 @@ function SignUp() {
           defaultValue={email}
           disabled
         />
-
+        <Input
+          type="text"
+          placeholder="이름"
+          name="name"
+          value={user.name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        {error.name && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.name}
+          </ErrorMsg>
+        )}
         <Input
           type="password"
           placeholder="비밀번호"
@@ -183,31 +207,18 @@ function SignUp() {
         <Input
           type="text"
           placeholder="휴대폰 번호 (ex.01012345678)"
-          name="mobile"
-          value={user.mobile}
+          name="phone"
+          value={user.phone}
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.mobile && (
+        {error.phone && (
           <ErrorMsg>
             <Warning />
-            &nbsp;{error.mobile}
+            &nbsp;{error.phone}
           </ErrorMsg>
         )}
-        <Input
-          type="text"
-          placeholder="학교 (ex.명지대학교)"
-          name="school"
-          value={user.school}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {error.school && (
-          <ErrorMsg>
-            <Warning />
-            &nbsp;{error.school}
-          </ErrorMsg>
-        )}
+
         <Input
           type="text"
           placeholder="전공 (ex.컴퓨터공학과)"
@@ -281,7 +292,7 @@ const Container = styled.form`
     padding: 12px 0px;
   }
 
-  @media screen and (max-width: ${theme.breakPoint.mobile}) {
+  @media screen and (max-width: ${theme.breakPoint.phone}) {
     height: 100%;
   }
 `;
@@ -318,11 +329,12 @@ const Input = styled.input`
 `;
 
 const ErrorMsg = styled.p`
+  display: inline-flex;
   padding: 6px 0px;
   color: ${theme.colors.primary.red};
 `;
 
-const Privacy = styled.a`
+const Privacy = styled.div`
   text-align: center;
   font-size: 13.5px;
 
@@ -334,9 +346,9 @@ const Privacy = styled.a`
   }
 `;
 
-const Check = styled.p`
+const Check = styled.div`
   color: ${theme.colors.third.skyblue};
   text-align: center;
-  cursot: pointer;
+  cursor: pointer;
 `;
 export default SignUp;

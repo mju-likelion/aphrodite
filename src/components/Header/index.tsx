@@ -4,6 +4,7 @@ import useUser from "src/hooks/useUser";
 import { useSWRConfig } from "swr";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import { theme } from "@styles/theme";
 import Login from "../Login";
 import Verify from "../Verify";
 
@@ -33,12 +34,20 @@ const InputComponent: ComponentType = {
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  const { user, isLoading, isError, isAdmin } = useUser("/api/user/me");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
   const { title } = InputComponent[componentText];
   const StepComponent = InputComponent[componentText].component;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error</div>;
+  }
 
   return (
     <>
@@ -47,25 +56,35 @@ function Header() {
           LIKELION | MJU{" "}
         </button>
         <div>
-          <button
-            type="button"
-            onClick={() => {
-              setShow(true);
-              setComponentText("Verify");
-            }}
-          >
-            회원가입
-          </button>
-          |
-          <button
-            type="button"
-            onClick={() => {
-              setShow(true);
-              setComponentText("Login");
-            }}
-          >
-            로그인
-          </button>
+          {!isError && !user && (
+            <>
+              <button
+                type="button"
+                onClick={() => {
+                  setShow(true);
+                  setComponentText("Verify");
+                }}
+              >
+                회원가입
+              </button>
+              |
+              <button
+                type="button"
+                onClick={() => {
+                  setShow(true);
+                  setComponentText("Login");
+                }}
+              >
+                로그인
+              </button>
+            </>
+          )}
+          {user && (
+            <p>
+              {isAdmin ? "운영진" : "회원"}&nbsp;
+              <Name>{user}</Name>님
+            </p>
+          )}
         </div>
       </Self>
       <Modal
@@ -101,6 +120,10 @@ const Self = styled.header`
     font-size: 15px;
     padding: 20px 10px;
   }
+`;
+
+const Name = styled.span`
+  color: ${theme.colors.primary.orange};
 `;
 
 export default Header;

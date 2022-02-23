@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import customAxios from ".";
 
 export const fetcher = (url: string) =>
