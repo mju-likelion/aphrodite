@@ -4,7 +4,7 @@ interface Props {
   height?: number;
 }
 
-function Warning({ color, width, height }: Props) {
+function Warning({ color, width = 16, height = 16 }: Props) {
   return (
     <svg
       width={width + 10}
@@ -23,8 +23,6 @@ function Warning({ color, width, height }: Props) {
 
 Warning.defaultProps = {
   color: "#FF5C58",
-  width: 16,
-  height: 16,
 };
 
 export default Warning;

@@ -133,10 +133,14 @@ function SignUp() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    delete user.passwordConfirm;
-
     customAxios
-      .post("/api/auth/sign-up", user)
+      .post("/api/auth/sign-up", {
+        email: user.email,
+        password: user.password,
+        major: user.major,
+        name: user.name,
+        phone: user.phone,
+      })
       .then((res) => {
         alert(res.data.data.message);
         router.push("/");
@@ -292,7 +296,7 @@ const Container = styled.form`
     padding: 12px 0px;
   }
 
-  @media screen and (max-width: ${theme.breakPoint.phone}) {
+  @media screen and (max-width: ${theme.breakPoint.mobile}) {
     height: 100%;
   }
 `;
