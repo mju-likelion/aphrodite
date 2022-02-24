@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import * as Cookie from "@lib/Cookie";
 
 import Warning from "@lib/DesignSystem/Icon/Warning";
+import { mutate } from "swr";
 
 const Errors = {
   email: "",
@@ -34,15 +35,16 @@ function Login({ setComponentText, setShow }: Props) {
       const isValid = handleValid(formik.values.email, formik.values.password);
 
       if (isValid) {
-        // customAxios
-        //   .post("/api/auth/sign-in", {
-        //     email: formik.values.email,
-        //     password: formik.values.password,
-        //   })
-        //   .then(({ data }) => {
-        //     Cookie.setCookie("jwt", data.jwt);
-        //     router.push("/");
-        //   });
+        customAxios
+          .post("/api/auth/sign-in", {
+            email: formik.values.email,
+            password: formik.values.password,
+          })
+          .then(({ data }) => {
+            Cookie.setCookie("jwt", data.data.jwt);
+            mutate("/api/user/me");
+            router.push("/");
+          });
         setShow(false);
         router.push("/");
       }

@@ -59,7 +59,7 @@ export const Validation: ValidationI = {
     };
   },
 
-  mobile(data) {
+  phone(data) {
     const regex = /^[0-9]{0,11}$/i;
 
     const result = regex.test(data);
@@ -76,8 +76,8 @@ export const Validation: ValidationI = {
     };
   },
 
-  school(data) {
-    const regex = /^[ㄱ-ㅎ가-힣]*대학교$/g;
+  name(data) {
+    const regex = /^[가-힣]*$/g;
 
     const result = regex.test(data);
 
@@ -89,7 +89,7 @@ export const Validation: ValidationI = {
     }
     return {
       result: false,
-      message: "학교명은 OO대학교로 끝나야 합니다",
+      message: "이름은 한글만 가능합니다",
     };
   },
 

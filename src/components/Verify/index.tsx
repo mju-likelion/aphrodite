@@ -28,12 +28,15 @@ function SignUp({ setComponentText, setShow }: Props) {
 
   const handleSendConfirmMail = useCallback((email) => {
     if (Validation.email(email).result) {
-      setError(false);
-      setMessage(true);
-      // FIXME: 주석제거
-      // customAxios.post("/api/auth/email-verify", {
-      //   email,
-      // });
+      try {
+        setError(false);
+        setMessage(true);
+        customAxios.post("/api/auth/email-verify", {
+          email,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     } else {
       setMessage(false);
       setError(true);
@@ -51,10 +54,13 @@ function SignUp({ setComponentText, setShow }: Props) {
         />
         {message && (
           <NoticeMsg>
-            이메일로 인증메일이 발송되었습니다. 인증메일은 약 24시간 동안
-            유효합니다. <br />
-            유효 시간 이내에 확인해주세요. (메일이 도착하지 않았을 경우, 스팸
-            메일함을 확인해주세요.)
+            <Warning color="#FF9E1B" height={16} width={16} />
+            <p>
+              이메일로 인증메일이 발송되었습니다. 인증메일은 약 24시간 동안
+              유효합니다. <br />
+              유효 시간 이내에 확인해주세요. (메일이 도착하지 않았을 경우, 스팸
+              메일함을 확인해주세요.)
+            </p>
           </NoticeMsg>
         )}
         {error && (
@@ -118,15 +124,17 @@ const Input = styled.input`
   padding-left: 16px;
 `;
 
-const NoticeMsg = styled.p<{ error?: boolean }>`
-  display: inline-flex;
-  width: 100%;
+const NoticeMsg = styled.div<{ error?: boolean }>`
+  display: flex;
+  align-items: center;
 
   margin-top: 5px;
-  color: ${theme.colors.primary.red};
+  color: ${theme.colors.primary.orange};
   word-break: keep-all;
 
-  ${({ error }) => (error ? `color : ${theme.colors.primary.red}` : "")}
+  p {
+    margin-left: 5px;
+  }
 `;
 
 const Div = styled.div`

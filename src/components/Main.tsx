@@ -1,20 +1,26 @@
 import styled from "styled-components";
 import { useState } from "react";
 import useUser from "src/hooks/useUser";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
-  const { user, isLoading, isError } = useUser("https://randomuser.me/api/");
+  const { user, isLoading, isError, isAdmin } = useUser("/api/user/me");
   const router = useRouter();
 
-  function MovedPage() {
+  function handleClickApply() {
     // TODO: user.isAdmin으로 판별
-    if (user) router.push("/apply");
-    else router.push("/applylists");
+    if (isAdmin) router.push("/applylists");
+    else router.push("/apply");
   }
 
-  // const { user, isLoading, isError } = useUser("/api/users/:id");
+  if (isError) {
+    return <div>Error</div>;
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -42,11 +48,11 @@ function Main() {
                 </p>
               )}
 
-              <ApplyBtn onClick={MovedPage}>
-                {user ? `지원서 보기 ` : `지원하기 `}
+              <ApplyBtn onClick={handleClickApply}>
+                {isAdmin ? `지원서 보기 ` : `지원하기 `}
                 <Arrow />
               </ApplyBtn>
-              {user && (
+              {isAdmin && (
                 <QuestionBtn onClick={() => router.push("/")}>
                   문항 제출/수정
                 </QuestionBtn>
