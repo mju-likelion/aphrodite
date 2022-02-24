@@ -47,7 +47,7 @@ function ApplyLists() {
     (value) => part[value as keyof typeof part],
   );
 
-  const { count, isLoading, error } = totalCount("/api/apply/total-count");
+  const { count } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
   const { isAdmin } = useUser("/api/user/me");
 
@@ -68,8 +68,8 @@ function ApplyLists() {
     "면접탈락",
     "최종합격",
   ];
-  const partKeys = ["design", "web", "server"] as const;
-  const partNames = ["기획/디자인", "웹", "서버"];
+  const partKeys = PART_LISTS.map((v) => v.value);
+  const partNames = PART_LISTS.map((v) => v.name);
 
   useEffect(() => {
     router.replace({
@@ -207,17 +207,18 @@ function ApplyLists() {
             </tbody>
           </TableContainer>
           <PageNation>
-            {pageNumbers.map((n, i) => (
-              <PageLi
-                key={n}
-                onClick={() => {
-                  setPage(i + 1);
-                }}
-                selected={i + 1 === page}
-              >
-                {n + 1}
-              </PageLi>
-            ))}
+            {pageNumbers &&
+              pageNumbers.map((n, i) => (
+                <PageLi
+                  key={n}
+                  onClick={() => {
+                    setPage(i + 1);
+                  }}
+                  selected={i + 1 === page}
+                >
+                  {n + 1}
+                </PageLi>
+              ))}
           </PageNation>
         </TableDiv>
       </Container>

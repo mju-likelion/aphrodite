@@ -1,6 +1,7 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
-import _ from "lodash";
-import { ChangeEvent, useReducer, useState } from "react";
+import { isEmpty, isEqual } from "lodash";
+import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import AnswerArea from "@components/Apply/AnswerArea";
 import useQuestions from "@hooks/useQuestions";
@@ -8,72 +9,10 @@ import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
 import useApply from "@hooks/useApply";
-import { PART_LISTS } from "./constants";
+import { AnswerNames, PART_LISTS } from "./constants";
 
-interface AnswerListI {
+interface AnswerList {
   [key: string]: string;
-}
-
-interface ActionI {
-  type: string;
-  value: string;
-}
-
-function reducer(state: AnswerListI, action: ActionI) {
-  switch (action.type) {
-    case "one":
-      return {
-        ...state,
-        one: action.value,
-      };
-    case "two":
-      return {
-        ...state,
-        two: action.value,
-      };
-    case "three":
-      return {
-        ...state,
-        three: action.value,
-      };
-    case "four":
-      return {
-        ...state,
-        four: action.value,
-      };
-    case "five":
-      return {
-        ...state,
-        five: action.value,
-      };
-    case "six":
-      return {
-        ...state,
-        six: action.value,
-      };
-    case "seven":
-      return {
-        ...state,
-        seven: action.value,
-      };
-    case "eight":
-      return {
-        ...state,
-        eight: action.value,
-      };
-    case "nine":
-      return {
-        ...state,
-        nine: action.value,
-      };
-    case "ten":
-      return {
-        ...state,
-        ten: action.value,
-      };
-    default:
-      return state;
-  }
 }
 
 function Apply() {
@@ -81,54 +20,71 @@ function Apply() {
   // TODO: 지원자 호출 -> 답변을 AnswerArea의 value로
   const { questions } = useQuestions("/api/questions");
   const { data } = useApply("/api/apply/me");
-  const ANSWERLIST = {
-    data: {
-      apply: {
-        part: data?.apply.part,
-        one: data?.apply.answer[0],
-        two: data?.apply.answer[1],
-        three: data?.apply.answer[2],
-        four: data?.apply.answer[3],
-        five: data?.apply.answer[4],
-        six: data?.apply.answer[5],
-        seven: data?.apply.answer[6],
-        eight: data?.apply.answer[7],
-        nine: data?.apply.answer[8],
-        ten: data?.apply.answer[9],
-      },
-    },
+
+  const ANSWERLIST: AnswerList = {
+    part: data?.data.apply.part || "design",
+    one: data?.data.apply.answers[0] || "",
+    two: data?.data.apply.answers[1] || "",
+    three: data?.data.apply.answers[2] || "",
+    four: data?.data.apply.answers[3] || "",
+    five: data?.data.apply.answers[4] || "",
   };
-  const [answerLists, answerDispatch] = useState(ANSWERLIST);
+
+  const [answers, setAnswers] = useState<AnswerList>(ANSWERLIST);
+
   const { showNotice } = useShowNotice();
   function handleClickSave() {
-    customAxios.put("/api/apply", answerLists).then(() => {
-      showNotice({
-        message: `지원서가 임시저장 되었습니다.
+    customAxios
+      .put("/api/apply", { data: { apply: { ...answers } } })
+      .then(() => {
+        showNotice({
+          message: `지원서가 임시저장 되었습니다.
           임시저장만으로는 제출되지않습니다.`,
+        });
+      })
+      .catch((err) => {
+        alert(err.error.message);
       });
-    });
   }
 
   function handleClickSubmit() {
-    customAxios
-      .post("/api/apply", answerLists)
-      .then((res) => {
-        alert(res.data?.data?.message);
-      })
-      .catch((err) => {
-        alert(err.response.data?.error.message);
-      });
+    const hasEmpty = handleCheckEmpty();
+
+    if (hasEmpty) {
+      alert("빈 칸이 존재합니다. 내용을 입력해주세요");
+      return;
+    }
+    const check = window.confirm(
+      "제출한 이후엔 취소할 수 없습니다 정말 제출 하시겠습니까?",
+    );
+    if (check) {
+      customAxios
+        .post("/api/apply", { data: { apply: { ...answers } } })
+        .then((res) => {
+          showNotice({ message: res.data?.data.message });
+        })
+        .catch((err) => {
+          alert(err.error.message);
+        });
+    }
   }
 
-  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
-    const { name, value } = e.target;
-    answerDispatch({
-      type: name,
-      value,
-    });
+  function handleCheckEmpty() {
+    return !isEmpty(Object.values(answers).filter((v) => isEmpty(v)));
   }
-  console.log("aaa", answerLists, ANSWERLIST);
-  console.log();
+
+  function handleChange(
+    e: ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>,
+  ) {
+    const { name, value } = e.target;
+    setAnswers((prev) => ({ ...prev, [name]: value }));
+  }
+
+  useEffect(() => {
+    if (!isEqual(answers, ANSWERLIST)) {
+      setAnswers(ANSWERLIST);
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -136,7 +92,7 @@ function Apply() {
         <Title>지원서</Title>
         <FilterContainer>
           <span>직종</span>
-          <select title="part">
+          <select title="part" name="part" onChange={handleChange}>
             {PART_LISTS.map(({ name, value }, i) => (
               <option key={i} value={value}>
                 {name}
@@ -144,13 +100,15 @@ function Apply() {
             ))}
           </select>
         </FilterContainer>
-        {questions?.map((question, i) => (
+        {questions?.slice(0, 5).map((question, i) => (
           <AnswerArea
             key={i}
-            question={question}
-            name={`${i + 1}번`}
+            question={`${question} ${
+              i !== 4 ? `(500자 내외)` : `(300자 내외)`
+            }`}
+            name={`${AnswerNames[i]}`}
             onChange={handleChange}
-            value={answerLists?.data?.apply.one}
+            value={answers[`${AnswerNames[i]}`]}
           />
         ))}
         <BtnContainer>

@@ -287,6 +287,7 @@ const Detail = styled.p`
 
 const DetailLink = styled.a`
   font-size: 16px;
+  color: white;
   cursor: pointer;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
