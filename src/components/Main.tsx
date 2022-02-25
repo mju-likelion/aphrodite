@@ -1,5 +1,5 @@
+import _isNil from "lodash/isNil";
 import styled from "styled-components";
-import { useState } from "react";
 import useUser from "src/hooks/useUser";
 import { useRouter } from "next/router";
 import Arrow from "@lib/DesignSystem/Icon/Arrow";
@@ -9,22 +9,25 @@ function Main() {
   const router = useRouter();
 
   function handleClickApply() {
-    // TODO: user.isAdmin으로 판별
+    if (_isNil(user)) {
+      alert("로그인을 해주세요");
+      return;
+    }
     if (isAdmin) router.push("/applylists");
     else router.push("/apply");
   }
 
   if (isError) {
-    return <div>Error</div>;
+    return <Container>Error</Container>;
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Container>Loading...</Container>;
   }
 
   return (
-    <>
-      <Container>
+    <Container>
+      <ImageContainer>
         <MainText>
           프로그래밍으로 당신의 인생을 바꿔보세요! <br />
         </MainText>
@@ -39,15 +42,13 @@ function Main() {
           </SubText>
           <Apply>
             <ApplyIntro>
-              {user ? (
-                <p>멋쟁이사자처럼(명지대자연) 10기</p>
-              ) : (
+              {user && isAdmin && <p>멋쟁이사자처럼(명지대자연) 10기</p>}
+              {!isAdmin && (
                 <p>
                   모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
                   모집 기간 : ~2022년 3월 11일까지 <br />
                 </p>
               )}
-
               <ApplyBtn onClick={handleClickApply}>
                 {isAdmin ? `지원서 보기 ` : `지원하기 `}
                 <Arrow />
@@ -60,40 +61,45 @@ function Main() {
             </ApplyIntro>
           </Apply>
         </SubMainText>
-      </Container>
+      </ImageContainer>
       <Bottom>
         <CodingImg src="/images/codingimage.png" />
         <CodingText>
-          <More>
-            <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
-            <br />
-            <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
-            <br />
-            <DetailLink onClick={() => router.push("/")}>
-              자세히 보기 <Arrow />
-            </DetailLink>
-            <CodingTextImage src="images/codingtext.png" />
-          </More>
+          <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
+          <br />
+          <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
+          <br />
+          <DetailLink href={process.env.NEXT_PUBLIC_NANA_SITE}>
+            자세히 보기 <Arrow />
+          </DetailLink>
         </CodingText>
       </Bottom>
-    </>
+      <CodingTextImageContainer>
+        <CodingTextImage src="images/codingtext.png" />
+      </CodingTextImageContainer>
+    </Container>
   );
 }
 
 const Container = styled.article`
   width: 100%;
-  height: 640px;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 
+  overflow-y: auto;
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+
+  height: 640px;
   background-image: url("https://mju-likelion.s3.ap-northeast-2.amazonaws.com/static/home/main_background.png");
   background-position: center;
   background-size: cover;
-
-  overflow-y: auto !important;
 `;
 
 const MainText = styled.div`
@@ -119,10 +125,10 @@ const SubMainText = styled.div`
   width: 100%;
 
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 
-  gap: 100px;
+  padding: 0px 8%;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     display: block;
@@ -169,6 +175,10 @@ const ApplyBtn = styled.button<{ theme: object }>`
   width: 165px;
   height: 38px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: none;
   border-radius: 5px;
   opacity: 0.8;
@@ -196,6 +206,7 @@ const ApplyBtn = styled.button<{ theme: object }>`
 
 const QuestionBtn = styled(ApplyBtn)`
   background-color: ${({ theme }) => theme.colors.primary.orange};
+  line-height: 100%;
 
   &:hover {
     opacity: 1;
@@ -226,11 +237,36 @@ const CodingText = styled.div`
     align-items: center;
   }
 `;
-const CodingTextImage = styled.img`
-  display: absolute;
-  width: 50%;
-  margin: -100px 0 0 150px;
 
+const Bottom = styled.article`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  padding-top: 40px;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
+    width: 100%;
+    flex-direction: column;
+    padding-top: 20px;
+  }
+`;
+
+const CodingTextImageContainer = styled.div`
+  width: 80%;
+
+  margin-top: -100px;
+
+  text-align: right;
+
+  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
+    display: none;
+  }
+`;
+
+const CodingTextImage = styled.img`
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
     display: none;
 
@@ -257,7 +293,7 @@ const Detail = styled.p`
   }
 `;
 
-const DetailLink = styled.div`
+const DetailLink = styled.a`
   font-size: 16px;
   cursor: pointer;
 
@@ -267,27 +303,6 @@ const DetailLink = styled.div`
 
   &:hover {
     color: #ff9e1b;
-  }
-`;
-
-const More = styled.div`
-  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    width: 100%;
-  }
-`;
-
-const Bottom = styled.article`
-  display: relative;
-
-  display: flex;
-  align-items: center;
-
-  padding-top: 40px;
-
-  @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    width: 100%;
-    flex-direction: column;
-    padding-top: 20px;
   }
 `;
 

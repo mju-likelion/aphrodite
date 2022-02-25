@@ -5,9 +5,10 @@ import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
 import _ from "lodash";
-import { ChangeEvent, useReducer, useState } from "react";
+import { ChangeEvent, useReducer } from "react";
 import { INITIAL } from "@components/ApplyLists/contacts";
 import styled from "styled-components";
+import { PART_LISTS } from "./constants";
 
 interface AnswerListI {
   [key: string]: string;
@@ -16,10 +17,6 @@ interface AnswerListI {
 interface ActionI {
   type: string;
   value: string;
-}
-
-interface PartI {
-  [key: string]: boolean;
 }
 
 const QUESTIONS = [
@@ -73,15 +70,11 @@ function reducer(state: AnswerListI, action: ActionI) {
 function Apply() {
   // TODO: 지원서 질문 API 호출
   // TODO: 지원자 호출 -> 답변을 AnswerArea의 value로
-  const [answerLists, dispatch] = useReducer(reducer, ANSWERLIST);
+  const [answerLists, answerDispatch] = useReducer(reducer, ANSWERLIST);
   const { showNotice } = useShowNotice();
-  const partNames = ["기획/디자인", "웹", "서버"];
-  const partKeys = ["design", "web", "server"] as const;
-
-  const [part, setPart] = useState<PartI>(INITIAL.PART);
 
   function handleClickSave() {
-    customAxios.put("/api/apply").catch((res) => {
+    customAxios.put("/api/apply").catch(() => {
       showNotice({
         message: `지원서가 임시저장 되었습니다.
         임시저장만으로는 제출되지않습니다.`,
@@ -98,7 +91,7 @@ function Apply() {
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     const { name, value } = e.target;
 
-    dispatch({
+    answerDispatch({
       type: name,
       value,
     });
@@ -109,14 +102,14 @@ function Apply() {
       <Inner>
         <Title>지원서</Title>
         <FilterContainer>
-          <div>
-            <span>직종</span>
-            <select>
-              {partKeys.map((p, i) => (
-                <option value="">{partNames[i]}</option>
-              ))}
-            </select>
-          </div>
+          <span>직종</span>
+          <select title="part">
+            {PART_LISTS.map(({ name, value }, i) => (
+              <option key={i} value={value}>
+                {name}
+              </option>
+            ))}
+          </select>
         </FilterContainer>
         {QUESTIONS.map((question, i) => (
           <AnswerArea
@@ -160,8 +153,12 @@ const Title = styled.h2`
   color: ${theme.colors.third.skyblue};
 `;
 
-const FilterContainer = styled.article`
+const FilterContainer = styled.div`
+  display: flex;
+  align-items: center;
+
   width: 100%;
+  line-height: 100%;
 
   padding-bottom: 30px;
 
@@ -174,6 +171,7 @@ const FilterContainer = styled.article`
   }
 
   span {
+    font-size: 20px;
     margin-right: 24px;
   }
 
@@ -184,10 +182,6 @@ const FilterContainer = styled.article`
   @media screen and (max-width: 424px) {
     div {
       flex-direction: column;
-    }
-
-    span {
-      margin-bottom: 8px;
     }
   }
 `;

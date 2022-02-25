@@ -1,3 +1,3 @@
-import Apply from "./Apply";
+import Apply from "@components/Apply/Apply";
 
 export default Apply;
