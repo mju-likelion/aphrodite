@@ -1,29 +1,33 @@
-/* eslint-disable react/no-array-index-key */
-
-import { useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router";
 import useApplyDetail from "src/hooks/useApplyDetail";
 import useQuestions from "src/hooks/useQuestions";
 
-function Apply() {
-  const datas = useApplyDetail().data;
-  const answer = useApplyDetail().data.apply.answers;
-  const question = useQuestions().data.questions;
+interface Props {
+  detail: number;
+  nameHide: boolean;
+}
+
+function Apply({ detail, nameHide }: Props) {
+  const { questions } = useQuestions("/api/questions");
+  const { answer } = useApplyDetail(`/api/apply/${detail}`);
   return (
     <ApplyWrapper>
       <ApplyList>
         <UserInfo>
-          이름 : {datas.user.name} <br />
-          대학 : {datas.user.univ} <br />
-          전공 : {datas.user.major} <br />
-          휴대폰 : {datas.user.phone} <br />
-          지원분야 : {datas.apply.part}
+          이름 :
+          {nameHide
+            ? answer?.user.name.replace(/(?<=.{1})./gi, "*")
+            : answer?.user.name}
+          <br />
+          전공 : {answer?.user.major} <br />
+          휴대폰 : {answer?.user.phone} <br />
+          지원분야 : {answer?.apply.part}
         </UserInfo>
-        {question.map((q, i) => (
+        {questions?.map((q: string, i: number) => (
+          // eslint-disable-next-line react/no-array-index-key
           <div key={i}>
             <ApplyQuestion>{q}</ApplyQuestion>
-            <ApplyAnswer>{answer[i]}</ApplyAnswer>
+            <ApplyAnswer>{answer?.apply.answers[i]}</ApplyAnswer>
           </div>
         ))}
       </ApplyList>

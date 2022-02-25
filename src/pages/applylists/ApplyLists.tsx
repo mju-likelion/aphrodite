@@ -7,6 +7,7 @@ import totalCount from "src/hooks/totalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import { useRouter } from "next/router";
 import Apply from "@components/ApplyLists";
+import { range } from "lodash";
 import { INITIAL } from "@components/ApplyLists/contacts";
 
 interface StatusI {
@@ -17,14 +18,22 @@ interface PartI {
   [key: string]: boolean;
 }
 
+interface ApplyType {
+  id: number;
+  name: string;
+  major: string;
+  email: string;
+}
+
 function ApplyLists() {
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
   const [part, setPart] = useState<PartI>(INITIAL.PART);
   const [sort, setSort] = useState("updatedAt_asc");
   const [page, setPage] = useState(1);
+  const [nameHide, setHideName] = useState(true);
+  const [detail, setDetail] = useState(0);
 
-  const users = useApplyLists().data.user;
   const router = useRouter();
 
   const statusList = Object.keys(status).filter(
@@ -33,24 +42,11 @@ function ApplyLists() {
   const partList = Object.keys(part).filter(
     (value) => part[value as keyof typeof part],
   );
-  const size = totalCount().meta.count;
 
-  const pageNumbers = [];
-  for (let i = 1; i <= users.length / 10; i += 1) {
-    pageNumbers.push(i);
-  }
+  const { count, isLoading, isError } = totalCount("/api/apply/total-count");
+  const { applies } = useApplyLists("/api/apply");
 
-  // const { applies, isLoading, isError } = useApplyLists(
-  // "https://jsonplaceholder.typicode.com/posts",
-  // );
-
-  // if (isLoading) {
-  //   return <>is Loading</>;
-  // }
-  // if (isError) {
-  //   return <>error</>;
-  // }
-  // const { count } = totalCount("https://randomuser.me/api/?results=5");
+  const pageNumbers = range(count);
 
   const statusKeys = [
     "complete",
@@ -131,8 +127,15 @@ function ApplyLists() {
             </div>
           </div>
         </FilterContainer>
-        <ApplyNum>지원자 {size}명</ApplyNum>
+        <ApplyNum>지원자 {count}명</ApplyNum>
         <ApplySort>
+          <Btn
+            onClick={() => {
+              setHideName(!nameHide);
+            }}
+          >
+            {nameHide ? `이름 보이기` : `이름 가리기`}
+          </Btn>
           <ApplySelect
             onChange={(e) => {
               setSort(e.target.value);
@@ -163,23 +166,28 @@ function ApplyLists() {
                 <th>이름</th>
                 <th>학과</th>
                 <th>이메일</th>
-                <th> </th>
               </tr>
             </TableHeader>
             <tbody>
-              {users.map((s) => (
+              {applies?.map((s: ApplyType) => (
                 <Line key={s.id}>
                   <td>{s.id}</td>
-                  <td>{s.name}</td>
+                  <td>
+                    {nameHide ? s.name.replace(/(?<=.{1})./gi, "*") : s.name}
+                    {/* 이름 앞글자 제외 정규식 처리 / 중괄호 안의 숫자만큼만 보이고 나머지 * 처리한것 */}
+                  </td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
-                  <ApplyButton
-                    onClick={() => {
-                      setShow(true);
-                    }}
-                  >
-                    지원서보기
-                  </ApplyButton>
+                  <td>
+                    <ApplyButton
+                      onClick={() => {
+                        setShow(true);
+                        setDetail(s.id);
+                      }}
+                    >
+                      지원서보기
+                    </ApplyButton>
+                  </td>
                 </Line>
               ))}
             </tbody>
@@ -189,11 +197,11 @@ function ApplyLists() {
               <PageLi
                 key={n}
                 onClick={() => {
-                  setPage(n);
+                  setPage(i + 1);
                 }}
                 selected={i + 1 === page}
               >
-                {n}
+                {n + 1}
               </PageLi>
             ))}
           </PageNation>
@@ -208,7 +216,7 @@ function ApplyLists() {
           setShow(false);
         }}
       >
-        <Apply />
+        <Apply detail={detail} nameHide={nameHide} />
       </Modal>
     </>
   );
@@ -282,6 +290,15 @@ const ApplyNum = styled.div`
   font-size: 18px;
   font-weight: bold;
   text-align: right;
+`;
+const Btn = styled.button`
+  width: 100px;
+  height: 30px;
+  margin: 0 30px 20px 0;
+  border-radius: 8px;
+
+  color: white;
+  background-color: rgba(149, 149, 149, 0.5);
 `;
 
 const ApplySort = styled.div`
