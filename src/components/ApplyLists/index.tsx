@@ -16,7 +16,7 @@ function Apply({ detail, nameHide }: Props) {
         <UserInfo>
           이름 :
           {nameHide
-            ? `${answer?.user.name.split("").slice(0, 1)}＊	＊	`
+            ? answer?.user.name.replace(/(?<=.{1})./gi, "*")
             : answer?.user.name}
           <br />
           전공 : {answer?.user.major} <br />

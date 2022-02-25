@@ -42,10 +42,13 @@ function ApplyLists() {
     (value) => part[value as keyof typeof part],
   );
 
-  const { count, isLoading, isError } = totalCount("/api/apply/total-count/");
+  const { count, isLoading, isError } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
 
-  const pageNumbers = new Array(count).fill(undefined);
+  const pageNumbers: number[] = [];
+  Array(count)
+    .fill(undefined)
+    .map((_, i) => pageNumbers.push(i + 1));
 
   const statusKeys = [
     "complete",
@@ -172,7 +175,8 @@ function ApplyLists() {
                 <Line key={s.id}>
                   <td>{s.id}</td>
                   <td>
-                    {nameHide ? `${s.name.split("").slice(0, 1)}＊	＊	` : s.name}
+                    {nameHide ? s.name.replace(/(?<=.{1})./gi, "*") : s.name}
+                    {/* 이름 앞글자 제외 정규식 처리 / 중괄호 안의 숫자만큼만 보이고 나머지 * 처리한것 */}
                   </td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
@@ -193,14 +197,13 @@ function ApplyLists() {
           <PageNation>
             {pageNumbers.map((n, i) => (
               <PageLi
-                // eslint-disable-next-line react/no-array-index-key
-                key={i}
+                key={n}
                 onClick={() => {
-                  setPage(i + 1);
+                  setPage(n);
                 }}
                 selected={i + 1 === page}
               >
-                {i + 1}
+                {n}
               </PageLi>
             ))}
           </PageNation>
