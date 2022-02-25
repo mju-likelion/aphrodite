@@ -4,13 +4,15 @@ import { useRouter } from "next/router";
 import React, { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 import { Validation } from "@lib/etc/validation";
+import Warning from "@lib/DesignSystem/Icon/Warning";
+import customAxios from "@lib/Axios";
 
 interface initialStateI {
   email: string;
   password: string;
   passwordConfirm: string;
-  mobile: string;
-  school: string;
+  phone: string;
+  name: string;
   major: string;
 }
 
@@ -23,8 +25,8 @@ const INITIALSTATE = {
   email: "",
   password: "",
   passwordConfirm: "",
-  mobile: "",
-  school: "",
+  phone: "",
+  name: "",
   major: "",
 };
 
@@ -36,10 +38,10 @@ function userReducer(state: initialStateI, action: actionI) {
       return { ...state, password: action.payload };
     case "passwordConfirm":
       return { ...state, passwordConfirm: action.payload };
-    case "mobile":
-      return { ...state, mobile: action.payload };
-    case "school":
-      return { ...state, school: action.payload };
+    case "phone":
+      return { ...state, phone: action.payload };
+    case "name":
+      return { ...state, name: action.payload };
     case "major":
       return { ...state, major: action.payload };
     default:
@@ -55,10 +57,10 @@ function errorReducer(state: initialStateI, action: actionI) {
       return { ...state, password: action.payload };
     case "passwordConfirm":
       return { ...state, passwordConfirm: action.payload };
-    case "mobile":
-      return { ...state, mobile: action.payload };
-    case "school":
-      return { ...state, school: action.payload };
+    case "phone":
+      return { ...state, phone: action.payload };
+    case "name":
+      return { ...state, name: action.payload };
     case "major":
       return { ...state, major: action.payload };
     default:
@@ -131,7 +133,17 @@ function SignUp() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    console.log("전송!");
+    delete user.passwordConfirm;
+
+    customAxios
+      .post("/api/auth/sign-up", user)
+      .then((res) => {
+        alert(res.data.data.message);
+        router.push("/");
+      })
+      .catch((err) => {
+        alert(err.response.data.error.message);
+      });
   }
 
   function isValid() {
@@ -156,7 +168,20 @@ function SignUp() {
           defaultValue={email}
           disabled
         />
-
+        <Input
+          type="text"
+          placeholder="이름"
+          name="name"
+          value={user.name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        {error.name && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.name}
+          </ErrorMsg>
+        )}
         <Input
           type="password"
           placeholder="비밀번호"
@@ -173,25 +198,27 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.passwordConfirm && <ErrorMsg>{error.passwordConfirm}</ErrorMsg>}
+        {error.passwordConfirm && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.passwordConfirm}
+          </ErrorMsg>
+        )}
         <Input
           type="text"
           placeholder="휴대폰 번호 (ex.01012345678)"
-          name="mobile"
-          value={user.mobile}
+          name="phone"
+          value={user.phone}
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.mobile && <ErrorMsg>{error.mobile}</ErrorMsg>}
-        <Input
-          type="text"
-          placeholder="학교 (ex.명지대학교)"
-          name="school"
-          value={user.school}
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        {error.school && <ErrorMsg>{error.school}</ErrorMsg>}
+        {error.phone && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.phone}
+          </ErrorMsg>
+        )}
+
         <Input
           type="text"
           placeholder="전공 (ex.컴퓨터공학과)"
@@ -200,18 +227,43 @@ function SignUp() {
           onChange={handleChange}
           onBlur={handleBlur}
         />
-        {error.major && <ErrorMsg>{error.major}</ErrorMsg>}
+        {error.major && (
+          <ErrorMsg>
+            <Warning />
+            &nbsp;{error.major}
+          </ErrorMsg>
+        )}
       </InputGroup>
-      <label htmlFor="termsOfUse">
-        <input
-          type="checkbox"
-          id="termsOfUse"
-          onChange={() => {
-            setTermsOfUse(!termsOfUse);
-          }}
-        />{" "}
-        이용약관에 동의 합니다
-      </label>
+      <Check>
+        <Privacy>
+          <a
+            href="https://likelion.notion.site/23c93a4763844b18abcaeb0fe68ba172"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            멋쟁이사자처럼 개인정보 이용 동의서
+            <br />
+          </a>
+          <a
+            href="https://burnt-dahlia-f9e.notion.site/d6b60340125841039e9610ea29e38e4a"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            멋쟁이사자처럼(명지대학교 자연) 개인정보 이용 동의서 <br />
+            <br />
+          </a>
+        </Privacy>
+        <label htmlFor="termsOfUse">
+          <input
+            type="checkbox"
+            id="termsOfUse"
+            onChange={() => {
+              setTermsOfUse(!termsOfUse);
+            }}
+          />{" "}
+          이용약관에 동의 합니다.
+        </label>
+      </Check>
       <Button
         type="submit"
         fullWidth
@@ -229,7 +281,7 @@ function SignUp() {
 const Container = styled.form`
   width: 100%;
   max-width: 334px;
-  height: 100%;
+  height: 100vh;
 
   margin: 0 auto;
   padding: 20px;
@@ -238,6 +290,10 @@ const Container = styled.form`
     margin-top: 20px;
     font-size: 14px;
     padding: 12px 0px;
+  }
+
+  @media screen and (max-width: ${theme.breakPoint.phone}) {
+    height: 100%;
   }
 `;
 
@@ -273,8 +329,26 @@ const Input = styled.input`
 `;
 
 const ErrorMsg = styled.p`
+  display: inline-flex;
   padding: 6px 0px;
-  color: ${theme.colors.primary.orange};
+  color: ${theme.colors.primary.red};
 `;
 
+const Privacy = styled.div`
+  text-align: center;
+  font-size: 13.5px;
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    color: ${theme.colors.third.skyblue};
+  }
+`;
+
+const Check = styled.div`
+  color: ${theme.colors.third.skyblue};
+  text-align: center;
+  cursor: pointer;
+`;
 export default SignUp;

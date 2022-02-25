@@ -1,15 +1,27 @@
-// import useSWRImmutable from "swr/immutable";
-// import axios, { AxiosResponse } from "axios";
-// import fetcher from "@lib/Axios/fetcher";
+import useSWRImmutable from "swr/immutable";
+import _isEmpty from "lodash/isEmpty";
+import * as Cookie from "@lib/Cookie";
+import { fetcher } from "@lib/Axios/fetcher";
+import customAxios from "@lib/Axios";
+import { AxiosResponse } from "axios";
 
-function totalCount() {
-  // const { data, error } = useSWRImmutable(url, fetcher);
+function totalCount(url: string) {
+  const jwt = Cookie.getCookie("jwt");
+
+  if (_isEmpty(jwt)) {
+    return {
+      count: null,
+      isLoading: false,
+      isError: false,
+    };
+  }
+
+  const { data, error } = useSWRImmutable(url, fetcher);
 
   return {
-    // count: data,
-    meta: {
-      count: 10,
-    },
+    count: data?.meta.count,
+    isLoading: !data && !error,
+    isError: error,
   };
 }
 

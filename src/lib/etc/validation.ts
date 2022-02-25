@@ -19,13 +19,13 @@ export const Validation: ValidationI = {
     }
     return {
       result: false,
-      message: "이메일을 확인 해주세요",
+      message: "이메일 형식에 맞지 않습니다.",
     };
   },
 
   password(data) {
     const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/i;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/i;
 
     const result = regex.test(data);
 
@@ -37,13 +37,13 @@ export const Validation: ValidationI = {
     }
     return {
       result: false,
-      message: "비밀번호는 최소 8자, 문자와 숫자, 특수문자를 포함해야합니다",
+      message: "비밀번호는 8~20자, 문자와 숫자, 특수문자를 포함해야합니다.",
     };
   },
 
   passwordConfirm(data) {
     const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/i;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,20}$/i;
 
     const result = regex.test(data);
 
@@ -55,11 +55,11 @@ export const Validation: ValidationI = {
     }
     return {
       result: false,
-      message: "비밀번호는 최소 8자, 문자와 숫자, 특수문자를 포함해야합니다",
+      message: "비밀번호는 8~20자, 문자와 숫자, 특수문자를 포함해야합니다.",
     };
   },
 
-  mobile(data) {
+  phone(data) {
     const regex = /^[0-9]{0,11}$/i;
 
     const result = regex.test(data);
@@ -76,8 +76,8 @@ export const Validation: ValidationI = {
     };
   },
 
-  school(data) {
-    const regex = /^[ㄱ-ㅎ가-힣]*대학교$/g;
+  name(data) {
+    const regex = /^[가-힣]*$/g;
 
     const result = regex.test(data);
 
@@ -89,7 +89,7 @@ export const Validation: ValidationI = {
     }
     return {
       result: false,
-      message: "학교명은 OO대학교로 끝나야 합니다",
+      message: "이름은 한글만 가능합니다",
     };
   },
 

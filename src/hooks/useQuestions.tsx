@@ -1,11 +1,14 @@
-import React from "react";
+import useSWRImmutable from "swr/immutable";
+import * as Cookie from "@lib/Cookie";
+import { fetcher } from "@lib/Axios/fetcher";
 
-function useQuestions() {
+function useQuestions(url: string) {
+  const { data, error } = useSWRImmutable(url, fetcher);
+
   return {
-    data: {
-      // 질문은 key-value조합이 아니라 배열로 넘겨야 한다.
-      questions: ["첫번째질문", "두번째질문", "n번째질문"],
-    },
+    questions: data?.data.questions,
+    isLoading: !data && !error,
+    isError: error,
   };
 }
 export default useQuestions;

@@ -1,4 +1,4 @@
-import axios from "axios";
+import customAxios from "@lib/Axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
@@ -12,9 +12,10 @@ function EmailConfirm() {
 
     async function emailVerify() {
       try {
-        // await axios.post(`/api/auth/email-verify/${token}`); api연동 되면 테스트
-        // response === {message : string, email : string}
-        const { email } = { email: "test123@naver.com" };
+        const response = await customAxios.post(
+          `/api/auth/email-verify/${token}`,
+        );
+        const { email } = response.data.data;
         router.push(
           {
             pathname: "/signup",

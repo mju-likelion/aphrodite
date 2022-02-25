@@ -21,10 +21,11 @@ function ApplyLists() {
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
   const [part, setPart] = useState<PartI>(INITIAL.PART);
-  const [sort, setSort] = useState("time_asc");
+  const [sort, setSort] = useState("updatedAt_asc");
   const [page, setPage] = useState(1);
+  const [nameHide, setHideName] = useState(true);
+  const [detail, setDetail] = useState(0);
 
-  const users = useApplyLists().data.user;
   const router = useRouter();
 
   const statusList = Object.keys(status).filter(
@@ -33,32 +34,20 @@ function ApplyLists() {
   const partList = Object.keys(part).filter(
     (value) => part[value as keyof typeof part],
   );
-  const size = totalCount().meta.count;
 
+  const { count, isLoading, isError } = totalCount("/api/apply/total-count/");
+  const { applies } = useApplyLists("/api/apply");
   const pageNumbers = [];
-  for (let i = 1; i <= users.length / 10; i += 1) {
+  for (let i = 1; i <= count / 10; i += 1) {
     pageNumbers.push(i);
   }
 
-  // const { applies, isLoading, isError } = useApplyLists(
-  // "https://jsonplaceholder.typicode.com/posts",
-  // );
-
-  // if (isLoading) {
-  //   return <>is Loading</>;
-  // }
-  // if (isError) {
-  //   return <>error</>;
-  // }
-  // const { count } = totalCount("https://randomuser.me/api/?results=5");
-  // const { statusKeys, isLoading, isError } = statuspart("");
-
   const statusKeys = [
-    "completion",
-    "first_out",
-    "first_pass",
-    "second_out",
-    "second_in",
+    "complete",
+    "first-fail",
+    "first-pass",
+    "second-fail",
+    "second-pass",
   ] as const;
 
   const statusNames = [
@@ -68,8 +57,8 @@ function ApplyLists() {
     "면접탈락",
     "최종합격",
   ];
-  const partKeys = ["manage", "design", "dev"] as const;
-  const partNames = ["기획", "디자인", "개발"];
+  const partKeys = ["design", "web", "server"] as const;
+  const partNames = ["기획/디자인", "웹", "서버"];
 
   useEffect(() => {
     router.replace({
@@ -78,9 +67,10 @@ function ApplyLists() {
         status: statusList.join(":"),
         part: partList.join(":"),
         sort,
+        page,
       },
     });
-  }, [status, part, sort]);
+  }, [status, part, sort, page]);
 
   return (
     <>
@@ -124,11 +114,6 @@ function ApplyLists() {
                         [p]: e.target.checked,
                       });
                     }}
-                    onClick={() =>
-                      router.replace({
-                        query: { part: [p] },
-                      })
-                    }
                   />
                   {partNames[i]}
                 </label>
@@ -136,8 +121,15 @@ function ApplyLists() {
             </div>
           </div>
         </FilterContainer>
-        <ApplyNum>지원자 {size}명</ApplyNum>
+        <ApplyNum>지원자 {count}명</ApplyNum>
         <ApplySort>
+          <Btn
+            onClick={() => {
+              setHideName(!nameHide);
+            }}
+          >
+            {nameHide ? `이름 보이기` : `이름 가리기`}
+          </Btn>
           <ApplySelect
             onChange={(e) => {
               setSort(e.target.value);
@@ -150,10 +142,10 @@ function ApplyLists() {
             <option id="name_desc" value="name_desc">
               가나다순(내림차순)
             </option>
-            <option id="time_asc" value="time_asc">
+            <option id="updatedAt_asc" value="updatedAt_asc">
               최신순(오름차순)
             </option>
-            <option id="time_desc" value="time_desc">
+            <option id="updatedAt_desc" value="updatedAt_desc">
               최신순(내림차순)
             </option>
           </ApplySelect>
@@ -172,19 +164,22 @@ function ApplyLists() {
               </tr>
             </TableHeader>
             <tbody>
-              {users.slice((page - 1) * 10, page * 10).map((s) => (
+              {applies?.map((s: any) => (
                 <Line key={s.id}>
                   <td>{s.id}</td>
-                  <td>{s.name}</td>
+                  <td>{nameHide ? `${s.name.slice(0, 1)}＊	＊	` : s.name}</td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
-                  <ApplyButton
-                    onClick={() => {
-                      setShow(true);
-                    }}
-                  >
-                    지원서보기
-                  </ApplyButton>
+                  <td>
+                    <ApplyButton
+                      onClick={() => {
+                        setShow(true);
+                        setDetail(s.id);
+                      }}
+                    >
+                      지원서보기
+                    </ApplyButton>
+                  </td>
                 </Line>
               ))}
             </tbody>
@@ -213,7 +208,7 @@ function ApplyLists() {
           setShow(false);
         }}
       >
-        <Apply />
+        <Apply detail={detail} />
       </Modal>
     </>
   );
@@ -288,6 +283,15 @@ const ApplyNum = styled.div`
   font-weight: bold;
   text-align: right;
 `;
+const Btn = styled.button`
+  width: 100px;
+  height: 30px;
+  margin: 0 30px 20px 0;
+  border-radius: 8px;
+
+  color: white;
+  background-color: #777;
+`;
 
 const ApplySort = styled.div`
   width: 100%;
@@ -339,33 +343,25 @@ const TableHeader = styled.thead`
 const Line = styled.tr`
   width: 100%;
 
-  margin-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 20px;
-
   font-size: 16px;
 
   border-bottom: 1px solid #28292a;
 `;
 
-const ApplyButton = styled.div`
-  display: inline-block;
+const ApplyButton = styled.button`
   width: 70px;
   height: 30px;
 
-  padding-top: 7px;
-  margin-left: 120px;
-
-  flex-direction: column;
-  text-align: center;
   font-size: 13px;
 
+  margin-top: 4px;
+
   border: none;
+  outline: none;
   border-radius: 8px;
 
+  color: white;
   background-color: rgba(0, 135, 209, 0.5);
-
-  cursor: pointer;
 `;
 
 const PageNation = styled.ul`

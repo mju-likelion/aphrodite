@@ -5,6 +5,7 @@ import { Validation } from "@lib/etc/validation";
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import customAxios from "@lib/Axios";
+import Warning from "@lib/DesignSystem/Icon/Warning";
 
 interface Values {
   email: string;
@@ -27,12 +28,15 @@ function SignUp({ setComponentText, setShow }: Props) {
 
   const handleSendConfirmMail = useCallback((email) => {
     if (Validation.email(email).result) {
-      setError(false);
-      setMessage(true);
-      // FIXME: 주석제거
-      // customAxios.post("/api/auth/email-verify", {
-      //   email,
-      // });
+      try {
+        setError(false);
+        setMessage(true);
+        customAxios.post("/api/auth/email-verify", {
+          email,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     } else {
       setMessage(false);
       setError(true);
@@ -48,8 +52,23 @@ function SignUp({ setComponentText, setShow }: Props) {
           onChange={formik.handleChange}
           value={formik.values.email}
         />
-        {message && <NoticeMsg>인증 링크가 전송되었습니다</NoticeMsg>}
-        {error && <NoticeMsg>유효한 이메일을 입력해주세요</NoticeMsg>}
+        {message && (
+          <NoticeMsg>
+            <Warning color="#FF9E1B" height={16} width={16} />
+            <p>
+              이메일로 인증메일이 발송되었습니다. 인증메일은 약 24시간 동안
+              유효합니다. <br />
+              유효 시간 이내에 확인해주세요. (메일이 도착하지 않았을 경우, 스팸
+              메일함을 확인해주세요.)
+            </p>
+          </NoticeMsg>
+        )}
+        {error && (
+          <NoticeMsg error>
+            <Warning />
+            &nbsp;유효한 이메일을 입력해주세요
+          </NoticeMsg>
+        )}
         <Button
           type="button"
           disabled={!formik.values.email}
@@ -105,11 +124,17 @@ const Input = styled.input`
   padding-left: 16px;
 `;
 
-const NoticeMsg = styled.p`
-  width: 100%;
+const NoticeMsg = styled.div<{ error?: boolean }>`
+  display: flex;
+  align-items: center;
 
   margin-top: 5px;
   color: ${theme.colors.primary.orange};
+  word-break: keep-all;
+
+  p {
+    margin-left: 5px;
+  }
 `;
 
 const Div = styled.div`
