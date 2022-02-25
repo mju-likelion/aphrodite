@@ -3,10 +3,10 @@ import _isEmpty from "lodash/isEmpty";
 import _isNil from "lodash/isNil";
 import * as Cookie from "@lib/Cookie";
 import { fetcher } from "@lib/Axios/fetcher";
-import { GetUserPayload } from "src/payloads/userResponse";
+import { GetUserSuccess } from "src/payloads/GetUserPayload";
 
 function useUser(url: string) {
-  const { data, error } = useSWRImmutable<GetUserPayload>(url, fetcher, {
+  const { data, error } = useSWRImmutable<GetUserSuccess>(url, fetcher, {
     errorRetryCount: 3,
   });
   const jwt = Cookie.getCookie("jwt");

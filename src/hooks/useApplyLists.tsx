@@ -1,8 +1,9 @@
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@lib/Axios/fetcher";
+import { GetApplyListsSuccess } from "src/payloads/GetApplyListsPayload";
 
 function useApplyLists(url: string) {
-  const { data, error } = useSWRImmutable(url, fetcher);
+  const { data, error } = useSWRImmutable<GetApplyListsSuccess>(url, fetcher);
 
   return {
     applies: data?.data.users,
