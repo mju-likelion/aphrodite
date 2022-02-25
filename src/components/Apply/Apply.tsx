@@ -1,13 +1,13 @@
 /* eslint-disable react/no-array-index-key */
+import _ from "lodash";
+import { ChangeEvent, useReducer } from "react";
+import styled from "styled-components";
 
 import AnswerArea from "@components/Apply/AnswerArea";
 import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
-import _ from "lodash";
-import { ChangeEvent, useReducer } from "react";
-import { INITIAL } from "@components/ApplyLists/contacts";
-import styled from "styled-components";
+
 import { PART_LISTS } from "./constants";
 
 interface AnswerListI {
