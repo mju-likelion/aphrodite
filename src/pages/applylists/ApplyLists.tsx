@@ -46,7 +46,7 @@ function ApplyLists() {
   const { count, isLoading, isError } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
 
-  const pageNumbers = range(count);
+  const pageNumbers = range(Math.ceil(count / 10));
 
   const statusKeys = [
     "complete",
