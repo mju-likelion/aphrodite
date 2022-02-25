@@ -65,15 +65,13 @@ function Main() {
       <Bottom>
         <CodingImg src="/images/codingimage.png" />
         <CodingText>
-          <More>
-            <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
-            <br />
-            <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
-            <br />
-            <DetailLink href="https://nana-iota.vercel.app/">
-              자세히 보기 <Arrow />
-            </DetailLink>
-          </More>
+          <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
+          <br />
+          <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
+          <br />
+          <DetailLink href={process.env.NEXT_PUBLIC_NANA_SITE}>
+            자세히 보기 <Arrow />
+          </DetailLink>
         </CodingText>
       </Bottom>
       <CodingTextImageContainer>
@@ -255,8 +253,6 @@ const Bottom = styled.article`
     padding-top: 20px;
   }
 `;
-
-const More = styled.div``;
 
 const CodingTextImageContainer = styled.div`
   width: 80%;
