@@ -3,15 +3,27 @@ import _isEmpty from "lodash/isEmpty";
 import _isNil from "lodash/isNil";
 import * as Cookie from "@lib/Cookie";
 import { fetcher } from "@lib/Axios/fetcher";
+import { GetUserPayload } from "src/payloads/userResponse";
 
 function useUser(url: string) {
-  const { data, error } = useSWRImmutable(url, fetcher);
+  const { data, error } = useSWRImmutable<GetUserPayload>(url, fetcher, {
+    errorRetryCount: 3,
+  });
   const jwt = Cookie.getCookie("jwt");
 
   if (_isEmpty(jwt)) {
     return {
       user: null,
       isLoading: false,
+      isError: false,
+      isAdmin: false,
+    };
+  }
+
+  if (!_isEmpty(jwt) && _isEmpty(data)) {
+    return {
+      user: null,
+      isLoading: true,
       isError: false,
       isAdmin: false,
     };

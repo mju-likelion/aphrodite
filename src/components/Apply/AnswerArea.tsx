@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
 import styled from "styled-components";
-import _isEqual from "lodash/isEqual";
 
 interface Props {
   question: string;

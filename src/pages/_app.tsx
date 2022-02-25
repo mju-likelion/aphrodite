@@ -5,7 +5,6 @@ import { theme } from "@styles/theme";
 import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
-import axios from "axios";
 import Notice from "@components/Notice";
 import { RecoilRoot } from "recoil";
 

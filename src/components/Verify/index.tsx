@@ -12,17 +12,17 @@ interface Values {
 }
 
 interface Props {
-  setComponentText: (s: string) => void;
-  setShow: (b: boolean) => void;
+  setComponentText: (text: string) => void;
 }
 
-function SignUp({ setComponentText, setShow }: Props) {
+function SignUp({ setComponentText }: Props) {
   const [message, setMessage] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const formik = useFormik<Values>({
     initialValues: {
       email: "",
     },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     onSubmit: () => {},
   });
 
@@ -45,7 +45,7 @@ function SignUp({ setComponentText, setShow }: Props) {
 
   return (
     <>
-      <FormWrapper onSubmit={(e) => e.preventDefault()}>
+      <FormWrapper onSubmit={formik.handleSubmit}>
         <Input
           id="email"
           placeholder="email"

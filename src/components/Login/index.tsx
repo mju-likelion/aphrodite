@@ -9,7 +9,7 @@ import * as Cookie from "@lib/Cookie";
 import Warning from "@lib/DesignSystem/Icon/Warning";
 import { mutate } from "swr";
 
-const Errors = {
+const Errors: Values = {
   email: "",
   password: "",
 };
@@ -19,8 +19,8 @@ interface Values {
 }
 
 type Props = {
-  setComponentText: (s: string) => void;
-  setShow: (b: boolean) => void;
+  setComponentText: (text: string) => void;
+  setShow: (text: boolean) => void;
 };
 
 function Login({ setComponentText, setShow }: Props) {
