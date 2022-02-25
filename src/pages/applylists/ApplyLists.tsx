@@ -172,11 +172,7 @@ function ApplyLists() {
                 <Line key={s.id}>
                   <td>{s.id}</td>
                   <td>
-                    {nameHide
-                      ? s.name.length === 4
-                        ? `${s.name.slice(0, 2)}＊	＊	`
-                        : `${s.name.slice(0, 1)}＊	＊	`
-                      : s.name}
+                    {nameHide ? `${s.name.split("").slice(0, 1)}＊	＊	` : s.name}
                   </td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
@@ -200,7 +196,7 @@ function ApplyLists() {
                 // eslint-disable-next-line react/no-array-index-key
                 key={i}
                 onClick={() => {
-                  setPage(n);
+                  setPage(i + 1);
                 }}
                 selected={i + 1 === page}
               >

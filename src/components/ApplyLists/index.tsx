@@ -16,9 +16,7 @@ function Apply({ detail, nameHide }: Props) {
         <UserInfo>
           이름 :
           {nameHide
-            ? answer?.user.name.length === 4
-              ? `${answer?.user.name.slice(0, 2)}**`
-              : `${answer?.user.name.slice(0, 1)}**`
+            ? `${answer?.user.name.split("").slice(0, 1)}＊	＊	`
             : answer?.user.name}
           <br />
           전공 : {answer?.user.major} <br />
