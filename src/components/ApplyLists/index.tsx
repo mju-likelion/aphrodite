@@ -8,8 +8,8 @@ interface Props {
 }
 
 function Apply({ detail, nameHide }: Props) {
-  const { questions } = useQuestions("http://3.35.11.129/api/questions");
-  const { answer } = useApplyDetail(`http://3.35.11.129/api/apply/${detail}`);
+  const { questions } = useQuestions("/api/questions");
+  const { answer } = useApplyDetail(`/api/apply/${detail}`);
   return (
     <ApplyWrapper>
       <ApplyList>
@@ -23,7 +23,7 @@ function Apply({ detail, nameHide }: Props) {
           휴대폰 : {answer?.user.phone} <br />
           지원분야 : {answer?.apply.part}
         </UserInfo>
-        {questions?.map((q: any, i: any) => (
+        {questions?.map((q: string, i: number) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={i}>
             <ApplyQuestion>{q}</ApplyQuestion>

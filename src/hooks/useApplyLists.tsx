@@ -1,5 +1,4 @@
 import useSWRImmutable from "swr/immutable";
-import * as Cookie from "@lib/Cookie";
 import { fetcher } from "@lib/Axios/fetcher";
 
 function useApplyLists(url: string) {

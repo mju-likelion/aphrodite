@@ -45,10 +45,7 @@ function ApplyLists() {
   const { count, isLoading, isError } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
 
-  const pageNumbers: number[] = [];
-  Array(count)
-    .fill(undefined)
-    .map((_, i) => pageNumbers.push(i + 1));
+  const pageNumbers = new Array(count).fill(undefined).map((_, i) => i + 1);
 
   const statusKeys = [
     "complete",
