@@ -7,6 +7,7 @@ import totalCount from "src/hooks/totalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import { useRouter } from "next/router";
 import Apply from "@components/ApplyLists";
+import { range } from "lodash";
 import { INITIAL } from "@components/ApplyLists/contacts";
 
 interface StatusI {
@@ -45,7 +46,7 @@ function ApplyLists() {
   const { count, isLoading, isError } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
 
-  const pageNumbers = new Array(count).fill(undefined).map((_, i) => i + 1);
+  const pageNumbers = range(count);
 
   const statusKeys = [
     "complete",
@@ -196,11 +197,11 @@ function ApplyLists() {
               <PageLi
                 key={n}
                 onClick={() => {
-                  setPage(n);
+                  setPage(i + 1);
                 }}
                 selected={i + 1 === page}
               >
-                {n}
+                {n + 1}
               </PageLi>
             ))}
           </PageNation>
