@@ -4,16 +4,23 @@ import useQuestions from "src/hooks/useQuestions";
 
 interface Props {
   detail: number;
+  nameHide: boolean;
 }
 
-function Apply({ detail }: Props) {
+function Apply({ detail, nameHide }: Props) {
   const { questions } = useQuestions("http://3.35.11.129/api/questions");
   const { answer } = useApplyDetail(`http://3.35.11.129/api/apply/${detail}`);
   return (
     <ApplyWrapper>
       <ApplyList>
         <UserInfo>
-          이름 : {answer?.user.name} <br />
+          이름 :
+          {nameHide
+            ? answer?.user.name.length === 4
+              ? `${answer?.user.name.slice(0, 2)}**`
+              : `${answer?.user.name.slice(0, 1)}**`
+            : answer?.user.name}
+          <br />
           전공 : {answer?.user.major} <br />
           휴대폰 : {answer?.user.phone} <br />
           지원분야 : {answer?.apply.part}

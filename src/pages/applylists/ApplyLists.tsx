@@ -17,6 +17,13 @@ interface PartI {
   [key: string]: boolean;
 }
 
+interface ApplyType {
+  id: number;
+  name: string;
+  major: string;
+  email: string;
+}
+
 function ApplyLists() {
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
@@ -37,10 +44,8 @@ function ApplyLists() {
 
   const { count, isLoading, isError } = totalCount("/api/apply/total-count/");
   const { applies } = useApplyLists("/api/apply");
-  const pageNumbers = [];
-  for (let i = 1; i <= count / 10; i += 1) {
-    pageNumbers.push(i);
-  }
+
+  const pageNumbers = new Array(count).fill(undefined);
 
   const statusKeys = [
     "complete",
@@ -160,14 +165,19 @@ function ApplyLists() {
                 <th>이름</th>
                 <th>학과</th>
                 <th>이메일</th>
-                <th> </th>
               </tr>
             </TableHeader>
             <tbody>
-              {applies?.map((s: any) => (
+              {applies?.map((s: ApplyType) => (
                 <Line key={s.id}>
                   <td>{s.id}</td>
-                  <td>{nameHide ? `${s.name.slice(0, 1)}＊	＊	` : s.name}</td>
+                  <td>
+                    {nameHide
+                      ? s.name.length === 4
+                        ? `${s.name.slice(0, 2)}＊	＊	`
+                        : `${s.name.slice(0, 1)}＊	＊	`
+                      : s.name}
+                  </td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
                   <td>
@@ -187,13 +197,14 @@ function ApplyLists() {
           <PageNation>
             {pageNumbers.map((n, i) => (
               <PageLi
-                key={n}
+                // eslint-disable-next-line react/no-array-index-key
+                key={i}
                 onClick={() => {
                   setPage(n);
                 }}
                 selected={i + 1 === page}
               >
-                {n}
+                {i + 1}
               </PageLi>
             ))}
           </PageNation>
@@ -208,7 +219,7 @@ function ApplyLists() {
           setShow(false);
         }}
       >
-        <Apply detail={detail} />
+        <Apply detail={detail} nameHide={nameHide} />
       </Modal>
     </>
   );
@@ -290,7 +301,7 @@ const Btn = styled.button`
   border-radius: 8px;
 
   color: white;
-  background-color: #777;
+  background-color: rgba(149, 149, 149, 0.5);
 `;
 
 const ApplySort = styled.div`
