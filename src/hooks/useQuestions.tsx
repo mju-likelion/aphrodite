@@ -3,7 +3,9 @@ import { fetcher } from "@lib/Axios/fetcher";
 import { GetQuestionsPayload } from "src/payloads/GetQuestionsPayload";
 
 function useQuestions(url: string) {
-  const { data, error } = useSWRImmutable<GetQuestionsPayload>(url, fetcher);
+  const { data, error } = useSWRImmutable<GetQuestionsPayload>(url, fetcher, {
+    errorRetryCount: 3,
+  });
 
   return {
     questions: data?.data.questions,

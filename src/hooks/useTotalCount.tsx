@@ -9,7 +9,9 @@ function totalCount(url: string) {
   const { data, error } = useSWRImmutable<
     GetTotalCountSuccess,
     GetTotalCountError
-  >(url, fetcher);
+  >(url, fetcher, {
+    errorRetryCount: 3,
+  });
 
   return {
     count: data?.meta?.count,

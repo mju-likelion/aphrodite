@@ -9,7 +9,9 @@ function useApplyDetail(url: string) {
   const { data, error } = useSWRImmutable<
     GetApplyDetailSuccess,
     GetApplyDetailError
-  >(url, fetcher);
+  >(url, fetcher, {
+    errorRetryCount: 3,
+  });
 
   return {
     answer: data?.data,

@@ -1,5 +1,6 @@
 import { range } from "lodash";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import styled from "styled-components";
 
 import { theme } from "@styles/theme";
@@ -74,7 +75,12 @@ function ApplyLists() {
   }, [status, part, sort, page]);
 
   if (!isAdmin) {
-    return <Container>접근이 제한되었습니다</Container>;
+    return (
+      <Container>
+        <Image src="/images/mju-likelion.png" width={200} height={200} />
+        <Restrict>접근이 제한되었습니다</Restrict>
+      </Container>
+    );
   }
 
   return (
@@ -391,6 +397,10 @@ const PageLi = styled.li<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const Restrict = styled.p`
+  margin-top: 10px;
 `;
 
 export default ApplyLists;

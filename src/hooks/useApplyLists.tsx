@@ -9,7 +9,9 @@ function useApplyLists(url: string) {
   const { data, error } = useSWRImmutable<
     GetApplyListsSuccess,
     GetApplyListsError
-  >(url, fetcher);
+  >(url, fetcher, {
+    errorRetryCount: 3,
+  });
 
   return {
     applies: data?.data.users,
