@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-param-reassign */
 import axios, { AxiosInstance } from "axios";
 import * as Cookie from "@lib/Cookie";
