@@ -14,6 +14,7 @@ function Apply({ detail, nameHide }: Props) {
     <ApplyWrapper>
       <ApplyList>
         <UserInfo>
+          번호 : {answer?.user.id} <br />
           이름 :
           {nameHide
             ? answer?.user.name.replace(/(?<=.{1})./gi, "*")
