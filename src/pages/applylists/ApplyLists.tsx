@@ -57,10 +57,12 @@ function ApplyLists() {
   const { applies } = useApplyLists("/api/apply");
   const { isAdmin } = useUser("/api/user/me");
 
+
   const pageNumbers = count && range(Math.ceil(count / 10));
 
   const partKeys = PART_LISTS.map((data) => data.value);
   const partNames = PART_LISTS.map((data) => data.name);
+
 
   useEffect(() => {
     router.replace({
