@@ -1,14 +1,20 @@
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@lib/Axios/fetcher";
-import { GetApplyListsSuccess } from "src/payloads/GetApplyListsPayload";
+import {
+  GetApplyListsError,
+  GetApplyListsSuccess,
+} from "src/payloads/GetApplyListsPayload";
 
 function useApplyLists(url: string) {
-  const { data, error } = useSWRImmutable<GetApplyListsSuccess>(url, fetcher);
+  const { data, error } = useSWRImmutable<
+    GetApplyListsSuccess,
+    GetApplyListsError
+  >(url, fetcher);
 
   return {
     applies: data?.data.users,
     isLoading: !data && !error,
-    isError: error,
+    isError: error?.error.message,
   };
 }
 
