@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-param-reassign */
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { isNil } from "lodash";
 import * as Cookie from "@lib/Cookie";
 
 const customAxios: AxiosInstance = axios.create({
@@ -8,11 +9,11 @@ const customAxios: AxiosInstance = axios.create({
 });
 
 customAxios.interceptors.request.use((config) => {
-  const isCookie = Cookie.getCookie("jwt");
+  const jwt = Cookie.getCookie("jwt");
 
-  if (isCookie) {
+  if (!isNil(jwt)) {
     config.headers = {
-      "X-Access-Token": Cookie.getCookie("jwt"),
+      "X-Access-Token": jwt,
     };
   }
   return config;

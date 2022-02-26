@@ -109,7 +109,6 @@ const Self = styled.header`
 
 const NameContainer = styled.div`
   button {
-    color: white;
     padding: 0;
   }
 `;
