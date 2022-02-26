@@ -1,22 +1,14 @@
-import { range } from "lodash";
-import { useRouter } from "next/router";
+import Modal from "@lib/DesignSystem/Modal/Modal";
 import styled from "styled-components";
-
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
-import useApplyLists from "@hooks/useApplyLists";
-import totalCount from "@hooks/useTotalCount";
-
+import useApplyLists from "src/hooks/useApplyLists";
+import totalCount from "src/hooks/useTotalCount";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
-import Modal from "@lib/DesignSystem/Modal/Modal";
-
+import { useRouter } from "next/router";
 import Apply from "@components/ApplyLists";
-import {
-  INITIAL,
-  statusKeys,
-  statusNames,
-} from "@components/ApplyLists/contacts";
-import { PART_LISTS } from "@components/Apply/constants";
+import { range } from "lodash";
+import { INITIAL } from "@components/ApplyLists/contacts";
 
 interface StatusI {
   [key: string]: boolean;
@@ -51,13 +43,28 @@ function ApplyLists() {
     (value) => part[value as keyof typeof part],
   );
 
-  const { count } = totalCount("/api/apply/total-count");
+  const { count, isLoading, isError } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
 
-  const pageNumbers = count && range(count);
+  const pageNumbers = range(count);
 
-  const partKeys = PART_LISTS.map((data) => data.value);
-  const partNames = PART_LISTS.map((data) => data.name);
+  const statusKeys = [
+    "complete",
+    "first-fail",
+    "first-pass",
+    "second-fail",
+    "second-pass",
+  ] as const;
+
+  const statusNames = [
+    "지원완료",
+    "서류탈락",
+    "서류합격",
+    "면접탈락",
+    "최종합격",
+  ];
+  const partKeys = ["design", "web", "server"] as const;
+  const partNames = ["기획/디자인", "웹", "서버"];
 
   useEffect(() => {
     router.replace({
@@ -186,18 +193,17 @@ function ApplyLists() {
             </tbody>
           </TableContainer>
           <PageNation>
-            {pageNumbers &&
-              pageNumbers.map((n, i) => (
-                <PageLi
-                  key={n}
-                  onClick={() => {
-                    setPage(i + 1);
-                  }}
-                  selected={i + 1 === page}
-                >
-                  {n + 1}
-                </PageLi>
-              ))}
+            {pageNumbers.map((n, i) => (
+              <PageLi
+                key={n}
+                onClick={() => {
+                  setPage(i + 1);
+                }}
+                selected={i + 1 === page}
+              >
+                {n + 1}
+              </PageLi>
+            ))}
           </PageNation>
         </TableDiv>
       </Container>
@@ -318,14 +324,12 @@ const ApplySelect = styled.select`
 
 const TableDiv = styled.div`
   width: 100%;
-
   overflow-x: auto;
   white-space: nowrap;
 `;
 
 const TableContainer = styled.table`
   width: 100%;
-  min-width: 800px;
 
   border-top: 5px solid ${theme.colors.third.skyblue};
   border-bottom: 1px solid ${theme.colors.third.skyblue};
@@ -357,6 +361,8 @@ const ApplyButton = styled.button`
   height: 30px;
 
   font-size: 13px;
+
+  margin-top: 4px;
 
   border: none;
   outline: none;

@@ -1,14 +1,16 @@
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@lib/Axios/fetcher";
-import { GetQuestionsPayload } from "src/payloads/GetQuestionsPayload";
 import { GetApplyDetailSuccess } from "src/payloads/GetApplyDetailPayload";
 
-function useApply() {
-  const { data: questions, error: questionError } =
-    useSWRImmutable<GetQuestionsPayload>("/api/questions", fetcher);
+function useApply(url: string) {
   const { data: users, error: userError } =
-    useSWRImmutable<GetApplyDetailSuccess>("/api/apply/:id", fetcher);
-
+    useSWRImmutable<GetApplyDetailSuccess>(url, fetcher);
+  console.log("users", users);
+  if (users) {
+    return {
+      data: users,
+    };
+  }
   if (userError) {
     return {
       data: userError.message,
@@ -16,20 +18,10 @@ function useApply() {
     };
   }
 
-  if (questionError) {
-    return {
-      data: "지원서 질문을 불러오는데에 실패앴습니다",
-      isError: true,
-    };
-  }
-
   return {
-    data: {
-      questions,
-      users,
-    },
-    isLoading: !questions && !users && !questionError && !userError,
-    isError: questionError || userError,
+    data: users,
+    isLoading: !users && !userError,
+    isError: userError,
   };
 }
 

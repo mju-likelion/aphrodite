@@ -17,7 +17,7 @@ function AnswerArea({ question, name, value, onChange }: Props) {
     <Container>
       <Question>{question}</Question>
       <TextArea name={name} onChange={onChange} value={value} />
-      <p>{value.length}자</p>
+      <p>{value?.length}자</p>
     </Container>
   );
 }

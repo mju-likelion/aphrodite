@@ -1,13 +1,13 @@
 /* eslint-disable react/no-array-index-key */
 import _ from "lodash";
-import { ChangeEvent, useReducer } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 import styled from "styled-components";
-
 import AnswerArea from "@components/Apply/AnswerArea";
+import useQuestions from "@hooks/useQuestions";
 import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
-
+import useApply from "@hooks/useApply";
 import { PART_LISTS } from "./constants";
 
 interface AnswerListI {
@@ -19,48 +19,57 @@ interface ActionI {
   value: string;
 }
 
-const QUESTIONS = [
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-];
-
-const ANSWERLIST: AnswerListI = {
-  one: "",
-  two: "",
-  three: "",
-  four: "",
-  five: "",
-};
-
 function reducer(state: AnswerListI, action: ActionI) {
   switch (action.type) {
-    case "1번":
+    case "one":
       return {
         ...state,
         one: action.value,
       };
-    case "2번":
+    case "two":
       return {
         ...state,
         two: action.value,
       };
-    case "3번":
+    case "three":
       return {
         ...state,
         three: action.value,
       };
-    case "4번":
+    case "four":
       return {
         ...state,
         four: action.value,
       };
-    case "5번":
+    case "five":
       return {
         ...state,
         five: action.value,
+      };
+    case "six":
+      return {
+        ...state,
+        six: action.value,
+      };
+    case "seven":
+      return {
+        ...state,
+        seven: action.value,
+      };
+    case "eight":
+      return {
+        ...state,
+        eight: action.value,
+      };
+    case "nine":
+      return {
+        ...state,
+        nine: action.value,
+      };
+    case "ten":
+      return {
+        ...state,
+        ten: action.value,
       };
     default:
       return state;
@@ -70,32 +79,56 @@ function reducer(state: AnswerListI, action: ActionI) {
 function Apply() {
   // TODO: 지원서 질문 API 호출
   // TODO: 지원자 호출 -> 답변을 AnswerArea의 value로
-  const [answerLists, answerDispatch] = useReducer(reducer, ANSWERLIST);
+  const { questions } = useQuestions("/api/questions");
+  const { data } = useApply("/api/apply/me");
+  const ANSWERLIST = {
+    data: {
+      apply: {
+        part: data?.apply.part,
+        one: data?.apply.answer[0],
+        two: data?.apply.answer[1],
+        three: data?.apply.answer[2],
+        four: data?.apply.answer[3],
+        five: data?.apply.answer[4],
+        six: data?.apply.answer[5],
+        seven: data?.apply.answer[6],
+        eight: data?.apply.answer[7],
+        nine: data?.apply.answer[8],
+        ten: data?.apply.answer[9],
+      },
+    },
+  };
+  const [answerLists, answerDispatch] = useState(ANSWERLIST);
   const { showNotice } = useShowNotice();
-
   function handleClickSave() {
-    customAxios.put("/api/apply").catch(() => {
+    customAxios.put("/api/apply", answerLists).then(() => {
       showNotice({
         message: `지원서가 임시저장 되었습니다.
-        임시저장만으로는 제출되지않습니다.`,
+          임시저장만으로는 제출되지않습니다.`,
       });
     });
   }
 
   function handleClickSubmit() {
-    customAxios.put("/api/apply").then((res) => {
-      alert(res.data.message);
-    });
+    customAxios
+      .post("/api/apply", answerLists)
+      .then((res) => {
+        alert(res.data?.data?.message);
+      })
+      .catch((err) => {
+        alert(err.response.data?.error.message);
+      });
   }
 
   function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
     const { name, value } = e.target;
-
     answerDispatch({
       type: name,
       value,
     });
   }
+  console.log("aaa", answerLists, ANSWERLIST);
+  console.log();
 
   return (
     <Container>
@@ -111,13 +144,13 @@ function Apply() {
             ))}
           </select>
         </FilterContainer>
-        {QUESTIONS.map((question, i) => (
+        {questions?.map((question, i) => (
           <AnswerArea
             key={i}
             question={question}
             name={`${i + 1}번`}
             onChange={handleChange}
-            value={answerLists[Object.keys(answerLists)[i]]}
+            value={answerLists?.data?.apply.one}
           />
         ))}
         <BtnContainer>
