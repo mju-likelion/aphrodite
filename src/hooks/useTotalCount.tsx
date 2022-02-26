@@ -1,14 +1,22 @@
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@lib/Axios/fetcher";
-import { GetTotalCountSuccess } from "src/payloads/GetTotalCountPayload";
+import {
+  GetTotalCountError,
+  GetTotalCountSuccess,
+} from "src/payloads/GetTotalCountPayload";
 
 function totalCount(url: string) {
-  const { data, error } = useSWRImmutable<GetTotalCountSuccess>(url, fetcher);
+  const { data, error } = useSWRImmutable<
+    GetTotalCountSuccess,
+    GetTotalCountError
+  >(url, fetcher, {
+    errorRetryCount: 3,
+  });
 
   return {
-    count: data?.meta.count,
+    count: data?.meta?.count,
     isLoading: !data && !error,
-    isError: error,
+    error: error?.error.message,
   };
 }
 
