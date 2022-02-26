@@ -1,14 +1,24 @@
-import Modal from "@lib/DesignSystem/Modal/Modal";
+import { range } from "lodash";
+import { useRouter } from "next/router";
+import Image from "next/image";
 import styled from "styled-components";
+
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
-import useApplyLists from "src/hooks/useApplyLists";
-import totalCount from "src/hooks/totalCount";
+import useApplyLists from "@hooks/useApplyLists";
+import totalCount from "@hooks/useTotalCount";
+
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
-import { useRouter } from "next/router";
+import Modal from "@lib/DesignSystem/Modal/Modal";
+
 import Apply from "@components/ApplyLists";
-import { range } from "lodash";
-import { INITIAL } from "@components/ApplyLists/contacts";
+import {
+  INITIAL,
+  statusKeys,
+  statusNames,
+} from "@components/ApplyLists/contacts";
+import { PART_LISTS } from "@components/Apply/constants";
+import useUser from "@hooks/useUser";
 
 interface StatusI {
   [key: string]: boolean;
@@ -43,28 +53,16 @@ function ApplyLists() {
     (value) => part[value as keyof typeof part],
   );
 
-  const { count, isLoading, isError } = totalCount("/api/apply/total-count");
+  const { count } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
+  const { isAdmin } = useUser("/api/user/me");
 
-  const pageNumbers = range(Math.ceil(count / 10));
 
-  const statusKeys = [
-    "complete",
-    "first-fail",
-    "first-pass",
-    "second-fail",
-    "second-pass",
-  ] as const;
+  const pageNumbers = count && range(Math.ceil(count / 10));
 
-  const statusNames = [
-    "지원완료",
-    "서류탈락",
-    "서류합격",
-    "면접탈락",
-    "최종합격",
-  ];
-  const partKeys = ["design", "web", "server"] as const;
-  const partNames = ["기획/디자인", "웹", "서버"];
+  const partKeys = PART_LISTS.map((data) => data.value);
+  const partNames = PART_LISTS.map((data) => data.name);
+
 
   useEffect(() => {
     router.replace({
@@ -77,6 +75,15 @@ function ApplyLists() {
       },
     });
   }, [status, part, sort, page]);
+
+  if (!isAdmin) {
+    return (
+      <Container>
+        <Image src="/images/mju-likelion.png" width={200} height={200} />
+        <Restrict>접근이 제한되었습니다</Restrict>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -193,17 +200,18 @@ function ApplyLists() {
             </tbody>
           </TableContainer>
           <PageNation>
-            {pageNumbers.map((n, i) => (
-              <PageLi
-                key={n}
-                onClick={() => {
-                  setPage(i + 1);
-                }}
-                selected={i + 1 === page}
-              >
-                {n + 1}
-              </PageLi>
-            ))}
+            {pageNumbers &&
+              pageNumbers.map((n, i) => (
+                <PageLi
+                  key={n}
+                  onClick={() => {
+                    setPage(i + 1);
+                  }}
+                  selected={i + 1 === page}
+                >
+                  {n + 1}
+                </PageLi>
+              ))}
           </PageNation>
         </TableDiv>
       </Container>
@@ -224,6 +232,7 @@ function ApplyLists() {
 
 const Container = styled.section`
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -324,12 +333,14 @@ const ApplySelect = styled.select`
 
 const TableDiv = styled.div`
   width: 100%;
+
   overflow-x: auto;
   white-space: nowrap;
 `;
 
 const TableContainer = styled.table`
   width: 100%;
+  min-width: 800px;
 
   border-top: 5px solid ${theme.colors.third.skyblue};
   border-bottom: 1px solid ${theme.colors.third.skyblue};
@@ -362,8 +373,6 @@ const ApplyButton = styled.button`
 
   font-size: 13px;
 
-  margin-top: 4px;
-
   border: none;
   outline: none;
   border-radius: 8px;
@@ -390,6 +399,10 @@ const PageLi = styled.li<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const Restrict = styled.p`
+  margin-top: 10px;
 `;
 
 export default ApplyLists;

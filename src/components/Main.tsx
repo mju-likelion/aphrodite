@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
-  const { user, isLoading, isError, isAdmin } = useUser("/api/user/me");
+  const { user, isLoading, error, isAdmin } = useUser("/api/user/me");
   const router = useRouter();
 
   function handleClickApply() {
@@ -15,14 +15,6 @@ function Main() {
     }
     if (isAdmin) router.push("/applylists");
     else router.push("/apply");
-  }
-
-  if (isError) {
-    return <Container>Error</Container>;
-  }
-
-  if (isLoading) {
-    return <Container>Loading...</Container>;
   }
 
   return (
@@ -54,7 +46,7 @@ function Main() {
                 <Arrow />
               </ApplyBtn>
               {isAdmin && (
-                <QuestionBtn onClick={() => router.push("/")}>
+                <QuestionBtn onClick={() => router.push("/apply/admin")}>
                   문항 제출/수정
                 </QuestionBtn>
               )}
