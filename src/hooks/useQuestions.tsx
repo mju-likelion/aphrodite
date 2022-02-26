@@ -8,7 +8,7 @@ function useQuestions(url: string) {
   return {
     questions: data?.data.questions,
     isLoading: !data && !error,
-    isError: error,
+    error,
   };
 }
 export default useQuestions;

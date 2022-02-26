@@ -14,7 +14,7 @@ function useApplyDetail(url: string) {
   return {
     answer: data?.data,
     isLoading: !data && !error,
-    isError: error,
+    error: error?.error,
   };
 }
 

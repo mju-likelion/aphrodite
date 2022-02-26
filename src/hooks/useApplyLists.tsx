@@ -14,7 +14,7 @@ function useApplyLists(url: string) {
   return {
     applies: data?.data.users,
     isLoading: !data && !error,
-    isError: error?.error.message,
+    error: error?.error,
   };
 }
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-param-reassign */
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
 import * as Cookie from "@lib/Cookie";
 
 const customAxios: AxiosInstance = axios.create({
@@ -17,5 +17,10 @@ customAxios.interceptors.request.use((config) => {
   }
   return config;
 });
+
+customAxios.interceptors.response.use(
+  (success: AxiosResponse) => Promise.resolve(success),
+  (error: AxiosError) => Promise.reject(error?.response?.data),
+);
 
 export default customAxios;

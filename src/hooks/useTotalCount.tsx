@@ -14,7 +14,7 @@ function totalCount(url: string) {
   return {
     count: data?.meta?.count,
     isLoading: !data && !error,
-    isError: error?.error.message,
+    error: error?.error.message,
   };
 }
 

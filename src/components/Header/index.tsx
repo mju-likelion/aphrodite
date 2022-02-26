@@ -1,18 +1,20 @@
-import Modal from "@lib/DesignSystem/Modal/Modal";
 import React, { useState } from "react";
-import useUser from "src/hooks/useUser";
 import { useSWRConfig } from "swr";
-import styled from "styled-components";
 import { useRouter } from "next/router";
-import { theme } from "@styles/theme";
+import styled from "styled-components";
+
+import Modal from "@lib/DesignSystem/Modal/Modal";
 import { removeCookie } from "@lib/Cookie";
+import useUser from "@hooks/useUser";
+import { theme } from "@styles/theme";
+
 import Login from "../Login";
 import Verify from "../Verify";
 
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isError, isAdmin } = useUser("/api/user/me");
+  const { user, error, isAdmin } = useUser("/api/user/me");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
@@ -36,7 +38,7 @@ function Header() {
           LIKELION | MJU{" "}
         </button>
         <div>
-          {!isError && !user && (
+          {!error && !user && (
             <>
               <button
                 type="button"

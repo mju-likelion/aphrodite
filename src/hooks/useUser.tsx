@@ -19,16 +19,16 @@ function useUser(url: string) {
     return {
       user: null,
       isLoading: false,
-      isError: false,
+      error: false,
       isAdmin: false,
     };
   }
 
   return {
     user: data?.data.user.name,
-    isError: error,
-    isLoading: !data?.data.user.name && error,
-    isAdmin: data?.data.user.isAdmin,
+    error: error?.error.message,
+    isLoading: !data?.data.user.name && !error,
+    isAdmin: data?.data.user.isAdmin || false,
   };
 }
 

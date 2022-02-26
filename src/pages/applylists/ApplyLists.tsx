@@ -17,6 +17,7 @@ import {
   statusNames,
 } from "@components/ApplyLists/contacts";
 import { PART_LISTS } from "@components/Apply/constants";
+import useUser from "@hooks/useUser";
 
 interface StatusI {
   [key: string]: boolean;
@@ -53,6 +54,7 @@ function ApplyLists() {
 
   const { count } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
+  const { isAdmin } = useUser("/api/user/me");
 
   const pageNumbers = count && range(Math.ceil(count / 10));
 
@@ -70,6 +72,10 @@ function ApplyLists() {
       },
     });
   }, [status, part, sort, page]);
+
+  if (!isAdmin) {
+    return <Container>접근이 제한되었습니다</Container>;
+  }
 
   return (
     <>
@@ -218,6 +224,7 @@ function ApplyLists() {
 
 const Container = styled.section`
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
