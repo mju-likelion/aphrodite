@@ -1,14 +1,18 @@
-import Modal from "@lib/DesignSystem/Modal/Modal";
+import { range } from "lodash";
+import { useRouter } from "next/router";
+
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
-import useApplyLists from "src/hooks/useApplyLists";
-import totalCount from "src/hooks/useTotalCount";
+import useApplyLists from "@hooks/useApplyLists";
+import totalCount from "@hooks/useTotalCount";
+import useUser from "@hooks/useUser";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
-import { useRouter } from "next/router";
+import Modal from "@lib/DesignSystem/Modal/Modal";
 import Apply from "@components/ApplyLists";
-import { range } from "lodash";
 import { INITIAL } from "@components/ApplyLists/contacts";
+import { PART_LISTS } from "@components/Apply/constants";
 
 interface StatusI {
   [key: string]: boolean;
@@ -43,10 +47,11 @@ function ApplyLists() {
     (value) => part[value as keyof typeof part],
   );
 
-  const { count, isLoading, isError } = totalCount("/api/apply/total-count");
+  const { count, isLoading, error } = totalCount("/api/apply/total-count");
   const { applies } = useApplyLists("/api/apply");
+  const { isAdmin } = useUser("/api/user/me");
 
-  const pageNumbers = range(count);
+  const pageNumbers = count && range(Math.ceil(count / 10));
 
   const statusKeys = [
     "complete",
@@ -77,6 +82,15 @@ function ApplyLists() {
       },
     });
   }, [status, part, sort, page]);
+
+  if (!isAdmin) {
+    return (
+      <Container>
+        <Image src="/images/mju-likelion.png" width={200} height={200} />
+        <Restrict>접근이 제한되었습니다</Restrict>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -224,6 +238,7 @@ function ApplyLists() {
 
 const Container = styled.section`
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -390,6 +405,10 @@ const PageLi = styled.li<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const Restrict = styled.p`
+  margin-top: 10px;
 `;
 
 export default ApplyLists;

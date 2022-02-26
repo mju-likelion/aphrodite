@@ -7,7 +7,7 @@ export interface GetUserSuccess {
   };
 }
 
-export interface GetApplyListsError {
+export interface GetUserError {
   error: {
     message: string;
   };
