@@ -1,14 +1,11 @@
 import useSWRImmutable from "swr/immutable";
 import { fetcher } from "@lib/Axios/fetcher";
-import {
-  GetApplyDetailError,
-  GetApplyDetailSuccess,
-} from "src/payloads/GetApplyDetailPayload";
+import { GetApplyError, GetApplySuccess } from "src/payloads/GetApplyPayload";
 
 function useApply(url: string) {
   const { data: users, error: userError } = useSWRImmutable<
-    GetApplyDetailSuccess,
-    GetApplyDetailError
+    GetApplySuccess,
+    GetApplyError
   >(url, fetcher, {
     errorRetryCount: 3,
   });
