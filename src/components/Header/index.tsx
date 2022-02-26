@@ -29,6 +29,7 @@ function Header() {
   function handleLogOut() {
     removeCookie("jwt");
     mutate("/api/user/me");
+    router.push("/");
   }
 
   return (

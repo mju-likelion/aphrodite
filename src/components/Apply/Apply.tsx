@@ -1,101 +1,90 @@
+/* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
-import _ from "lodash";
-import { ChangeEvent, useReducer } from "react";
+import { isEmpty, isEqual } from "lodash";
+import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
-
 import AnswerArea from "@components/Apply/AnswerArea";
+import useQuestions from "@hooks/useQuestions";
 import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
+import useApply from "@hooks/useApply";
+import { AnswerNames, PART_LISTS } from "./constants";
 
-import { PART_LISTS } from "./constants";
-
-interface AnswerListI {
+interface AnswerList {
   [key: string]: string;
-}
-
-interface ActionI {
-  type: string;
-  value: string;
-}
-
-const QUESTIONS = [
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-  "Q1. 대충 질문",
-];
-
-const ANSWERLIST: AnswerListI = {
-  one: "",
-  two: "",
-  three: "",
-  four: "",
-  five: "",
-};
-
-function reducer(state: AnswerListI, action: ActionI) {
-  switch (action.type) {
-    case "1번":
-      return {
-        ...state,
-        one: action.value,
-      };
-    case "2번":
-      return {
-        ...state,
-        two: action.value,
-      };
-    case "3번":
-      return {
-        ...state,
-        three: action.value,
-      };
-    case "4번":
-      return {
-        ...state,
-        four: action.value,
-      };
-    case "5번":
-      return {
-        ...state,
-        five: action.value,
-      };
-    default:
-      return state;
-  }
 }
 
 function Apply() {
   // TODO: 지원서 질문 API 호출
   // TODO: 지원자 호출 -> 답변을 AnswerArea의 value로
-  const [answerLists, answerDispatch] = useReducer(reducer, ANSWERLIST);
-  const { showNotice } = useShowNotice();
+  const { questions } = useQuestions("/api/questions");
+  const { data } = useApply("/api/apply/me");
 
+  const ANSWERLIST: AnswerList = {
+    part: data?.data.apply.part || "design",
+    one: data?.data.apply.answers[0] || "",
+    two: data?.data.apply.answers[1] || "",
+    three: data?.data.apply.answers[2] || "",
+    four: data?.data.apply.answers[3] || "",
+    five: data?.data.apply.answers[4] || "",
+  };
+
+  const [answers, setAnswers] = useState<AnswerList>(ANSWERLIST);
+
+  const { showNotice } = useShowNotice();
   function handleClickSave() {
-    customAxios.put("/api/apply").catch(() => {
-      showNotice({
-        message: `지원서가 임시저장 되었습니다.
-        임시저장만으로는 제출되지않습니다.`,
+    customAxios
+      .put("/api/apply", { data: { apply: { ...answers } } })
+      .then(() => {
+        showNotice({
+          message: `지원서가 임시저장 되었습니다.
+          임시저장만으로는 제출되지않습니다.`,
+        });
+      })
+      .catch((err) => {
+        alert(err.error.message);
       });
-    });
   }
 
   function handleClickSubmit() {
-    customAxios.put("/api/apply").then((res) => {
-      alert(res.data.message);
-    });
+    const hasEmpty = handleCheckEmpty();
+
+    if (hasEmpty) {
+      alert("빈 칸이 존재합니다. 내용을 입력해주세요");
+      return;
+    }
+    const check = window.confirm(
+      "제출한 이후엔 취소할 수 없습니다 정말 제출 하시겠습니까?",
+    );
+    if (check) {
+      customAxios
+        .post("/api/apply", { data: { apply: { ...answers } } })
+        .then((res) => {
+          showNotice({ message: res.data?.data.message });
+        })
+        .catch((err) => {
+          alert(err.error.message);
+        });
+    }
   }
 
-  function handleChange(e: ChangeEvent<HTMLTextAreaElement>) {
+  function handleCheckEmpty() {
+    return !isEmpty(Object.values(answers).filter((v) => isEmpty(v)));
+  }
+
+  function handleChange(
+    e: ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>,
+  ) {
     const { name, value } = e.target;
-
-    answerDispatch({
-      type: name,
-      value,
-    });
+    setAnswers((prev) => ({ ...prev, [name]: value }));
   }
+
+  useEffect(() => {
+    if (!isEqual(answers, ANSWERLIST)) {
+      setAnswers(ANSWERLIST);
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -103,7 +92,7 @@ function Apply() {
         <Title>지원서</Title>
         <FilterContainer>
           <span>직종</span>
-          <select title="part">
+          <select title="part" name="part" onChange={handleChange}>
             {PART_LISTS.map(({ name, value }, i) => (
               <option key={i} value={value}>
                 {name}
@@ -111,13 +100,15 @@ function Apply() {
             ))}
           </select>
         </FilterContainer>
-        {QUESTIONS.map((question, i) => (
+        {questions?.slice(0, 5).map((question, i) => (
           <AnswerArea
             key={i}
-            question={question}
-            name={`${i + 1}번`}
+            question={`${question} ${
+              i !== 4 ? `(500자 내외)` : `(300자 내외)`
+            }`}
+            name={`${AnswerNames[i]}`}
             onChange={handleChange}
-            value={answerLists[Object.keys(answerLists)[i]]}
+            value={answers[`${AnswerNames[i]}`]}
           />
         ))}
         <BtnContainer>

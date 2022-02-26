@@ -12,3 +12,16 @@ export const PART_LISTS = [
     value: "server",
   },
 ];
+
+export const AnswerNames = [
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+  "ten",
+];

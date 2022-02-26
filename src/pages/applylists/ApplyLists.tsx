@@ -1,24 +1,18 @@
 import { range } from "lodash";
 import { useRouter } from "next/router";
+
 import Image from "next/image";
 import styled from "styled-components";
-
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
 import useApplyLists from "@hooks/useApplyLists";
 import totalCount from "@hooks/useTotalCount";
-
+import useUser from "@hooks/useUser";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
 import Modal from "@lib/DesignSystem/Modal/Modal";
-
 import Apply from "@components/ApplyLists";
-import {
-  INITIAL,
-  statusKeys,
-  statusNames,
-} from "@components/ApplyLists/contacts";
+import { INITIAL } from "@components/ApplyLists/contacts";
 import { PART_LISTS } from "@components/Apply/constants";
-import useUser from "@hooks/useUser";
 
 interface StatusI {
   [key: string]: boolean;
@@ -57,12 +51,25 @@ function ApplyLists() {
   const { applies } = useApplyLists("/api/apply");
   const { isAdmin } = useUser("/api/user/me");
 
-
   const pageNumbers = count && range(Math.ceil(count / 10));
 
-  const partKeys = PART_LISTS.map((data) => data.value);
-  const partNames = PART_LISTS.map((data) => data.name);
+  const statusKeys = [
+    "complete",
+    "first-fail",
+    "first-pass",
+    "second-fail",
+    "second-pass",
+  ] as const;
 
+  const statusNames = [
+    "지원완료",
+    "서류탈락",
+    "서류합격",
+    "면접탈락",
+    "최종합격",
+  ];
+  const partKeys = PART_LISTS.map((v) => v.value);
+  const partNames = PART_LISTS.map((v) => v.name);
 
   useEffect(() => {
     router.replace({
@@ -333,14 +340,12 @@ const ApplySelect = styled.select`
 
 const TableDiv = styled.div`
   width: 100%;
-
   overflow-x: auto;
   white-space: nowrap;
 `;
 
 const TableContainer = styled.table`
   width: 100%;
-  min-width: 800px;
 
   border-top: 5px solid ${theme.colors.third.skyblue};
   border-bottom: 1px solid ${theme.colors.third.skyblue};
@@ -372,6 +377,8 @@ const ApplyButton = styled.button`
   height: 30px;
 
   font-size: 13px;
+
+  margin-top: 4px;
 
   border: none;
   outline: none;
