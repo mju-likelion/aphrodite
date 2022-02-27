@@ -17,7 +17,6 @@ export function middleware(request: NextRequest) {
   if (
     allowed.length === 0 &&
     targetPage !== "/" &&
-    !targetPage?.startsWith("/auth") &&
     !_.isNil(request.page.name) &&
     !cookie
   ) {

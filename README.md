@@ -5,18 +5,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
-npm run dev
-# or
+yarn
 yarn dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## 개발 방법
 
@@ -34,8 +25,16 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 - `refactor:` => 리팩토링
 - `chore:` => 폴더 구조 변경
 
-## PR 이후
+## HTTPS 설정 방법
 
-- 터미널에서 `git checkout develop` 명령어를 이용하여 develop 브랜치로 이동한다
-- `git pull` 명령어를 이용하여 develop의 최신 상태를 가져온다.
-- 자신의 브랜치를 만들고 거기서 개발한다.
+https://www.notion.so/Web-200b750e161e4b858669dbc534404b32
+
+## 환경 변수
+
+1. 프로젝트 폴더에 .env 파일 생성
+2. 다음 코드 입력
+
+```bash
+NEXT_PUBLIC_NANA_SITE=https://promotion.mju-likelion.com/
+NEXT_PUBLIC_BASE_URL=https://api-apply.mju-likelion.com
+```
