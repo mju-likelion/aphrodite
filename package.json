@@ -2,7 +2,7 @@
 	"name": "aphrodite",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "node server",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
@@ -17,6 +17,7 @@
 		"@types/react-portal": "^4.0.4",
 		"axios": "^0.25.0",
 		"css-mediaquery": "^0.1.2",
+		"dotenv": "^16.0.0",
 		"formik": "^2.2.9",
 		"global": "^4.4.0",
 		"lodash": "^4.17.21",
