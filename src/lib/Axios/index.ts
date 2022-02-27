@@ -1,24 +1,27 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable no-param-reassign */
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { isNil } from "lodash";
 import * as Cookie from "@lib/Cookie";
-import _ from "lodash";
-
-const header = !_.isNil(Cookie.getCookie("jwt"))
-  ? { "X-Access-Token": Cookie.getCookie("jwt") }
-  : null;
 
 const customAxios: AxiosInstance = axios.create({
-  baseURL: "http://3.35.11.129",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
 });
 
 customAxios.interceptors.request.use((config) => {
-  const isCookie = Cookie.getCookie("jwt");
-  if (isCookie) {
+  const jwt = Cookie.getCookie("jwt");
+
+  if (!isNil(jwt)) {
     config.headers = {
-      "X-Access-Token": Cookie.getCookie("jwt"),
+      "X-Access-Token": jwt,
     };
   }
   return config;
 });
+
+customAxios.interceptors.response.use(
+  (success: AxiosResponse) => Promise.resolve(success),
+  (error: AxiosError) => Promise.reject(error?.response?.data),
+);
 
 export default customAxios;

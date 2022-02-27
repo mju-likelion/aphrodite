@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
 import styled from "styled-components";
-import _isEqual from "lodash/isEqual";
 
 interface Props {
   question: string;
@@ -18,7 +17,7 @@ function AnswerArea({ question, name, value, onChange }: Props) {
     <Container>
       <Question>{question}</Question>
       <TextArea name={name} onChange={onChange} value={value} />
-      <p>{value.length}자</p>
+      <p>{value?.length}자</p>
     </Container>
   );
 }

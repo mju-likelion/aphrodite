@@ -1,32 +1,36 @@
-import customAxios from "@lib/Axios";
-import { fetcher } from "@lib/Axios/fetcher";
-import { theme } from "@styles/theme";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
-import useSWRImmutable from "swr/immutable";
 
-const data = ["질문 1", "질문 2", "질문 3", "질문 4", "질문 5"];
+import useQuestions from "@hooks/useQuestions";
+import customAxios from "@lib/Axios";
+import { theme } from "@styles/theme";
+import { useRouter } from "next/router";
+import useUser from "@hooks/useUser";
+import { isEqual } from "lodash";
 
 function Admin() {
-  //   const { data, isError, isLoading } = useSWRImmutable(
-  //     "/api/questions",
-  //     fetcher,
-  //   );
+  const { questions } = useQuestions("api/questions");
+  const [nextQuestion, setNextQuestions] = useState(questions);
+  const { isAdmin } = useUser("/api/user/me");
 
-  //   if (isLoading) {
-  //     return <div>Loading</div>;
-  //   }
-
-  //   if (isError) {
-  //     return <div>Error</div>;
-  //   }
-
-  const [questions, setQuestions] = useState(data);
-  // const { data, isLoading, isError } = useUser("/api/users/:id");
+  const router = useRouter();
 
   function handleClick() {
     customAxios.post("");
   }
+
+  useEffect(() => {
+    if (!isAdmin) {
+      alert("접근이 제한되었습니다");
+      router.back();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isEqual(nextQuestion, questions)) {
+      setNextQuestions(questions);
+    }
+  }, [questions]);
 
   return (
     <Container>
@@ -36,7 +40,8 @@ function Admin() {
           문항수정
         </button>
       </TitleWrapper>
-      {questions &&
+      {nextQuestion &&
+        questions &&
         questions.map((question, i) => (
           <Wrapper>
             <div>{question}</div>
@@ -46,11 +51,11 @@ function Admin() {
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const { name, value } = e.target;
 
-                  setQuestions((prev) =>
-                    prev.map((d, idx) => (idx === Number(name) ? value : d)),
+                  setNextQuestions((prev) =>
+                    prev?.map((d, idx) => (idx === Number(name) ? value : d)),
                   );
                 }}
-                value={question}
+                value={nextQuestion[i]}
               />
             </label>
             <br />
@@ -80,7 +85,7 @@ const Container = styled.div`
   }
 `;
 
-const TitleWrapper = styled.h2`
+const TitleWrapper = styled.div`
   display: flex;
   width: 100%;
 
@@ -106,6 +111,9 @@ const Title = styled.h2`
 `;
 
 const Wrapper = styled.div`
+  input {
+    padding: 10px;
+  }
   & + & {
     margin-top: 32px;
   }

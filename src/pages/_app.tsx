@@ -1,13 +1,14 @@
-import styled, { ThemeProvider } from "styled-components";
+import { RecoilRoot } from "recoil";
 import type { AppProps } from "next/app";
+import styled, { ThemeProvider } from "styled-components";
+
 import { GlobalStyle } from "@styles/global-styles";
 import { theme } from "@styles/theme";
 import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
-import axios from "axios";
 import Notice from "@components/Notice";
-import { RecoilRoot } from "recoil";
+import customAxios from "@lib/Axios";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -9,7 +9,7 @@ import * as Cookie from "@lib/Cookie";
 import Warning from "@lib/DesignSystem/Icon/Warning";
 import { mutate } from "swr";
 
-const Errors = {
+const Errors: Values = {
   email: "",
   password: "",
 };
@@ -19,12 +19,13 @@ interface Values {
 }
 
 type Props = {
-  setComponentText: (s: string) => void;
-  setShow: (b: boolean) => void;
+  setComponentText: (text: string) => void;
+  setShow: (text: boolean) => void;
 };
 
 function Login({ setComponentText, setShow }: Props) {
   const [errors, setErrors] = useState<Values>(Errors);
+  const [totalError, setTotalError] = useState("");
   const router = useRouter();
   const formik = useFormik<Values>({
     initialValues: {
@@ -43,10 +44,11 @@ function Login({ setComponentText, setShow }: Props) {
           .then(({ data }) => {
             Cookie.setCookie("jwt", data.data.jwt);
             mutate("/api/user/me");
-            router.push("/");
+            setShow(false);
+          })
+          .catch((err) => {
+            setTotalError(err.error.message);
           });
-        setShow(false);
-        router.push("/");
       }
     },
   });
@@ -123,6 +125,12 @@ function Login({ setComponentText, setShow }: Props) {
         <ErrorMsg>
           <Warning />
           &nbsp; {errors.password}
+        </ErrorMsg>
+      )}
+      {totalError && (
+        <ErrorMsg>
+          <Warning /> &nbsp;
+          {totalError}
         </ErrorMsg>
       )}
       <Button

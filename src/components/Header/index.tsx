@@ -1,52 +1,35 @@
-import Modal from "@lib/DesignSystem/Modal/Modal";
-import React, { ReactElement, useState } from "react";
-import useUser from "src/hooks/useUser";
+import React, { useState } from "react";
 import { useSWRConfig } from "swr";
-import styled from "styled-components";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+
+import Modal from "@lib/DesignSystem/Modal/Modal";
+import { removeCookie } from "@lib/Cookie";
+import useUser from "@hooks/useUser";
 import { theme } from "@styles/theme";
+
 import Login from "../Login";
 import Verify from "../Verify";
-
-interface Props {
-  setComponentText: (s: string) => void;
-  setShow: (b: boolean) => void;
-}
-
-interface ComponentType {
-  [s: string]: {
-    title: string;
-    component: ({ setComponentText, setShow }: Props) => ReactElement;
-  };
-}
-
-const InputComponent: ComponentType = {
-  Login: {
-    title: "로그인",
-    component: Login,
-  },
-  Verify: {
-    title: "회원가입",
-    component: Verify,
-  },
-};
 
 function Header() {
   const [componentText, setComponentText] = useState<string>("Login");
   const [show, setShow] = useState<boolean>(false);
-  const { user, isLoading, isError, isAdmin } = useUser("/api/user/me");
+  const { user, error, isAdmin } = useUser("/api/user/me");
   const { mutate } = useSWRConfig();
   const router = useRouter();
 
-  const { title } = InputComponent[componentText];
-  const StepComponent = InputComponent[componentText].component;
+  const title = componentText === "Login" ? "로그인" : "회원가입";
+  const StepComponent =
+    componentText === "Login" ? (
+      <Login setComponentText={setComponentText} setShow={setShow} />
+    ) : (
+      <Verify setComponentText={setComponentText} />
+    );
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error</div>;
+  function handleLogOut() {
+    removeCookie("jwt");
+    mutate("/api/user/me");
+    router.push("/");
   }
 
   return (
@@ -56,7 +39,7 @@ function Header() {
           LIKELION | MJU{" "}
         </button>
         <div>
-          {!isError && !user && (
+          {!error && !user && (
             <>
               <button
                 type="button"
@@ -80,10 +63,13 @@ function Header() {
             </>
           )}
           {user && (
-            <p>
+            <NameContainer>
               {isAdmin ? "운영진" : "회원"}&nbsp;
-              <Name>{user}</Name>님
-            </p>
+              <Name>{user}</Name>님 |&nbsp;
+              <button type="button" onClick={handleLogOut}>
+                로그아웃
+              </button>
+            </NameContainer>
           )}
         </div>
       </Self>
@@ -96,7 +82,7 @@ function Header() {
           setShow(false);
         }}
       >
-        <StepComponent setComponentText={setComponentText} setShow={setShow} />
+        {StepComponent}
       </Modal>
     </>
   );
@@ -119,6 +105,12 @@ const Self = styled.header`
   @media screen and (max-width: 424px) {
     font-size: 15px;
     padding: 20px 10px;
+  }
+`;
+
+const NameContainer = styled.div`
+  button {
+    padding: 0;
   }
 `;
 
