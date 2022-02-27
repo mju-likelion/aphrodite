@@ -5,7 +5,7 @@ import { isNil } from "lodash";
 import * as Cookie from "@lib/Cookie";
 
 const customAxios: AxiosInstance = axios.create({
-  baseURL: "http://3.35.11.129",
+  baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}`,
 });
 
 customAxios.interceptors.request.use((config) => {

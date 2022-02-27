@@ -24,7 +24,7 @@ function Apply({ detail, nameHide }: Props) {
           휴대폰 : {answer?.user.phone} <br />
           지원분야 : {answer?.apply.part}
         </UserInfo>
-        {questions?.map((q: string, i: number) => (
+        {questions?.slice(0, 5).map((q: string, i: number) => (
           // eslint-disable-next-line react/no-array-index-key
           <div key={i}>
             <ApplyQuestion>{q}</ApplyQuestion>

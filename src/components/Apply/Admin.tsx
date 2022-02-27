@@ -6,6 +6,7 @@ import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
 import { useRouter } from "next/router";
 import useUser from "@hooks/useUser";
+import { isEqual } from "lodash";
 
 function Admin() {
   const { questions } = useQuestions("api/questions");
@@ -24,6 +25,12 @@ function Admin() {
       router.back();
     }
   }, []);
+
+  useEffect(() => {
+    if (!isEqual(nextQuestion, questions)) {
+      setNextQuestions(questions);
+    }
+  }, [questions]);
 
   return (
     <Container>
@@ -78,7 +85,7 @@ const Container = styled.div`
   }
 `;
 
-const TitleWrapper = styled.h2`
+const TitleWrapper = styled.div`
   display: flex;
   width: 100%;
 
