@@ -1,6 +1,6 @@
-export interface GetApplyDetailSuccess {
+export interface GetApplySuccess {
   data: {
-    user: {
+    data: {
       id: number;
       email: string;
       phone: string;
@@ -17,7 +17,7 @@ export interface GetApplyDetailSuccess {
   };
 }
 
-export interface GetApplyDetailError {
+export interface GetApplyError {
   error: {
     message: string;
   };
