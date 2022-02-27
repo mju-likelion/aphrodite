@@ -7,10 +7,20 @@ export function middleware(request: NextRequest) {
   // you could use `redirect()` or `rewrite()` as well
   const response = NextResponse.next();
   const targetPage: string | undefined = request.page.name;
-
   const cookie: string | undefined = request.cookies.jwt;
 
-  if (targetPage !== "/" && !_.isNil(request.page.name) && !cookie) {
+  const allowedPage = ["signup", "auth"];
+  const allowed = allowedPage.filter(
+    (page) => targetPage?.split("/")[1] === page,
+  );
+
+  if (
+    allowed.length === 0 &&
+    targetPage !== "/" &&
+    !targetPage?.startsWith("/auth") &&
+    !_.isNil(request.page.name) &&
+    !cookie
+  ) {
     return NextResponse.redirect("/");
   }
 
