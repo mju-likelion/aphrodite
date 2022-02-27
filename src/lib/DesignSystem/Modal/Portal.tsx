@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { PortalProps } from "react-portal";
 
-function Portal({ children }: React.PropsWithChildren<{}>) {
+function Portal({ children }: React.PropsWithChildren<PortalProps>) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

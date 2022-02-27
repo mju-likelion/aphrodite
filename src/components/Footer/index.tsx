@@ -120,14 +120,4 @@ const SnsGitMargin = styled.div`
   }
 `;
 
-const SnsImage = styled.img`
-  height: 19px;
-  width: 19px;
-
-  @media screen and (max-width: ${theme.breakPoint.mobile}) {
-    height: 15px;
-    width: 15px;
-  }
-`;
-
 export default Footer;

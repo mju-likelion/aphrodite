@@ -1,7 +1,4 @@
-import { fetcher } from "@lib/Axios/fetcher";
-import useSWRImmutable from "swr/immutable";
-
-function usePasswordReset(url: string) {
+function usePasswordReset() {
   // const { data, isLoading, isError } = useSWRImmutable(url, fetcher);
   return <div>usePasswordReset</div>;
 }
