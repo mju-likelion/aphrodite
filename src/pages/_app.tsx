@@ -8,7 +8,6 @@ import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
 import Notice from "@components/Notice";
-import customAxios from "@lib/Axios";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
