@@ -274,7 +274,6 @@ function SignUp() {
         color={theme.colors.third.skyblue}
         size="large"
         disabled={isValid() || !termsOfUse} // 하나라도 true면 disabled
-        onClick={() => {}}
       >
         회원가입
       </Button>

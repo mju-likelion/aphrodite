@@ -116,17 +116,7 @@ const SnsGitMargin = styled.div`
   margin-right: 10px;
 
   @media screen and (max-width: 768px) {
-    margin-right: 3;
-  }
-`;
-
-const SnsImage = styled.img`
-  height: 19px;
-  width: 19px;
-
-  @media screen and (max-width: ${theme.breakPoint.mobile}) {
-    height: 15px;
-    width: 15px;
+    margin-right: 3px;
   }
 `;
 

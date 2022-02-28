@@ -1,7 +1,6 @@
 import { Button } from "@lib/DesignSystem/Button";
 import { theme } from "@styles/theme";
 import axios from "axios";
-import { useRouter } from "next/router";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
@@ -12,8 +11,6 @@ function PasswordReset() {
   const [password, setPassword] = useState<string>("");
   const [passwordConfirm, setPasswordConfirm] = useState<string>("");
   const [error, setError] = useState("");
-
-  const router = useRouter();
 
   function handleClick() {
     if (password !== passwordConfirm) {

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Arrow from "@lib/DesignSystem/Icon/Arrow";
 
 function Main() {
-  const { user, isLoading, error, isAdmin } = useUser("/api/user/me");
+  const { user, isAdmin } = useUser("/api/user/me");
   const router = useRouter();
 
   function handleClickApply() {
