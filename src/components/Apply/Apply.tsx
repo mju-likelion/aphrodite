@@ -9,6 +9,7 @@ import useShowNotice from "@hooks/useShowNotice";
 import customAxios from "@lib/Axios";
 import { theme } from "@styles/theme";
 import useApply from "@hooks/useApply";
+import { mutate } from "swr";
 import { AnswerNames, PART_LISTS } from "./constants";
 
 interface AnswerList {
@@ -62,6 +63,7 @@ function Apply() {
         .post("/api/apply", { data: { apply: { ...answers } } })
         .then((res) => {
           showNotice({ message: res.data?.data.message });
+          mutate("/api/apply/me");
         })
         .catch((err) => {
           alert(err.error.message);
@@ -85,6 +87,10 @@ function Apply() {
       setAnswers(ANSWERLIST);
     }
   }, [data]);
+
+  useEffect(() => {
+    mutate("/api/apply/me");
+  }, []);
 
   return (
     <Container>

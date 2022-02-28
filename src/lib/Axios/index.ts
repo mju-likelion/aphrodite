@@ -21,7 +21,7 @@ customAxios.interceptors.request.use((config) => {
 
 customAxios.interceptors.response.use(
   (success: AxiosResponse) => Promise.resolve(success),
-  (error: AxiosError) => Promise.reject(error?.response?.data),
+  (error: AxiosError) => Promise.reject(error.response?.data),
 );
 
 export default customAxios;

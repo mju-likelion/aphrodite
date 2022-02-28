@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { Validation } from "@lib/etc/validation";
@@ -26,22 +26,22 @@ function SignUp({ setComponentText }: Props) {
     onSubmit: () => {},
   });
 
-  const handleSendConfirmMail = useCallback((email) => {
+  const handleSendConfirmMail = (email: string) => {
     if (Validation.email(email).result) {
-      try {
-        setError(false);
-        setMessage(true);
-        customAxios.post("/api/auth/email-verify", {
-          email,
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    } else {
+      setError(false);
       setMessage(false);
-      setError(true);
+      customAxios
+        .post("/api/auth/email-verify", {
+          email,
+        })
+        .then(() => {
+          setMessage(true);
+        })
+        .catch((err) => {
+          setError(err.error.message);
+        });
     }
-  }, []);
+  };
 
   return (
     <>
@@ -66,11 +66,11 @@ function SignUp({ setComponentText }: Props) {
         {error && (
           <NoticeMsg error>
             <Warning />
-            &nbsp;유효한 이메일을 입력해주세요
+            &nbsp;{error}
           </NoticeMsg>
         )}
         <Button
-          type="button"
+          type="submit"
           disabled={!formik.values.email}
           onClick={() => handleSendConfirmMail(formik.values.email)}
           fullWidth
