@@ -12,7 +12,7 @@ type Props = {
   disabled?: boolean;
   children: React.ReactNode;
 
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 function Button({
