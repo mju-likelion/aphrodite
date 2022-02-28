@@ -15,8 +15,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/?", "/", { shallow: true });
-  }, []);
+    const { asPath, pathname } = router;
+    if (pathname === "/" && asPath !== "/") {
+      router.replace("/");
+    }
+  }, [router]);
 
   return (
     <RecoilRoot>
