@@ -98,7 +98,12 @@ function Apply() {
         <Title>지원서</Title>
         <FilterContainer>
           <span>직종</span>
-          <select title="part" name="part" onChange={handleChange}>
+          <select
+            title="part"
+            name="part"
+            onChange={handleChange}
+            value={answers.part}
+          >
             {PART_LISTS.map(({ name, value }, i) => (
               <option key={i} value={value}>
                 {name}
