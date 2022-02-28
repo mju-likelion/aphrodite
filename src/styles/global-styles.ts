@@ -28,6 +28,7 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
     border:none;
     background-color : transparent;
+    color: white;
 
     cursor : pointer;
   }

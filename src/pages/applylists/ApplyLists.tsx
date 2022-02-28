@@ -1,13 +1,18 @@
-import Modal from "@lib/DesignSystem/Modal/Modal";
+import { range } from "lodash";
+import { useRouter } from "next/router";
+
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "@styles/theme";
 import { useEffect, useState } from "react";
-import useApplyLists from "src/hooks/useApplyLists";
-import totalCount from "src/hooks/totalCount";
+import useApplyLists from "@hooks/useApplyLists";
+import totalCount from "@hooks/useTotalCount";
+import useUser from "@hooks/useUser";
 import SortPolygon from "@lib/DesignSystem/Icon/SortPolygon";
-import { useRouter } from "next/router";
+import Modal from "@lib/DesignSystem/Modal/Modal";
 import Apply from "@components/ApplyLists";
 import { INITIAL } from "@components/ApplyLists/contacts";
+import { PART_LISTS } from "@components/Apply/constants";
 
 interface StatusI {
   [key: string]: boolean;
@@ -17,14 +22,22 @@ interface PartI {
   [key: string]: boolean;
 }
 
+interface ApplyType {
+  id: number;
+  name: string;
+  major: string;
+  email: string;
+}
+
 function ApplyLists() {
   const [show, setShow] = useState(false);
   const [status, setStatus] = useState<StatusI>(INITIAL.STATUS);
   const [part, setPart] = useState<PartI>(INITIAL.PART);
   const [sort, setSort] = useState("updatedAt_asc");
   const [page, setPage] = useState(1);
+  const [nameHide, setHideName] = useState(true);
+  const [detail, setDetail] = useState(0);
 
-  const users = useApplyLists().data.user;
   const router = useRouter();
 
   const statusList = Object.keys(status).filter(
@@ -33,24 +46,12 @@ function ApplyLists() {
   const partList = Object.keys(part).filter(
     (value) => part[value as keyof typeof part],
   );
-  const size = totalCount().meta.count;
 
-  const pageNumbers = [];
-  for (let i = 1; i <= users.length / 10; i += 1) {
-    pageNumbers.push(i);
-  }
+  const { count } = totalCount("/api/apply/total-count");
+  const { applies } = useApplyLists("/api/apply");
+  const { isAdmin } = useUser("/api/user/me");
 
-  // const { applies, isLoading, isError } = useApplyLists(
-  // "https://jsonplaceholder.typicode.com/posts",
-  // );
-
-  // if (isLoading) {
-  //   return <>is Loading</>;
-  // }
-  // if (isError) {
-  //   return <>error</>;
-  // }
-  // const { count } = totalCount("https://randomuser.me/api/?results=5");
+  const pageNumbers = count && range(Math.ceil(count / 10));
 
   const statusKeys = [
     "complete",
@@ -67,8 +68,8 @@ function ApplyLists() {
     "면접탈락",
     "최종합격",
   ];
-  const partKeys = ["design", "web", "server"] as const;
-  const partNames = ["기획/디자인", "웹", "서버"];
+  const partKeys = PART_LISTS.map((v) => v.value);
+  const partNames = PART_LISTS.map((v) => v.name);
 
   useEffect(() => {
     router.replace({
@@ -81,6 +82,15 @@ function ApplyLists() {
       },
     });
   }, [status, part, sort, page]);
+
+  if (!isAdmin) {
+    return (
+      <Container>
+        <Image src="/images/mju-likelion.png" width={200} height={200} />
+        <Restrict>접근이 제한되었습니다</Restrict>
+      </Container>
+    );
+  }
 
   return (
     <>
@@ -131,8 +141,15 @@ function ApplyLists() {
             </div>
           </div>
         </FilterContainer>
-        <ApplyNum>지원자 {size}명</ApplyNum>
+        <ApplyNum>지원자 {count}명</ApplyNum>
         <ApplySort>
+          <Btn
+            onClick={() => {
+              setHideName(!nameHide);
+            }}
+          >
+            {nameHide ? `이름 보이기` : `이름 가리기`}
+          </Btn>
           <ApplySelect
             onChange={(e) => {
               setSort(e.target.value);
@@ -163,39 +180,45 @@ function ApplyLists() {
                 <th>이름</th>
                 <th>학과</th>
                 <th>이메일</th>
-                <th> </th>
               </tr>
             </TableHeader>
             <tbody>
-              {users.map((s) => (
+              {applies?.map((s: ApplyType) => (
                 <Line key={s.id}>
                   <td>{s.id}</td>
-                  <td>{s.name}</td>
+                  <td>
+                    {nameHide ? s.name.replace(/(?<=.{1})./gi, "*") : s.name}
+                    {/* 이름 앞글자 제외 정규식 처리 / 중괄호 안의 숫자만큼만 보이고 나머지 * 처리한것 */}
+                  </td>
                   <td>{s.major}</td>
                   <td>{s.email}</td>
-                  <ApplyButton
-                    onClick={() => {
-                      setShow(true);
-                    }}
-                  >
-                    지원서보기
-                  </ApplyButton>
+                  <td>
+                    <ApplyButton
+                      onClick={() => {
+                        setShow(true);
+                        setDetail(s.id);
+                      }}
+                    >
+                      지원서보기
+                    </ApplyButton>
+                  </td>
                 </Line>
               ))}
             </tbody>
           </TableContainer>
           <PageNation>
-            {pageNumbers.map((n, i) => (
-              <PageLi
-                key={n}
-                onClick={() => {
-                  setPage(n);
-                }}
-                selected={i + 1 === page}
-              >
-                {n}
-              </PageLi>
-            ))}
+            {pageNumbers &&
+              pageNumbers.map((n, i) => (
+                <PageLi
+                  key={n}
+                  onClick={() => {
+                    setPage(i + 1);
+                  }}
+                  selected={i + 1 === page}
+                >
+                  {n + 1}
+                </PageLi>
+              ))}
           </PageNation>
         </TableDiv>
       </Container>
@@ -208,7 +231,7 @@ function ApplyLists() {
           setShow(false);
         }}
       >
-        <Apply />
+        <Apply detail={detail} nameHide={nameHide} />
       </Modal>
     </>
   );
@@ -216,6 +239,7 @@ function ApplyLists() {
 
 const Container = styled.section`
   width: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
@@ -282,6 +306,15 @@ const ApplyNum = styled.div`
   font-size: 18px;
   font-weight: bold;
   text-align: right;
+`;
+const Btn = styled.button`
+  width: 100px;
+  height: 30px;
+  margin: 0 30px 20px 0;
+  border-radius: 8px;
+
+  color: white;
+  background-color: rgba(149, 149, 149, 0.5);
 `;
 
 const ApplySort = styled.div`
@@ -373,6 +406,10 @@ const PageLi = styled.li<{ selected: boolean }>`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const Restrict = styled.p`
+  margin-top: 10px;
 `;
 
 export default ApplyLists;

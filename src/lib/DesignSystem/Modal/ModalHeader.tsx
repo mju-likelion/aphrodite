@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { DefaultTheme } from "styled-components";
+import styled from "styled-components";
 
 type Props = {
   title: string;
