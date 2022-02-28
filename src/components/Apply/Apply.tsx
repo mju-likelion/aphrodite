@@ -66,7 +66,7 @@ function Apply() {
           mutate("/api/apply/me");
         })
         .catch((err) => {
-          alert(err.error.message);
+          alert(err?.error.message);
         });
     }
   }
@@ -97,26 +97,31 @@ function Apply() {
       <Inner>
         <Title>지원서</Title>
         <FilterContainer>
-          <span>직종</span>
-          <select
-            title="part"
-            name="part"
-            onChange={handleChange}
-            value={answers.part}
-          >
-            {PART_LISTS.map(({ name, value }, i) => (
-              <option key={i} value={value}>
-                {name}
-              </option>
-            ))}
-          </select>
+          <p>
+            멋쟁이사자처럼 대학 10기부터 기초 개발 스터디는 동일하게 진행되지만
+            이후에 기획/디자인 파트와 개발 파트 중 선택하여 진행하게 됩니다.
+            어느 파트에 지원하시나요?
+          </p>
+          <div>
+            <span>파트</span>
+            <select
+              title="part"
+              name="part"
+              onChange={handleChange}
+              value={answers.part}
+            >
+              {PART_LISTS.map(({ name, value }, i) => (
+                <option key={i} value={value}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </div>
         </FilterContainer>
         {questions?.slice(0, 5).map((question, i) => (
           <AnswerArea
             key={i}
-            question={`${question} ${
-              i !== 4 ? `(500자 내외)` : `(300자 내외)`
-            }`}
+            question={`${question}`}
             name={`${AnswerNames[i]}`}
             onChange={handleChange}
             value={answers[`${AnswerNames[i]}`]}
@@ -158,14 +163,18 @@ const Title = styled.h2`
 const FilterContainer = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: column;
 
   width: 100%;
   line-height: 100%;
 
   padding-bottom: 30px;
 
-  > div {
+  div {
     display: flex;
+    align-items: center;
+    width: 100%;
+    padding-top: 10px;
   }
 
   label {

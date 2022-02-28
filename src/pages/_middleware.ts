@@ -23,7 +23,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect("/");
   }
 
-  if (cookie && allowed.length > 1) {
+  if (cookie && allowed.length >= 1) {
     return NextResponse.redirect("/");
   }
 
