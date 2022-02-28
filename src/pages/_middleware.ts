@@ -23,5 +23,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect("/");
   }
 
+  if (cookie && allowed.length !== 0) {
+    return NextResponse.redirect("/");
+  }
+
   return response;
 }
