@@ -60,7 +60,7 @@ export const Validation: ValidationI = {
   },
 
   phone(data) {
-    const regex = /^[0-9]{0,11}$/i;
+    const regex = /^[0-9]{11}$/i;
 
     const result = regex.test(data);
 
@@ -70,6 +70,14 @@ export const Validation: ValidationI = {
         message: "",
       };
     }
+
+    if (data.length !== 11) {
+      return {
+        result: false,
+        message: "번호는 01012345678 형태로 입력해주세요",
+      };
+    }
+
     return {
       result: false,
       message: "번호는 숫자만 입력 해주세요",

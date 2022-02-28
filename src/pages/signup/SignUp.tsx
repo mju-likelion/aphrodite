@@ -100,13 +100,6 @@ function SignUp() {
     });
   }
 
-  useEffect(() => {
-    if (user) {
-      alert("이미 로그인 상태입니다");
-      router.push("/");
-    }
-  }, []);
-
   function handleBlur(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     const { message } = Validation[name](value);
