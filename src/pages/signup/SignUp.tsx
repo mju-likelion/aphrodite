@@ -336,6 +336,8 @@ const Input = styled.input`
 const ErrorMsg = styled.p`
   display: inline-flex;
   padding: 6px 0px;
+  white-space: pre;
+  font-size: 13px;
   color: ${theme.colors.primary.red};
 `;
 
