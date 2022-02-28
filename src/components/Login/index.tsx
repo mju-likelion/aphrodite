@@ -215,7 +215,7 @@ const ErrorMsg = styled.span`
   width: 90%;
 
   margin: 8px 0px;
-
+  white-space: pre;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.primary.red};
 `;
