@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { ChangeEvent, useCallback, useState } from "react";
 import styled from "styled-components";
 import { useFormik } from "formik";
 import { Validation } from "@lib/etc/validation";
 import customAxios from "@lib/Axios";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import * as Cookie from "@lib/Cookie";
 
 import Warning from "@lib/DesignSystem/Icon/Warning";
@@ -26,7 +27,7 @@ type Props = {
 function Login({ setComponentText, setShow }: Props) {
   const [errors, setErrors] = useState<Values>(Errors);
   const [totalError, setTotalError] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   const formik = useFormik<Values>({
     initialValues: {
       email: "",
@@ -161,7 +162,7 @@ function Login({ setComponentText, setShow }: Props) {
             회원가입 하기
           </Signup>
         </Text>
-        <Text>
+        {/* <Text>
           비밀번호를 잊어버리셨나요?{" "}
           <Reset
             onClick={() => {
@@ -171,7 +172,7 @@ function Login({ setComponentText, setShow }: Props) {
           >
             비밀번호 초기화
           </Reset>
-        </Text>
+        </Text> */}
       </Div>
     </FormWrapper>
   );
@@ -243,12 +244,12 @@ const Text = styled.div`
   font-size: 13px;
 `;
 
-const Reset = styled.button`
-  display: inline;
+// const Reset = styled.button`
+//   display: inline;
 
-  font-size: 13px;
-  color: ${({ theme }) => theme.colors.third.skyblue};
-`;
+//   font-size: 13px;
+//   color: ${({ theme }) => theme.colors.third.skyblue};
+// `;
 
 const Signup = styled.a`
   display: inline-flex;
