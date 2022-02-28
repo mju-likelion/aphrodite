@@ -116,7 +116,7 @@ const SnsGitMargin = styled.div`
   margin-right: 10px;
 
   @media screen and (max-width: 768px) {
-    margin-right: 3;
+    margin-right: 3px;
   }
 `;
 

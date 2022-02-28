@@ -219,9 +219,8 @@ const CodingText = styled.div`
   padding: 40px 0 0 40px;
 
   @media screen and (max-width: ${({ theme }) => theme.breakPoint.mobile}) {
-    display: flex;
     width: 100%;
-    padding: 0 0 0 40px;
+    padding: 40px 0 0 40px;
 
     align-items: center;
   }
