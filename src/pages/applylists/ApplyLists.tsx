@@ -48,7 +48,14 @@ function ApplyLists() {
   );
 
   const { count } = totalCount("/api/apply/total-count");
-  const { applies } = useApplyLists("/api/apply");
+  // const { applies } = useApplyLists(
+  //   `/api/apply?status=${statusList?.join(":")}&part=${partList?.join(
+  //     ":",
+  //   )}&sort=${sort}&page=${page}`,
+  // );
+  const { applies } = useApplyLists(
+    `/api/apply?${router.asPath.split("?")[1]}`,
+  );
   const { isAdmin } = useUser("/api/user/me");
 
   const pageNumbers = count && range(Math.ceil(count / 10));

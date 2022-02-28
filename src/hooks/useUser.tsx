@@ -26,7 +26,7 @@ function useUser(url: string) {
 
   return {
     user: data?.data.user.name,
-    error: error?.error.message,
+    error: error?.error?.message,
     isLoading: !data?.data.user.name && !error,
     isAdmin: data?.data.user.isAdmin || false,
   };

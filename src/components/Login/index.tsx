@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { useFormik } from "formik";
 import { Validation } from "@lib/etc/validation";
 import customAxios from "@lib/Axios";
-// import { useRouter } from "next/router";
 import * as Cookie from "@lib/Cookie";
 
 import Warning from "@lib/DesignSystem/Icon/Warning";
@@ -27,7 +26,6 @@ type Props = {
 function Login({ setComponentText, setShow }: Props) {
   const [errors, setErrors] = useState<Values>(Errors);
   const [totalError, setTotalError] = useState("");
-  // const router = useRouter();
   const formik = useFormik<Values>({
     initialValues: {
       email: "",
@@ -43,9 +41,16 @@ function Login({ setComponentText, setShow }: Props) {
             password: formik.values.password,
           })
           .then(({ data }) => {
+            const isFirst = Cookie.getCookie("isFirst") ?? null;
+
             Cookie.setCookie("jwt", data.data.jwt);
-            mutate("/api/user/me");
             setShow(false);
+            mutate("/api/user/me");
+
+            if (isFirst !== "true") {
+              Cookie.setCookie("isFirst", "true");
+              window.location.href = "/";
+            }
           })
           .catch((err) => {
             setTotalError(err.error.message);
