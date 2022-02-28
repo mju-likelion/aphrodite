@@ -25,6 +25,8 @@ function EmailConfirm() {
         );
       } catch (e) {
         console.error(e);
+        alert("에러가 발생했습니다 다시 인증 메일을 요청해주세요");
+        router.push("/");
       }
     }
     emailVerify();
