@@ -8,8 +8,16 @@ import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
 import Notice from "@components/Notice";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/?", "/", { shallow: true });
+  }, []);
+
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
