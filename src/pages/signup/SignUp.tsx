@@ -245,7 +245,7 @@ function SignUp() {
             target="_blank"
             rel="noreferrer noopener"
           >
-            멋쟁이사자처럼 개인정보 이용 동의서
+            주식회사 멋쟁이사자처럼 개인정보 이용 동의서
             <br />
           </a>
           <a
@@ -253,7 +253,7 @@ function SignUp() {
             target="_blank"
             rel="noreferrer noopener"
           >
-            멋쟁이사자처럼(명지대학교 자연) 개인정보 이용 동의서 <br />
+            멋쟁이사자처럼 명지대학교(자연) 개인정보 이용 동의서 <br />
             <br />
           </a>
         </Privacy>

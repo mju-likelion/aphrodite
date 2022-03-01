@@ -34,10 +34,10 @@ function Main() {
           </SubText>
           <Apply>
             <ApplyIntro>
-              {user && isAdmin && <p>멋쟁이사자처럼(명지대자연) 10기</p>}
+              {user && isAdmin && <p>멋쟁이사자처럼 명지대학교(자연) 10기</p>}
               {!isAdmin && (
                 <p>
-                  모집 대상: 멋쟁이사자처럼(명지대자연) 10기 <br />
+                  모집 대상: 멋쟁이사자처럼 명지대학교(자연) 10기 <br />
                   모집 기간 : ~2022년 3월 11일까지 <br />
                 </p>
               )}
@@ -57,7 +57,7 @@ function Main() {
       <Bottom>
         <CodingImg src="/images/codingimage.png" />
         <CodingText>
-          <Mju>멋쟁이사자처럼(명지대 자연)</Mju>
+          <Mju>멋쟁이사자처럼 명지대학교(자연)</Mju>
           <br />
           <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
           <br />
