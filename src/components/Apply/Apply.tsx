@@ -98,7 +98,7 @@ function Apply() {
         <Title>지원서</Title>
         <FilterContainer>
           <p>
-            멋쟁이사자처럼 대학 10기부터 기초 개발 스터디는 동일하게 진행되지만
+            멋쟁이사자처럼 대학 10기부터 기초 개발 스터디는 동일하게 진행되지만,
             이후에 기획/디자인 파트와 개발 파트 중 선택하여 진행하게 됩니다.
             어느 파트에 지원하시나요?
           </p>
@@ -164,6 +164,9 @@ const FilterContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  font-size: 23px;
+  font-weight: bold;
 
   width: 100%;
   line-height: 100%;
