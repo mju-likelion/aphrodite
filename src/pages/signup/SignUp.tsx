@@ -144,6 +144,7 @@ function SignUp() {
       .then((res) => {
         alert(res.data.data.message);
         router.push("/");
+        window.location.href = "/";
       })
       .catch((err) => {
         alert(err.response.data.error.message);
@@ -225,7 +226,7 @@ function SignUp() {
 
         <Input
           type="text"
-          placeholder="전공 (ex.컴퓨터공학과)"
+          placeholder="전공 (복수전공 함께 기입) (ex.컴퓨터공학과)"
           name="major"
           value={user.major}
           onChange={handleChange}
