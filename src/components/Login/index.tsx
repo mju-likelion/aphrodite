@@ -41,16 +41,16 @@ function Login({ setComponentText, setShow }: Props) {
             password: formik.values.password,
           })
           .then(({ data }) => {
-            const isFirst = Cookie.getCookie("isFirst") ?? null;
+            // const isFirst = Cookie.getCookie("isFirst") ?? null;
 
             Cookie.setCookie("jwt", data.data.jwt);
             setShow(false);
             mutate("/api/user/me");
 
-            if (isFirst !== "true") {
-              Cookie.setCookie("isFirst", "true");
-              window.location.href = "/";
-            }
+            // if (isFirst !== "true") {
+            //   Cookie.setCookie("isFirst", "true");
+            //   window.location.href = "/";
+            // }
           })
           .catch((err) => {
             setTotalError(err.error.message);
