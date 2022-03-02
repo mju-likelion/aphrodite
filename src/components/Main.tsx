@@ -61,7 +61,11 @@ function Main() {
           <br />
           <Detail> 멋쟁이들의 동료상과 커리큘럼을 알고싶다면?</Detail>
           <br />
-          <DetailLink href={process.env.NEXT_PUBLIC_NANA_SITE}>
+          <DetailLink
+            href={process.env.NEXT_PUBLIC_NANA_SITE}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             자세히 보기 <Arrow />
           </DetailLink>
         </CodingText>
