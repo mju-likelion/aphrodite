@@ -226,7 +226,8 @@ function SignUp() {
 
         <Input
           type="text"
-          placeholder="전공 (복수전공 함께 기입) (ex.컴퓨터공학과)"
+          placeholder="전공 (복수전공 기입)
+          (ex.컴퓨터공학과, 전기공학과)"
           name="major"
           value={user.major}
           onChange={handleChange}
@@ -321,13 +322,13 @@ const Input = styled.input`
   border-radius: 6px;
   background-color: ${theme.colors.primary.gray};
 
-  font-size: 17px;
+  font-size: 14px;
   letter-spacing: -0.2px;
 
   outline-color: #8ffcff;
   color: #a0a0a0;
 
-  padding-left: 16px;
+  padding-left: 14px;
 
   & + & {
     margin-top: 24px;

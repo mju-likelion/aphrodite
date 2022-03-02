@@ -102,7 +102,7 @@ export const Validation: ValidationI = {
   },
 
   major(data) {
-    const regex = /^[ㄱ-ㅎ가-힣]*(과|학과|학부)$/gi;
+    const regex = /^[ㄱ-ㅎ가-힣]*[\d,]*[\s]*[ㄱ-ㅎ가-힣]*(과|학과|학부)$/gi;
 
     const result = regex.test(data);
 
