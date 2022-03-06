@@ -8,6 +8,7 @@ import CustomHead from "src/components/CustomHead";
 import Header from "@components/Header";
 import Footer from "@components/Footer";
 import Notice from "@components/Notice";
+import { GA_TRACKING_ID, pageview } from "@lib/GTag";
 import { useRouter } from "next/router";
 import Script from "next/script";
 import { useEffect } from "react";
@@ -22,6 +23,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [router]);
 
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <RecoilRoot>
       <ThemeProvider theme={theme}>
@@ -29,6 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <GlobalStyle />
         <AppContainer>
           <Header />
+          {/* 채널톡 script */}
           <Script
             strategy="afterInteractive"
             dangerouslySetInnerHTML={{
@@ -70,6 +82,25 @@ function MyApp({ Component, pageProps }: AppProps) {
                 })();
                 ChannelIO('boot', {
                   "pluginKey": "${process.env.NEXT_PUBLIC_CHANNEL_IO_PLUGIN_KEY}"
+                });
+              `,
+            }}
+          />
+          {/* Global site tag (gtag.js) - Google Analytics */}
+          <Script
+            strategy="afterInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+          />
+          <Script
+            id="gtag-init"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TRACKING_ID}', {
+                  page_path: window.location.pathname,
                 });
               `,
             }}
