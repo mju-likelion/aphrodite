@@ -14,7 +14,7 @@ function Main() {
       return;
     }
     if (isAdmin) router.push("/applylists");
-    else router.push("/apply");
+    else alert("지원기간이 아닙니다.");
   }
 
   return (
